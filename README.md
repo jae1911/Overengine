@@ -4,7 +4,7 @@ My overengineered blog/website engine.
 
 ## Roadmap
 
- - [ ] Basic page render to markdown
+ - [x] Basic page render to markdown
  - [ ] vhost-based whitelist system (allows multiple domains to be used for app, unlike `gohugo`)
  - [ ] Templating
  - [ ] Menus configurable via YAML markdown header
