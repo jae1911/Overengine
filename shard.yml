@@ -1,0 +1,14 @@
+name: overengine
+version: 0.1.0
+
+authors:
+  - Jae Lo Presti <jae@j4.lc>
+
+description: |
+  My overengineered blog/website engine.
+
+targets:
+  overengine:
+    main: src/overengine.cr
+
+license: MIT
