@@ -34,12 +34,19 @@ function pathToParse(path: string): string {
 function markToParsed(path: string): PostMedatada {
     const mdh = parseMarkdownHeaders(readFileSync(path, 'utf-8'));
 
-    const headers = JSON.parse(JSON.stringify(mdh?.headers));
+    let title = noMetaError.title;
+    let description = noMetaError.description;
+    let date = noMetaError.pubDate;
 
+
+    if (mdh?.headers) {
+        const headers = JSON.parse(JSON.stringify(mdh?.headers));
+        title = headers.title ?? noMetaError.title;
+        description = headers.description ?? noMetaError.description;
+        date = new Date(headers.date) ?? noMetaError.pubDate;
+    }
+    
     const markdown = mdh?.markdown ?? noMetaError.markdown;
-    const title = headers.title ?? noMetaError.title;
-    const description = headers.description ?? noMetaError.description;
-    const date = new Date(headers.date) ?? noMetaError.pubDate;
 
     const res: PostMedatada = {
         title: title,
