@@ -6,3 +6,4 @@ out/
 *.md
 lib/
 node_modules/
+.env
