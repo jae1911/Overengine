@@ -12,8 +12,8 @@ My overengineered blog/website engine.
  - [ ] Compression (GZIP; BROTLI)
  - [ ] Shortcodes
  - [x] Markdown file location to web path (`content/blog/2022/test.md` goes to `/blog/2022/test`)
- - [ ] RSS feed
- - [ ] JSON feed
+ - [x] RSS feed
+ - [x] JSON feed
  - [ ] Dynamic IP loading (can detect kind of IP used and display message to IPv4 users)
  - [ ] Docker / Baremetal deployment
  - [x] Dynamic content loading (content loaded from distant repo; reloads all clients and displays when pulled)

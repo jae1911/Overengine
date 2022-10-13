@@ -1,8 +1,9 @@
 import { FastifyPluginCallback } from 'fastify';
+import { Feed } from 'feed';
 
 import scourDirectory from '../utils/fileUtil';
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder } from '../utils/markdownUtil';
+import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
@@ -25,6 +26,18 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname, request.protocol),
             wikiMenu: generateWikiMenu(request.hostname, request.protocol),
         })
+    });
+
+    // RSS Feed blog
+    fastify.get("/blog/index.xml", (request, reply): void => {
+        const feed = generateFeeds(request.hostname, request.protocol, true);
+        reply.send(feed.rss2());
+    });
+
+    // JSON Feed blog
+    fastify.get("/blog/index.json", (request, reply): void => {
+        const feed = generateFeeds(request.hostname, request.protocol, true);
+        reply.send(feed.json1());
     });
 
     next();

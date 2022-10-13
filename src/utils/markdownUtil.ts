@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'fs';
 
 import { marked } from 'marked';
 import { parseMarkdownHeaders } from 'markdown-headers';
+import { Feed } from 'feed';
 
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
@@ -190,4 +191,58 @@ function blogFinder(uri: string): PostMedatada {
     return res;
 }
 
-export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder };
+function generateFeeds(hostname: string, protocol: string, isBlog: boolean, path?: string): Feed {
+    const feed = new Feed({
+        title: "Jae's Blog",
+        description: "The blog of Jae.",
+        id: `${protocol}://${hostname}`,
+        link: `${protocol}://${hostname}`,
+        language: "en",
+        copyright: "CC BY-SA 4.0 Jae Lo Presti",
+        generator: "Overengine by J4",
+        feedLinks: {
+            atom: `${protocol}://${hostname}/blog/index.xml`,
+            json: `${protocol}://${hostname}/blog/index.json`,
+        }
+    });
+
+    const dirContent: string[] = scourDirectory(BASE_CONTENT_DIR + '/blog');
+
+    let allThePosts: PostMedatada[] = [];
+    dirContent.forEach((entry) => {
+        if (!entry.includes("_index")) {
+            const postMeta: PostMedatada = markToParsed(BASE_CONTENT_DIR  + entry);
+            allThePosts.push(postMeta);
+        }    
+    });
+
+    allThePosts = allThePosts.sort(
+        (objA, objB) => objB.pubDate.getTime() - objA.pubDate.getTime(),
+    );
+
+    allThePosts.forEach((postMeta) => {
+        if (postMeta.title) {
+            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').toLowerCase()}/`;
+
+            feed.addItem({
+                title: postMeta.title,
+                id: formattedURi,
+                link: formattedURi,
+                description: postMeta.description,
+                content: marked.parse(postMeta.markdown),
+                author: [
+                    {
+                        name: "Jae Lo Presti",
+                        email: "jae@j4.lc",
+                        link: "https://j4.lc",
+                    }
+                ],
+                date: postMeta.pubDate,
+            });
+        }
+    })
+
+    return feed;
+}
+
+export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds };
