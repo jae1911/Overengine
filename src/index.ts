@@ -1,5 +1,7 @@
 import fastify from 'fastify';
 import autoLoad from '@fastify/autoload';
+import fastifyView from '@fastify/view';
+import fastifyStatic from '@fastify/static';
 
 import { join } from 'path';
 
@@ -9,6 +11,23 @@ const server = fastify({
 
 server.register(autoLoad, {
     dir: join(__dirname, 'routes'),
+});
+
+server.register(fastifyView, {
+    engine: {
+        ejs: require("ejs"),
+    }
+});
+
+server.register(fastifyStatic, {
+    root: join(__dirname, '../public'),
+    prefix: '/files/',
+});
+
+server.register(fastifyStatic, {
+    root: join(__dirname, '../public/.well-known'),
+    prefix: '/.well-known/',
+    decorateReply: false,
 });
 
 server.listen({ port: 8080, host: "::" }, (err, address) => {

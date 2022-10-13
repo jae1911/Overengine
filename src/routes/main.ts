@@ -1,12 +1,11 @@
 import { FastifyPluginCallback } from 'fastify';
 
 import pathToParse from '../utils/markdownUtil';
-import { BASE_CONTENT_DIR } from '../environment';
+import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/", (request, reply): void => {
-        console.log(BASE_CONTENT_DIR);
-        reply.type('text/html').send(pathToParse(BASE_CONTENT_DIR + '/index.md'));
+        reply.view('/templates/fullpage.ejs', { content: pathToParse(BASE_CONTENT_DIR + '/index.md'), sitename: SITE_NAME });
     });
 
     fastify.get("/*", (request, reply): void => {

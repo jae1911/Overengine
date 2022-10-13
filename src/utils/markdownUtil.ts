@@ -20,13 +20,18 @@ const noMetaError: PostMedatada = {
     pubDate: new Date(),
 }
 
-function pathToParse(path: string): string {
-    let res = '';
+function pathToParse(path: string): PostMedatada {
+    let res: PostMedatada;
 
     if(path.length < 1 || path.split('.').pop() != 'md' || !existsSync(path))
-        res = Marked.parse(errorMeta.markdown);
-    else
-        res = Marked.parse(markToParsed(path).markdown);
+    {
+        res = errorMeta;
+        res.markdown = Marked.parse(errorMeta.markdown);
+    }
+    else {
+        res = markToParsed(path);
+        res.markdown = Marked.parse(res.markdown);
+    }
 
     return res;
 }

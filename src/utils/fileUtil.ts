@@ -20,4 +20,6 @@ function scourDirectory(path: string, _files?: string[]): string[] {
     return files_;
 }
 
+// Finds a post with particular date and time
+
 export default scourDirectory;
