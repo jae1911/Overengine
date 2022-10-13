@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic page meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>
+      <%= sitename %> - <%= content.title %>
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="/files/main.css">
+    <link rel="icon" href="/files/logo.svg" type="image/svg+xml" sizes="any">
+
+    <!-- OpenGraph -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:title" content="Jae's Website">
+    <meta property="og:url" content="https://jae.fi">
+    <meta property="og:site_name" content="Jae's Website">
+    <meta property="og:description" content="<%= content.description %>">
+    <meta property="og:image" content="https://bm.jae.fi/web/Logo-abs.png">
+</head>
+<body id="body">
+
+    <div class="page">
+        <%- include('layouts/header'); -%>
+        <div class="cpage">
+            <div class="mainPage">
+                <h1><%= content.title %></h1>
+                <%- content.markdown %>
+            </div>
+            <%- include('layouts/navigation'); -%>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@ import { FastifyPluginCallback } from 'fastify';
 
 import scourDirectory from '../utils/fileUtil';
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList } from '../utils/markdownUtil';
+import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
@@ -18,7 +18,13 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
 
     // Blog posts
     fastify.get("/blog/:year/:month/:day/:title/", (request, reply): void => {
-        reply.send("trolled");
+        const reqUri = request.url;
+        reply.view('/templates/blog.ejs', {
+            content: blogFinder(reqUri),
+            sitename: SITE_NAME,
+            pagesMenu: generatePageMenu(request.hostname, request.protocol),
+            wikiMenu: generateWikiMenu(request.hostname, request.protocol),
+        })
     });
 
     next();

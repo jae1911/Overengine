@@ -89,7 +89,7 @@ function generateListFromFile(path: string, baseDomain: string, protocol?: strin
                 listUri = listUri.replace('_index', '');
         } else if (isBlog) {
             const title = postMeta.title ?? 'No title';
-            listUri = `${proto}://${baseDomain}/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${title.replaceAll(' ', '-').toLowerCase()}/`;
+            listUri = `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${title.replaceAll(' ', '-').toLowerCase()}/`;
         }
 
         const menuEntry: MenuList = {
@@ -167,8 +167,27 @@ function generateBlogList(baseDomain: string, protocol?: string): string {
 
     res = marked.parse(listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, protocol, false, true, true, undefined, true));
 
+    return res;
+}
+
+function blogFinder(uri: string): PostMedatada {
+    let res: PostMedatada = errorMeta;
+
+    const dirContent: string[] = scourDirectory(BASE_CONTENT_DIR + '/blog');
+    dirContent.forEach((entry) => {
+        const postMeta: PostMedatada = markToParsed(BASE_CONTENT_DIR  + entry);
+
+        if(postMeta.pubDate && postMeta.title) {
+            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').toLowerCase()}/`;
+
+            if (formattedTitle == uri) {
+                res = postMeta;
+                res.markdown = marked.parse(res.markdown);
+            }
+        }
+    });
 
     return res;
 }
 
-export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList };
+export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder };
