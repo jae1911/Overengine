@@ -7,19 +7,11 @@
         <div class="content">
             <p>Pages</p>
 
-             <ul>
-              {{ range .Site.Menus.main }}
-               <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-              {{ end }}
-             </ul>
+            <%- pagesMenu -%>
 
             <p>Wiki</p>
 
-            <ul>
-              {{ range .Site.Menus.wiki }}
-               <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-              {{ end }}
-            </ul>
+            <%- wikiMenu -%>
 
         </div>
     </div>
