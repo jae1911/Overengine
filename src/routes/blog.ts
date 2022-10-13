@@ -40,6 +40,12 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.send(feed.json1());
     });
 
+    // ATOM Feed blog
+    fastify.get("/blog/index.atom", (request, reply): void => {
+        const feed = generateFeeds(request.hostname, request.protocol, true);
+        reply.send(feed.atom1());
+    });
+
     next();
 }
 

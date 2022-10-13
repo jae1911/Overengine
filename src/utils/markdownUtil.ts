@@ -201,8 +201,9 @@ function generateFeeds(hostname: string, protocol: string, isBlog: boolean, path
         copyright: "CC BY-SA 4.0 Jae Lo Presti",
         generator: "Overengine by J4",
         feedLinks: {
-            atom: `${protocol}://${hostname}/blog/index.xml`,
+            xml: `${protocol}://${hostname}/blog/index.xml`,
             json: `${protocol}://${hostname}/blog/index.json`,
+            atom: `${protocol}://${hostname}/blog/index.atom`,
         }
     });
 
