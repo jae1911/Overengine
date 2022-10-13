@@ -10,6 +10,12 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.type('text/html').send(pathToParse(BASE_CONTENT_DIR + '/blog/index.md'));
     });
 
+    // Blog posts
+    fastify.get("/blog/:year/:month/:day/:title", (request, reply): void => {
+        console.log(request.params);
+        reply.send("trolled");
+    });
+
     next();
 }
 
