@@ -1,0 +1,295 @@
+@font-face {
+  font-family: 'Dotsies';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/Dotsies.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'pixel';
+  src: url('fonts/Ac437_IBM_PGC.woff2');
+}
+
+:root {
+  --fontsize: 1.4em;
+  --pagetitle: 1.75em;
+
+  --imgsize: 10em;
+  --svgsize: 3em;
+
+  --titlesize: 2.5em;
+  --subsize: 1.5em;
+
+  --padsize: 0.625rem;
+
+  --blue: #5C527F;
+  --yellow: #FFD369;
+  --constcolor: #022C43;
+  --constbd: #001F3F;
+
+  /* DEFAULT LIGHT SCHEME COLOURS */
+  --background-color: #F7ECDE;
+  --main-text-color: #1B2430;
+  --outlink-color: #4169e1;
+  --inlink-color: #006400;
+  --purple: #800080;
+  --grey: #878787;
+  --table-color: #000000;
+  --shadow-color: #999999;
+  --title-color: white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1B2430;
+    --outlink-color: #ff8080;
+    --inlink-color: #7aff7a;
+    --main-text-color: #FFFFFF;
+    --purple: #ffd1ff ;
+    --grey: #E7F6F2;
+    --table-color: #F7EDDB;
+    --shadow-color: #999999;
+    --title-color: #FFFFFF;
+  }
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'pixel';
+  background-color: var(--background-color);
+  background-image: url('img/oldbg/maze.gif');
+  color: var(--main-text-color);
+}
+
+.page {
+  margin: auto;
+  width: 100%;
+  max-width: 1000px;
+  border: 3px solid var(--blue);
+  box-sizing: border-box;
+  margin-top: var(--padsize);
+  margin-bottom: var(--padsize);
+  overflow: scroll;
+  background-color: var(--background-color);
+  max-height: 98vh;
+}
+
+.header {
+  border-bottom: 3px solid var(--blue);
+  padding-left: 5px;
+  max-width: 100%;
+  max-height: 150vh;
+  padding-bottom: 0;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+
+  color: white;
+
+  background: rgb(255,255,255);
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue) 49%, var(--background-color) 100%);
+}
+
+hr {
+  border-color: var(--blue);
+  background-color: var(--blue);
+  color: var(--blue);
+}
+
+.header h1 {
+  text-shadow: 5px 5px var(--shadow-color);
+  color: var(--title-color);
+}
+
+.header a {
+  color: var(--main-text-color);
+  text-decoration: none;
+}
+
+.header .title {
+  font-size: var(--titlesize);
+}
+
+.header .subtitle {
+  font-size: var(--subsize);
+}
+
+.header img {
+  margin-left: auto;
+  padding-right: var(--padsize);
+  max-width: var(--imgsize);
+  max-height: var(--imgsize);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.cpage {
+  display: flex;
+  font-size: var(--fontsize);
+}
+
+.mainPage {
+  max-width: 70%;
+  min-width: 70%;
+  padding-left: var(--padsize);
+  padding-right: var(--padsize);
+  padding-bottom: var(--padsize);
+}
+
+.mainPage h1 {
+  font-size: var(--pagetitle);
+}
+
+@media (max-width: 991px) {
+ .navigation {
+    position: relative;
+    max-width: 90vw;
+  }
+  .mainPage {
+    position: relative;
+    max-width: 90vw;
+  }
+  .cpage {
+    display: block;
+  }
+  .page {
+    margin: auto;
+    width: 100%;
+    max-width: 95vw;
+    border: 3px solid var(--blue);
+    box-sizing: border-box;
+    margin-top: var(--padsize);
+    margin-bottom: var(--padsize);
+  }
+}
+
+.navigation {
+  max-width: 100%;
+  min-width: 20%;
+  padding-left: var(--padsize);
+  padding-right: var(--padsize);
+  padding-bottom: var(--padsize);
+}
+
+@media (min-width: 991px) {
+  .navigation {
+    border-left: 3px solid var(--blue);
+  }
+}
+
+.navigation h1 {
+  text-align: center;
+  font-size: calc(var(--fontsize) * 2vmin);
+}
+
+.violet {
+  color: var(--purple);
+}
+
+p {
+  text-align: justify;
+  word-wrap: anywhere;
+}
+
+a {
+  color: unset;
+  text-decoration-style: dotted;
+  color: var(--outlink-color);
+}
+
+.il {
+  color: var(--grey);
+  text-decoration: underline;
+  text-decoration-style: wavy;
+}
+
+.in a {
+  color: var(--inlink-color);
+}
+
+.linklist {
+  border: 3px solid var(--blue);
+}
+
+.linklist .header {
+  background: var(--blue);
+}
+
+.content a,
+.int,
+.int a {
+  color: var(--inlink-color);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.content p {
+  padding-left: var(--padsize);
+  padding-right: var(--padsize);
+}
+
+.content hr {
+  width: 5vw;
+  margin-right: auto;
+}
+
+table, th, td {
+  border:1px solid var(--table-color);
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.tablecontainer {
+  overflow-x: auto;
+}
+
+.construction {
+  background-color: var(--yellow);
+  padding: var(--padsize);
+  color: var(--constcolor);
+  display: flex;
+  border: 2px dotted var(--constbd);
+}
+
+.construction svg {
+  max-height: var(--svgsize);
+  margin-right: auto;
+  padding-left: var(--padsize);
+  padding-top: var(--padsize);
+  padding-bottom: var(--padsize);
+}
+
+.construction h2 {
+  padding-right: var(--padsize);
+  padding-top: var(--padsize);
+  padding-bottom: var(--padsize);
+}
+
+pre {
+  overflow-x: auto;
+}
+
+.footnotes {
+  font-size: .8em;
+}
+
+img,
+video {
+  max-width: 15em;
+}
+
+.bn {
+  width: 88px;
+  height: 31px;
+}
+
+.rightgif {
+  float: right;
+  max-width: 11em;
+  margin: var(--padsize);
+  border: 3px solid var(--blue);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3Cfilter id='grayscale'%3E%3CfeColorMatrix type='saturate' values='0.01'/%3E%3C/filter%3E%3C/defs%3E%3Cg opacity='0.3' filter='url(%23grayscale)'%3E%3Cpolygon fill='%23cc0000' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%23aa0000' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23ca002c' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%23a70022' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23c6004c' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%23a3003c' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23c0006a' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%239d0055' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23b7008a' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%2394006e' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%23aa00aa' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%23880088' points='943 900 1210 900 971 687'/%3E%3C/g%3E%3C/svg%3E");
+}
