@@ -1,0 +1,3 @@
+[submodule "content"]
+	path = content
+	url = https://git.jae.fi/jae/sitecontent
