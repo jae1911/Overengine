@@ -6,7 +6,7 @@ import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/", (request, reply): void => {
         reply.view('/templates/index.ejs', { 
-            content: pathToParse(BASE_CONTENT_DIR + '/_index.md'),
+            content: pathToParse(BASE_CONTENT_DIR + '/_index.md', true, request.hostname, request.protocol),
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname, request.protocol),
             wikiMenu: generateWikiMenu(request.hostname, request.protocol),
@@ -33,6 +33,13 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname, request.protocol),
             wikiMenu: generateWikiMenu(request.hostname, request.protocol),
             list: postList,
+        });
+    });
+
+    // Matrix config
+    fastify.get("/.well-known/matrix/server", (request, reply): void => {
+        reply.send({
+            "m.server": `${request.hostname}:443`,
         });
     });
 

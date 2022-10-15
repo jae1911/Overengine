@@ -10,7 +10,7 @@ My overengineered blog/website engine.
  - [x] Menus configurable via YAML markdown header
  - [x] Blog permalinks (format URI like `/blog/{year}/{month}/{day}/{title}` from YAML header)
  - [ ] Compression (GZIP; BROTLI)
- - [ ] Shortcodes
+ - [x] Shortcodes
  - [x] Markdown file location to web path (`content/blog/2022/test.md` goes to `/blog/2022/test`)
  - [x] RSS feed
  - [x] JSON feed
