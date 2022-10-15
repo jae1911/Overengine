@@ -31,19 +31,19 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // RSS Feed blog
     fastify.get("/blog/index.xml", (request, reply): void => {
         const feed = generateFeeds(request.hostname, request.protocol, true);
-        reply.send(feed.rss2());
+        reply.type('application/rss+xml ').send(feed.rss2());
     });
 
     // JSON Feed blog
     fastify.get("/blog/index.json", (request, reply): void => {
         const feed = generateFeeds(request.hostname, request.protocol, true);
-        reply.send(feed.json1());
+        reply.type('application/feed+json').send(feed.json1());
     });
 
     // ATOM Feed blog
     fastify.get("/blog/index.atom", (request, reply): void => {
         const feed = generateFeeds(request.hostname, request.protocol, true);
-        reply.send(feed.atom1());
+        reply.type('application/atom+xml').send(feed.atom1());
     });
 
     next();
