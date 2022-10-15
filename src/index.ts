@@ -5,8 +5,10 @@ import fastifyStatic from '@fastify/static';
 
 import { join } from 'path';
 
+import { PRODUCTION } from './environment';
+
 const server = fastify({
-    logger: true,
+    logger: PRODUCTION,
 });
 
 server.register(autoLoad, {

@@ -7,3 +7,4 @@ out/
 lib/
 node_modules/
 .env
+build/

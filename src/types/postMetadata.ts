@@ -1,4 +1,4 @@
-export type PostMedatada {
+export type PostMedatada = {
     title?: string;
     description?: string;
     markdown: string;
