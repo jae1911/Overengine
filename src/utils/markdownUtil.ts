@@ -24,7 +24,7 @@ const noMetaError: PostMedatada = {
     pubDate: new Date(),
 }
 
-function pathToParse(path: string, blog?: boolean, baseDomain?: string, protocol?: string): PostMedatada {
+function pathToParse(path: string, blog?: boolean, baseDomain?: string): PostMedatada {
     let res: PostMedatada;
 
     if(path.length < 1 || path.split('.').pop() != 'md' || !existsSync(path))
@@ -38,8 +38,8 @@ function pathToParse(path: string, blog?: boolean, baseDomain?: string, protocol
     }
 
     // Handle "shortcodes"
-    if (blog && baseDomain && protocol)
-        res.markdown = res.markdown.replaceAll('{{< postlist >}}', listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, protocol, false, true, false, undefined, true, 5));
+    if (blog && baseDomain)
+        res.markdown = res.markdown.replaceAll('{{< postlist >}}', listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, false, undefined, true, 5));
 
     res.markdown = res.markdown.replaceAll('{{< construction >}}', '<div class="construction"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z"></path></svg><h2>What comes next is a work in progress!</h2></div>');
 
@@ -79,9 +79,8 @@ function markToParsed(path: string): PostMedatada {
 }
 
 // BaseDomain is request.hostname
-// Protocol is request.protocol
-function generateListFromFile(path: string, baseDomain: string, protocol?: string, onlyIndex?: boolean, noIndex?: boolean, menuName?: string, isBlog?: boolean): MenuList[] {
-    const proto: string = protocol ?? 'https';
+function generateListFromFile(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, menuName?: string, isBlog?: boolean): MenuList[] {
+    const proto: string = determineProtocol(baseDomain);
     let res: MenuList[] = [];
 
     const dirContent: string[] = scourDirectory(path);
@@ -124,10 +123,10 @@ function generateListFromFile(path: string, baseDomain: string, protocol?: strin
     return res;
 }
 
-function listToMarkdown(path: string, baseDomain: string, protocol?: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number): string {
+function listToMarkdown(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number): string {
     let res: string = '';
 
-    let fileList: MenuList[] = generateListFromFile(path, baseDomain, protocol, onlyIndex, noIndex, menuName, isBlog);
+    let fileList: MenuList[] = generateListFromFile(path, baseDomain, onlyIndex, noIndex, menuName, isBlog);
 
     fileList = fileList.sort(
         (objA, objB) => objB.date.getTime() - objA.date.getTime(),
@@ -148,36 +147,36 @@ function listToMarkdown(path: string, baseDomain: string, protocol?: string, onl
     return res;
 }
 
-function generateList(path: string, baseDomain: string, protocol?: string): string {
+function generateList(path: string, baseDomain: string): string {
     let res: string = '';
 
-    res = marked.parse(listToMarkdown(path.replace(/.$/, ''), baseDomain, protocol, false, true));
+    res = marked.parse(listToMarkdown(path.replace(/.$/, ''), baseDomain, false, true));
 
     return res;
 }
 
-function generatePageMenu(baseDomain: string, protocol?: string): string {
+function generatePageMenu(baseDomain: string): string {
     let res: string = '';
 
-    const listMd = listToMarkdown(BASE_CONTENT_DIR, baseDomain, protocol, false, false, false, 'main');
+    const listMd = listToMarkdown(BASE_CONTENT_DIR, baseDomain, false, false, false, 'main');
     res = marked.parse(listMd);
 
     return res;
 }
 
-function generateWikiMenu(baseDomain: string, protocol?: string): string {
+function generateWikiMenu(baseDomain: string): string {
     let res: string = '';
 
-    const listMd = listToMarkdown(BASE_CONTENT_DIR, baseDomain, protocol, true, false, false, 'wiki');
+    const listMd = listToMarkdown(BASE_CONTENT_DIR, baseDomain, true, false, false, 'wiki');
     res = marked.parse(listMd);
 
     return res;
 }
 
-function generateBlogList(baseDomain: string, protocol?: string): string {
+function generateBlogList(baseDomain: string): string {
     let res: string = '';
 
-    res = marked.parse(listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, protocol, false, true, true, undefined, true));
+    res = marked.parse(listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, true, undefined, true));
 
     return res;
 }
@@ -202,7 +201,9 @@ function blogFinder(uri: string): PostMedatada {
     return res;
 }
 
-function generateFeeds(hostname: string, protocol: string, isBlog: boolean, path?: string): Feed {
+function generateFeeds(hostname: string, isBlog: boolean, path?: string): Feed {
+    const protocol = determineProtocol(hostname);
+
     const feed = new Feed({
         title: "Jae's Blog",
         description: "The blog of Jae.",
@@ -255,6 +256,15 @@ function generateFeeds(hostname: string, protocol: string, isBlog: boolean, path
     })
 
     return feed;
+}
+
+function determineProtocol(host: string): string {
+    let res = 'https';
+
+    if (host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost'))
+        res = 'http';
+
+    return res;
 }
 
 export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds };

@@ -6,7 +6,7 @@ import { BASE_CONTENT_DIR } from '../environment';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/debug", (request, reply): void => {
-        reply.send(listToMarkdown(BASE_CONTENT_DIR + '/pages', request.hostname, request.protocol, false, true, false));
+        reply.send(listToMarkdown(BASE_CONTENT_DIR + '/pages', request.hostname, false, true, false));
     });
 
     next();

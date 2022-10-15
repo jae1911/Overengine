@@ -11,9 +11,9 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.view('/templates/list.ejs', { 
             content: pathToParse(BASE_CONTENT_DIR + '/blog/_index.md'),
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname, request.protocol),
-            wikiMenu: generateWikiMenu(request.hostname, request.protocol),
-            list: generateBlogList(request.hostname, request.protocol),
+            pagesMenu: generatePageMenu(request.hostname),
+            wikiMenu: generateWikiMenu(request.hostname),
+            list: generateBlogList(request.hostname),
         });
     });
 
@@ -23,26 +23,26 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.view('/templates/blog.ejs', {
             content: blogFinder(reqUri),
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname, request.protocol),
-            wikiMenu: generateWikiMenu(request.hostname, request.protocol),
+            pagesMenu: generatePageMenu(request.hostname),
+            wikiMenu: generateWikiMenu(request.hostname),
         })
     });
 
     // RSS Feed blog
     fastify.get("/blog/index.xml", (request, reply): void => {
-        const feed = generateFeeds(request.hostname, request.protocol, true);
+        const feed = generateFeeds(request.hostname, true);
         reply.type('application/rss+xml ').send(feed.rss2());
     });
 
     // JSON Feed blog
     fastify.get("/blog/index.json", (request, reply): void => {
-        const feed = generateFeeds(request.hostname, request.protocol, true);
+        const feed = generateFeeds(request.hostname, true);
         reply.type('application/feed+json').send(feed.json1());
     });
 
     // ATOM Feed blog
     fastify.get("/blog/index.atom", (request, reply): void => {
-        const feed = generateFeeds(request.hostname, request.protocol, true);
+        const feed = generateFeeds(request.hostname, true);
         reply.type('application/atom+xml').send(feed.atom1());
     });
 

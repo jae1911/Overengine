@@ -6,10 +6,10 @@ import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/", (request, reply): void => {
         reply.view('/templates/index.ejs', { 
-            content: pathToParse(BASE_CONTENT_DIR + '/_index.md', true, request.hostname, request.protocol),
+            content: pathToParse(BASE_CONTENT_DIR + '/_index.md', true, request.hostname),
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname, request.protocol),
-            wikiMenu: generateWikiMenu(request.hostname, request.protocol),
+            pagesMenu: generatePageMenu(request.hostname),
+            wikiMenu: generateWikiMenu(request.hostname),
         });
     });
 
@@ -22,7 +22,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         if (uri.slice(-1) == '/') {
             fileGet += '_index.md';
             templateFile = 'list';
-            postList = generateList(BASE_CONTENT_DIR + uri, request.hostname, request.protocol);
+            postList = generateList(BASE_CONTENT_DIR + uri, request.hostname);
         }
         else
             fileGet += '.md';
@@ -30,8 +30,8 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.view(`/templates/${templateFile}.ejs`, { 
             content: pathToParse(fileGet),
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname, request.protocol),
-            wikiMenu: generateWikiMenu(request.hostname, request.protocol),
+            pagesMenu: generatePageMenu(request.hostname),
+            wikiMenu: generateWikiMenu(request.hostname),
             list: postList,
         });
     });
