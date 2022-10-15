@@ -5,7 +5,7 @@ import fastifyStatic from '@fastify/static';
 
 import { join } from 'path';
 
-import { PRODUCTION } from './environment';
+import { PRODUCTION, HOST } from './environment';
 
 const server = fastify({
     logger: PRODUCTION,
@@ -32,7 +32,7 @@ server.register(fastifyStatic, {
     decorateReply: false,
 });
 
-server.listen({ port: 8080, host: "::" }, (err, address) => {
+server.listen({ port: 8080, host: HOST }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
