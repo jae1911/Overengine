@@ -55,6 +55,7 @@ function markToParsed(path: string): PostMedatada {
     let description = noMetaError.description;
     let date = noMetaError.pubDate;
     let menusList: string[] = [];
+    let tags: string[] = [];
 
     if (mdh?.headers) {
         const headers = JSON.parse(JSON.stringify(mdh?.headers));
@@ -63,6 +64,8 @@ function markToParsed(path: string): PostMedatada {
         date = new Date(headers.date) ?? noMetaError.pubDate;
         if (headers.menus || headers.menu)
             menusList = headers.menus ?? headers.menu;
+        if (headers.tags)
+            tags = headers.tags;
     }
     
     const markdown = mdh?.markdown ?? noMetaError.markdown;
@@ -73,13 +76,14 @@ function markToParsed(path: string): PostMedatada {
         markdown: markdown,
         pubDate: date,
         menus: menusList,
+        tags: tags,
     };
 
     return res;
 }
 
 // BaseDomain is request.hostname
-function generateListFromFile(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, menuName?: string, isBlog?: boolean): MenuList[] {
+function generateListFromFile(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, menuName?: string, isBlog?: boolean, tag?: string): MenuList[] {
     const proto: string = determineProtocol(baseDomain);
     let res: MenuList[] = [];
 
@@ -110,12 +114,15 @@ function generateListFromFile(path: string, baseDomain: string, onlyIndex?: bool
             if (postMeta.menus.includes(menuName)) {
                 res.push(menuEntry);
             }
-        } else if (!menuName) {
+        } else if (!menuName && !tag) {
             if (onlyIndex && entry.includes('_index.md'))
                 res.push(menuEntry);
             else if (!onlyIndex && !noIndex)
                 res.push(menuEntry);
             else if (!onlyIndex && noIndex && !entry.includes('_index.md'))
+                res.push(menuEntry);
+        } else if (!menuName && tag) {
+            if (postMeta.tags && postMeta.tags.includes(tag))
                 res.push(menuEntry);
         }
     });
@@ -123,10 +130,10 @@ function generateListFromFile(path: string, baseDomain: string, onlyIndex?: bool
     return res;
 }
 
-function listToMarkdown(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number): string {
+function listToMarkdown(path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number, tag?: string): string {
     let res: string = '';
 
-    let fileList: MenuList[] = generateListFromFile(path, baseDomain, onlyIndex, noIndex, menuName, isBlog);
+    let fileList: MenuList[] = generateListFromFile(path, baseDomain, onlyIndex, noIndex, menuName, isBlog, tag);
 
     fileList = fileList.sort(
         (objA, objB) => objB.date.getTime() - objA.date.getTime(),
@@ -177,6 +184,14 @@ function generateBlogList(baseDomain: string): string {
     let res: string = '';
 
     res = marked.parse(listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, true, undefined, true));
+
+    return res;
+}
+
+function generateBlogListTagged(baseDomain: string, tag: string): string {
+    let res: string = '';
+
+    res = marked.parse(listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, false, undefined, true, undefined, tag));
 
     return res;
 }
@@ -267,4 +282,4 @@ function determineProtocol(host: string): string {
     return res;
 }
 
-export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds };
+export { pathToParse, generateListFromFile, listToMarkdown, generateList, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds, generateBlogListTagged };

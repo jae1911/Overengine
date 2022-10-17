@@ -1,7 +1,7 @@
-import { FastifyPluginCallback } from 'fastify';
+import { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds } from '../utils/markdownUtil';
+import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds, generateBlogListTagged } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
@@ -15,6 +15,22 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         });
     });
 
+    // Blog tag
+    fastify.get("/blog/tag/:tag/", (request: FastifyRequest<{
+        Params: {
+            tag: string,
+        },
+    }>, reply): void => {
+        console.log(request.params);
+        reply.view('/templates/list.ejs', {
+            content: pathToParse(BASE_CONTENT_DIR + '/blog/_index.tags.md'),
+            sitename: SITE_NAME,
+            pagesMenu: generatePageMenu(request.hostname),
+            wikiMenu: generateWikiMenu(request.hostname),
+            list: generateBlogListTagged(request.hostname, request.params.tag),
+        });
+    });
+
     // Blog posts
     fastify.get("/blog/:year/:month/:day/:title/", (request, reply): void => {
         const reqUri = request.url;
@@ -23,7 +39,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
-        })
+        });
     });
 
     // RSS Feed blog

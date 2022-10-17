@@ -4,7 +4,7 @@ My overengineered blog/website engine.
 
 ## Current Roadmap
 
- - [ ] Tagging
+ - [x] Tagging
 
 ## v0 Roadmap
 

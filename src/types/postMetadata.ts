@@ -4,4 +4,5 @@ export type PostMedatada = {
     markdown: string;
     pubDate: Date;
     menus?: string[];
+    tags?: string[];
 };
