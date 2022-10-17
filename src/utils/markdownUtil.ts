@@ -6,7 +6,7 @@ import { Feed } from 'feed';
 
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
-import scourDirectory from './fileUtil';
+import { scourDirectory } from './fileUtil';
 import { BASE_CONTENT_DIR } from '../environment';
 
 
