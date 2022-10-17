@@ -1,4 +1,5 @@
 import { FastifyPluginCallback } from 'fastify';
+import { existsSync } from 'fs';
 
 import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
@@ -19,7 +20,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         let postList: string = '';
 
         let fileGet = BASE_CONTENT_DIR + uri;
-        if (uri.slice(-1) == '/') {
+        if (uri.slice(-1) == '/' && existsSync(BASE_CONTENT_DIR + uri)) {
             fileGet += '_index.md';
             templateFile = 'list';
             postList = generateList(BASE_CONTENT_DIR + uri, request.hostname);
