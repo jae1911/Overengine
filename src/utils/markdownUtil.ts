@@ -276,7 +276,7 @@ function generateFeeds(hostname: string, isBlog: boolean, path?: string): Feed {
 function determineProtocol(host: string): string {
     let res = 'https';
 
-    if (host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost'))
+    if (host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost') || host.includes('.i2p'))
         res = 'http';
 
     return res;
