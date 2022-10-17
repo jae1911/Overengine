@@ -2,7 +2,11 @@
 
 My overengineered blog/website engine.
 
-## Roadmap
+## Current Roadmap
+
+ - [ ] Tagging
+
+## v0 Roadmap
 
  - [x] Basic page render to markdown
  - [x] vhost-based whitelist system (allows multiple domains to be used for app, unlike `gohugo`)
