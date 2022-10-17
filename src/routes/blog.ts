@@ -1,7 +1,6 @@
 import { FastifyPluginCallback } from 'fastify';
 import { Feed } from 'feed';
 
-import scourDirectory from '../utils/fileUtil';
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds } from '../utils/markdownUtil';
 
