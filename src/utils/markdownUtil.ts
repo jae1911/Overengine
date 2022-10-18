@@ -60,12 +60,18 @@ function markToParsed(path: string): PostMedatada {
     if (mdh?.headers) {
         const headers = JSON.parse(JSON.stringify(mdh?.headers));
         title = headers.title ?? noMetaError.title;
-        description = headers.description ?? noMetaError.description;
         date = new Date(headers.date) ?? noMetaError.pubDate;
         if (headers.menus || headers.menu)
             menusList = headers.menus ?? headers.menu;
         if (headers.tags)
             tags = headers.tags;
+
+        if (!headers.description) {
+            description = mdh?.markdown?.substring(0, 160).replaceAll('#', '').replaceAll(/(\r\n|\n|\r)/gm, ' ').replaceAll('*', '');
+        }
+        else if (headers.description) {
+            description = headers.description;
+        }
     }
     
     const markdown = mdh?.markdown ?? noMetaError.markdown;
