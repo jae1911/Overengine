@@ -19,6 +19,7 @@
     "ip-address": "^8.1.0",
     "markdown-headers": "^0.0.1",
     "marked": "^4.1.1",
+    "moment": "^2.29.4",
     "typescript": "^4.8.4"
   },
   "devDependencies": {

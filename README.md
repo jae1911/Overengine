@@ -5,8 +5,8 @@ My overengineered blog/website engine.
 ## Current Roadmap
 
  - [x] Tagging
- - [ ] Display dates on blog posts
- - [ ] Add warning if blog post is older than a year
+ - [x] Display dates on blog posts
+ - [x] Add warning if blog post is older than a year
 
 ## v0 Roadmap
 

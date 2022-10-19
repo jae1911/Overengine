@@ -34,6 +34,14 @@
                 <%# } %>
 
                 <h1><%= content.title %></h1>
+                <p>- Published on <%= moment(content.pubDate).format('Do MMMM, YYYY') %> -</p>
+
+                <% if (((new Date()) - content.pubDate) / (1000 * 3600 * 24 * 365) > 1) { %>
+                    <div class="construction" style="margin-top: 0.625rem;">
+                        <h2>This article is older than a year and might be outdated!</h2>
+                    </div>
+                <% } %>
+
                 <%- content.markdown %>
             </div>
             <%- include('layouts/navigation'); -%>

@@ -1,4 +1,5 @@
 import { FastifyPluginCallback, FastifyRequest } from 'fastify';
+import moment from 'moment';
 
 import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds, generateBlogListTagged } from '../utils/markdownUtil';
@@ -39,6 +40,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
+            moment: moment,
         });
     });
 
