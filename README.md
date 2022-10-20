@@ -9,7 +9,7 @@ My overengineered blog/website engine.
  - [x] Add warning if blog post is older than a year
  - [x] WakaTime/Open-Source alternative integration
  - [ ] Twitch.tv/Trovo integration
- - [ ] BGP Monitoring (show upstreams on a page & API; see https://bgpview.docs.apiary.io/#reference/0/asn-upstreams/view-asn-upstreams)
+ - [x] BGP Monitoring (show upstreams on a page & API; see https://bgpview.docs.apiary.io/#reference/0/asn-upstreams/view-asn-upstreams)
 
 ## v0 Roadmap
 
