@@ -7,7 +7,7 @@ import { Feed } from 'feed';
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
 import { scourDirectory } from './fileUtil';
-import { BASE_CONTENT_DIR } from '../environment';
+import { BASE_CONTENT_DIR, WAKATOKEN } from '../environment';
 import WakaClient from './apiClient';
 
 const wakaClient = new WakaClient();
@@ -44,8 +44,12 @@ async function pathToParse(path: string, blog?: boolean, baseDomain?: string): P
         res.markdown = res.markdown.replaceAll('{{< postlist >}}', listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, false, undefined, true, 5));
 
     res.markdown = res.markdown
-        .replaceAll('{{< construction >}}', '<div class="construction"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z"></path></svg><h2>What comes next is a work in progress!</h2></div>')
-        .replaceAll('{{< wakaCounter >}}', `<p>I spent ${await generateWakaString()} programming this week.`);
+        .replaceAll('{{< construction >}}', '<div class="construction"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z"></path></svg><h2>What comes next is a work in progress!</h2></div>');
+
+    if (WAKATOKEN && WAKATOKEN.length > 1)
+        res.markdown = res.markdown.replaceAll('{{< wakaCounter >}}', `<p>I spent ${await generateWakaString()} programming this week.<br><small>If the counter indicates zero, it probably means WakaTime hasn't initialized yet.</small>`);
+    else if (!WAKATOKEN || WAKATOKEN.length <= 1)
+        res.markdown = res.markdown.replaceAll('{{< wakaCounter >}}', '<p>WakaTime is disabled.</p>');
 
     res.markdown = marked.parse(res.markdown);
 
