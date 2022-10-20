@@ -76,7 +76,7 @@ class BGPClient {
 
             if (parsedJson.data.ipv6_upstreams) {
                 parsedJson.data.ipv6_upstreams.forEach((upstream: any) => {
-                    res += `<li>${upstream.asn} - ${upstream.name}</li>\n`;
+                    res += `<li>${upstream.asn} - ${upstream.description}</li>\n`;
                 });
             }
 
