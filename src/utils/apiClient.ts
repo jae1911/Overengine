@@ -22,9 +22,9 @@ class WakaClient {
 
         const stats = await this.wClient.getMyStats(RANGE.LAST_7_DAYS);
 
-        res = stats;
+        res = JSON.stringify(stats);
 
-        this.cache.cacheVal('waka_weekly', JSON.stringify(res));
+        this.cache.cacheVal('waka_weekly', res);
 
         return res;
     }
