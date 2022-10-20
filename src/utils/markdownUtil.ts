@@ -7,10 +7,11 @@ import { Feed } from 'feed';
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
 import { scourDirectory } from './fileUtil';
-import { BASE_CONTENT_DIR, WAKATOKEN } from '../environment';
-import WakaClient from './apiClient';
+import { BASE_CONTENT_DIR, WAKATOKEN, BGPAS } from '../environment';
+import { WakaClient, BGPClient } from './apiClient';
 
 const wakaClient = new WakaClient();
+const bgpClient = new BGPClient();
 
 const errorMeta: PostMedatada = {
     title: '404',
@@ -50,6 +51,10 @@ async function pathToParse(path: string, blog?: boolean, baseDomain?: string): P
         res.markdown = res.markdown.replaceAll('{{< wakaCounter >}}', `<p>I spent ${await generateWakaString()} programming this week.<br><small>If the counter indicates zero, it probably means WakaTime hasn't initialized yet.</small>`);
     else if (!WAKATOKEN || WAKATOKEN.length <= 1)
         res.markdown = res.markdown.replaceAll('{{< wakaCounter >}}', '<p>WakaTime is disabled.</p>');
+    
+    if (BGPAS) {
+        res.markdown = res.markdown.replaceAll('{{< bgpUpstreams >}}', `${await bgpClient.getUpstreams()}`);
+    }
 
     res.markdown = marked.parse(res.markdown);
 
@@ -61,10 +66,7 @@ async function generateWakaString(): Promise<string> {
 
     const hours = await wakaClient.getWeeklyHours();
 
-    // If there is a god, he weeps
-    res = JSON.parse(JSON.stringify(hours))['data']['human_readable_total'];
-
-    console.log(res);
+    res = JSON.parse(hours)['data']['human_readable_total'];
 
     return res;
 }

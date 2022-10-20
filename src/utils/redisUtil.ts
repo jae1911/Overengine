@@ -13,19 +13,15 @@ const cache = new Redis({
 
 class RedisClient {
     public async cacheVal(key: string, value: string): Promise<string> {
-        const finalValue = pickle.dumps(value);
 
         // Cache results for 1h only
-        await cache.set(key, finalValue, 'EX', 60 * 60);
+        await cache.set(key, value, 'EX', 60 * 60);
 
         return key;
     }
 
     public async getVal(key: string): Promise<string | null> {
         let value = await cache.get(key);
-        
-        if (value)
-            value = pickle.loads(value)
 
         return value;
     }

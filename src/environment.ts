@@ -16,3 +16,5 @@ export const REDIS_PASSWORD: string = env.REDIS_PASSWORD ?? '';
 export const REDIS_USER: string = env.REDIS_USER ?? '';
 
 export const WAKATOKEN: string = env.WAKATOKEN ?? '';
+
+export const BGPAS: string = env.BGPAS ?? '';
