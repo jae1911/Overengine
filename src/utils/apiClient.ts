@@ -51,6 +51,31 @@ class BGPClient {
         this.cache = new RedisClient();
     }
 
+    public async getIx(): Promise<string> {
+        let res = '';
+
+        const cacheRes = await this.cache.getVal('bgp_ix');
+        if (cacheRes)
+            return cacheRes;
+
+        const response = await this.client.get('ixs');
+        const parsedJson = JSON.parse(JSON.stringify(response.data));
+
+        if (parsedJson.status != 'ok')
+            res = 'No IXs detected.';
+        else if (parsedJson.status == 'ok') {
+            res += '<ul>';
+            parsedJson.data.forEach((ix: any) => {
+                res += `<li>${ix.name_full} [${ix.ipv6_address} - ${ix.ipv4_address} | ${ix.speed}Mbps]</li>`;
+            });
+            res += '</ul>';
+        }
+
+        this.cache.cacheVal('bgp_ix', res);
+
+        return res;
+    }
+
     public async getUpstreams(): Promise<string> {
         let res = '';
 

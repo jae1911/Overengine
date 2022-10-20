@@ -53,7 +53,8 @@ async function pathToParse(path: string, blog?: boolean, baseDomain?: string): P
         res.markdown = res.markdown.replaceAll('{{< wakaCounter >}}', '<p>WakaTime is disabled.</p>');
     
     if (BGPAS) {
-        res.markdown = res.markdown.replaceAll('{{< bgpUpstreams >}}', `${await bgpClient.getUpstreams()}`);
+        res.markdown = res.markdown.replaceAll('{{< bgpUpstreams >}}', await bgpClient.getUpstreams());
+        res.markdown = res.markdown.replaceAll('{{< bgpIx >}}', await bgpClient.getIx());
     }
 
     res.markdown = marked.parse(res.markdown);
