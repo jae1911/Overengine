@@ -7,7 +7,7 @@ My overengineered blog/website engine.
  - [x] Tagging
  - [x] Display dates on blog posts
  - [x] Add warning if blog post is older than a year
- - [ ] WakaTime/Open-Source alternative integration
+ - [x] WakaTime/Open-Source alternative integration
  - [ ] Twitch.tv/Trovo integration
  - [ ] BGP Monitoring (show upstreams on a page & API; see https://bgpview.docs.apiary.io/#reference/0/asn-upstreams/view-asn-upstreams)
 
