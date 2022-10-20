@@ -14,3 +14,5 @@ export const REDIS_PORT: number = parseInt(env.REDIS_PORT ?? '6379');
 export const REDIS_DB: number = parseInt(env.REDIS_DB ?? '0');
 export const REDIS_PASSWORD: string = env.REDIS_PASSWORD ?? '';
 export const REDIS_USER: string = env.REDIS_USER ?? '';
+
+export const WAKATOKEN: string = env.WAKATOKEN ?? '';
