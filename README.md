@@ -7,6 +7,9 @@ My overengineered blog/website engine.
  - [x] Tagging
  - [x] Display dates on blog posts
  - [x] Add warning if blog post is older than a year
+ - [ ] WakaTime/Open-Source alternative integration
+ - [ ] Twitch.tv/Trovo integration
+ - [ ] BGP Monitoring (show upstreams on a page & API; see https://bgpview.docs.apiary.io/#reference/0/asn-upstreams/view-asn-upstreams)
 
 ## v0 Roadmap
 
@@ -15,7 +18,7 @@ My overengineered blog/website engine.
  - [x] Templating
  - [x] Menus configurable via YAML markdown header
  - [x] Blog permalinks (format URI like `/blog/{year}/{month}/{day}/{title}` from YAML header)
- - ~~[ ] Compression (GZIP; BROTLI)~~ *better to handle at the RE level*
+ - ~~[ ] Compression (GZIP; BROTLI)~~ *better to handle at the RP level*
  - [x] Shortcodes
  - [x] Markdown file location to web path (`content/blog/2022/test.md` goes to `/blog/2022/test`)
  - [x] RSS feed
