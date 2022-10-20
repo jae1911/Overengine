@@ -24,7 +24,6 @@ class RedisClient {
     public async getVal(key: string): Promise<string | null> {
         let value = await cache.get(key);
         
-        console.log(`${key} ${value}`)
         if (value)
             value = pickle.loads(value)
 
