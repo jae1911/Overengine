@@ -18,7 +18,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     });
 
     fastify.get('/redir/matrixcritic', (request, reply) => {
-        reply.redirect('https://www.aminda.eu/blog/english/2021/08/03/matrix-perfect-privacy-not.html');
+        reply.redirect('https://www.aminda.eu/matrix/');
     });
 
     // Matrix room joins
