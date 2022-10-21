@@ -3,6 +3,8 @@ import { pickle } from 'picklefriend';
 
 import { REDIS_HOST, REDIS_DB, REDIS_PASSWORD, REDIS_PORT, REDIS_USER } from '../environment';
 
+const defaultTtl = 60 * 60;
+
 const cache = new Redis({
     host: REDIS_HOST,
     port: REDIS_PORT,
@@ -12,10 +14,12 @@ const cache = new Redis({
 })
 
 class RedisClient {
-    public async cacheVal(key: string, value: string): Promise<string> {
+    public async cacheVal(key: string, value: string, ttl?: number, persist?: boolean): Promise<string> {
 
-        // Cache results for 1h only
-        await cache.set(key, value, 'EX', 60 * 60);
+        if (!persist)
+            await cache.set(key, value, 'EX', ttl ?? defaultTtl);
+        else if (persist)
+            await cache.set(key, value);
 
         return key;
     }
