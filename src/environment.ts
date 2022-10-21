@@ -18,3 +18,6 @@ export const REDIS_USER: string = env.REDIS_USER ?? '';
 export const WAKATOKEN: string = env.WAKATOKEN ?? '';
 
 export const BGPAS: string = env.BGPAS ?? '';
+
+export const OWMKEY: string = env.OWMKEY ?? '';
+export const OWMCITY: string = env.OWMCITY ?? 'Helsinki';

@@ -1,7 +1,7 @@
 import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from 'axios';
 
-import { WAKATOKEN, BGPAS } from "../environment";
+import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY } from "../environment";
 import RedisClient from "./redisUtil";
 
 class WakaClient {
@@ -115,4 +115,44 @@ class BGPClient {
     }
 }
 
-export { WakaClient, BGPClient };
+class WeatherApi {
+    private cache: RedisClient;
+    private client: AxiosInstance;
+
+    constructor() {
+        this.cache = new RedisClient();
+        this.client = axios.create({
+            baseURL: 'https://api.openweathermap.org/data/2.5/',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'jae.fi/overengine'
+            }
+        });
+    }
+
+    public async weatherForCity(city?: string): Promise<string> {
+        let res = '';
+        const finalCity = city ?? OWMCITY;
+
+        const cacheRes = await this.cache.getVal(`weather_city_${finalCity}`)
+        if (cacheRes)
+            return cacheRes;
+
+        const requestData = await this.client.get(`weather?q=${finalCity}&units=metric&appid=${OWMKEY}`);
+        const parsedData = JSON.parse(JSON.stringify(requestData.data));
+
+        console.log(parsedData);
+
+        if (!parsedData.weather)
+            res = 'Could not fetch any weather data or instance is rate-limited.';
+        else if (parsedData.weather) {
+            res = `Weather in ${finalCity} is ${parsedData.weather[0].description} with ${parsedData.main.temp}°C.`;
+        }
+
+        this.cache.cacheVal(`weather_city_${finalCity}`, res);
+
+        return res;
+    }
+}
+
+export { WakaClient, BGPClient, WeatherApi };

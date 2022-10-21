@@ -7,11 +7,12 @@ import { Feed } from 'feed';
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
 import { scourDirectory } from './fileUtil';
-import { BASE_CONTENT_DIR, WAKATOKEN, BGPAS } from '../environment';
-import { WakaClient, BGPClient } from './apiClient';
+import { BASE_CONTENT_DIR, WAKATOKEN, BGPAS, OWMKEY } from '../environment';
+import { WakaClient, BGPClient, WeatherApi } from './apiClient';
 
 const wakaClient = new WakaClient();
 const bgpClient = new BGPClient();
+const weatherClient = new WeatherApi();
 
 const errorMeta: PostMedatada = {
     title: '404',
@@ -56,6 +57,9 @@ async function pathToParse(path: string, blog?: boolean, baseDomain?: string): P
         res.markdown = res.markdown.replaceAll('{{< bgpUpstreams >}}', await bgpClient.getUpstreams());
         res.markdown = res.markdown.replaceAll('{{< bgpIx >}}', await bgpClient.getIx());
     }
+
+    if (OWMKEY)
+        res.markdown = res.markdown.replaceAll('{{< weatherWidget >}}', await weatherClient.weatherForCity());
 
     res.markdown = marked.parse(res.markdown);
 
