@@ -10,6 +10,9 @@ My overengineered blog/website engine.
  - [x] WakaTime/Open-Source alternative integration
  - [ ] Twitch.tv/Trovo integration
  - [x] BGP Monitoring (show upstreams on a page & API; see https://bgpview.docs.apiary.io/#reference/0/asn-upstreams/view-asn-upstreams)
+ - [x] OpenWeatherMap weather widget
+ - [ ] WebFinger
+ - [ ] WebMention
 
 ## v0 Roadmap
 
