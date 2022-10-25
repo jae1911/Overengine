@@ -42,7 +42,6 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         },
     }>, reply) => {
         const { roomid, server } = request.params;
-        console.log(matrixUtil.elementRedirector(roomid, server));
         reply.redirect(matrixUtil.elementRedirector(roomid, server));
     });
 
