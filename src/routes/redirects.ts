@@ -11,7 +11,11 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/redir/cv", (request, reply): void => {
         reply.redirect('https://git.jae.fi/jae');
     });
-    
+
+    fastify.get('/redir/metacode', (request, reply) => {
+        reply.redirect('https://git.jae.fi/jae/overengine');
+    });
+
     fastify.get('/redir/gh', (request, reply) => {
         reply.redirect('https://github.com/jae1911');
     });
@@ -22,6 +26,10 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
 
     fastify.get('/redir/matrixcritic', (request, reply) => {
         reply.redirect('https://www.aminda.eu/matrix/');
+    });
+
+    fastify.get('/redir/friend1', (request, reply) => {
+        reply.redirect('https://mikaela.eu');
     });
 
     // Matrix room joins
