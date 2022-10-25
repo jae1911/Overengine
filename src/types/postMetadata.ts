@@ -5,4 +5,5 @@ export type PostMedatada = {
     pubDate: Date;
     menus?: string[];
     tags?: string[];
+    draft?: boolean;
 };

@@ -7,7 +7,7 @@ import { Feed } from 'feed';
 import { PostMedatada } from '../types/postMetadata';
 import { MenuList } from '../types/menuList';
 import { scourDirectory } from './fileUtil';
-import { BASE_CONTENT_DIR, WAKATOKEN, BGPAS, OWMKEY } from '../environment';
+import { BASE_CONTENT_DIR, WAKATOKEN, BGPAS, OWMKEY, PRODUCTION } from '../environment';
 import { WakaClient, BGPClient, WeatherApi } from './apiClient';
 
 const wakaClient = new WakaClient();
@@ -19,6 +19,7 @@ const errorMeta: PostMedatada = {
     description: 'Page not found',
     markdown: '## 404\n\nPage not found.',
     pubDate: new Date(),
+    draft: false,
 }
 
 const noMetaError: PostMedatada = {
@@ -26,6 +27,7 @@ const noMetaError: PostMedatada = {
     description: 'No description provided',
     markdown: "## No markdown found.",
     pubDate: new Date(),
+    draft: false,
 }
 
 async function pathToParse(path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> {
@@ -84,6 +86,7 @@ function markToParsed(path: string): PostMedatada {
     let date = noMetaError.pubDate;
     let menusList: string[] = [];
     let tags: string[] = [];
+    let draft: boolean = false;
 
     if (mdh?.headers) {
         const headers = JSON.parse(JSON.stringify(mdh?.headers));
@@ -93,6 +96,9 @@ function markToParsed(path: string): PostMedatada {
             menusList = headers.menus ?? headers.menu;
         if (headers.tags)
             tags = headers.tags;
+        
+        if (headers.draft)
+            draft = headers.draft;
 
         if (!headers.description)
             description = mdh?.markdown?.substring(0, 160).replaceAll('#', '').replaceAll(/(\r\n|\n|\r)/gm, ' ').replaceAll('*', '');
@@ -109,6 +115,7 @@ function markToParsed(path: string): PostMedatada {
         pubDate: date,
         menus: menusList,
         tags: tags,
+        draft: draft,
     };
 
     return res;
