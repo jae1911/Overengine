@@ -141,8 +141,6 @@ class WeatherApi {
         const requestData = await this.client.get(`weather?q=${finalCity}&units=metric&appid=${OWMKEY}`);
         const parsedData = JSON.parse(JSON.stringify(requestData.data));
 
-        console.log(parsedData);
-
         if (!parsedData.weather)
             res = 'Could not fetch any weather data or instance is rate-limited.';
         else if (parsedData.weather) {
