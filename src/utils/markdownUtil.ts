@@ -130,39 +130,43 @@ function generateListFromFile(path: string, baseDomain: string, onlyIndex?: bool
     dirContent.forEach((entry) => {
         const postMeta: PostMedatada = markToParsed(BASE_CONTENT_DIR + entry);
 
-        let listUri: string = '';
+        if (!PRODUCTION || (PRODUCTION && !postMeta.draft)) {
 
-        if (!isBlog) {
-            listUri = `${proto}://${baseDomain}${entry.replace(BASE_CONTENT_DIR, '').replace('.md', '').replaceAll(' ', '-')}`;
+            let listUri: string = '';
 
-            // Take into account the subdir index
-            if (listUri.substring(listUri.lastIndexOf("/")).replace("/", "") == '_index')
-                listUri = listUri.replace('_index', '');
-        } else if (isBlog) {
-            const title = postMeta.title ?? 'No title';
-            listUri = `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${title.replaceAll(' ', '-').toLowerCase()}/`;
-        }
+            if (!isBlog) {
+                listUri = `${proto}://${baseDomain}${entry.replace(BASE_CONTENT_DIR, '').replace('.md', '').replaceAll(' ', '-')}`;
 
-        const menuEntry: MenuList = {
-            title: postMeta.title as string,
-            date: postMeta.pubDate,
-            link: listUri,
-        };
-
-        if (menuName && postMeta.menus && postMeta.menus.length > 0){
-            if (postMeta.menus.includes(menuName)) {
-                res.push(menuEntry);
+                // Take into account the subdir index
+                if (listUri.substring(listUri.lastIndexOf("/")).replace("/", "") == '_index')
+                    listUri = listUri.replace('_index', '');
+            } else if (isBlog) {
+                const title = postMeta.title ?? 'No title';
+                listUri = `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${title.replaceAll(' ', '-').toLowerCase()}/`;
             }
-        } else if (!menuName && !tag) {
-            if (onlyIndex && entry.includes('_index.md'))
-                res.push(menuEntry);
-            else if (!onlyIndex && !noIndex)
-                res.push(menuEntry);
-            else if (!onlyIndex && noIndex && !entry.includes('_index.md'))
-                res.push(menuEntry);
-        } else if (!menuName && tag) {
-            if (postMeta.tags && postMeta.tags.includes(tag))
-                res.push(menuEntry);
+
+            const menuEntry: MenuList = {
+                title: postMeta.title as string,
+                date: postMeta.pubDate,
+                link: listUri,
+            };
+
+            if (menuName && postMeta.menus && postMeta.menus.length > 0){
+                if (postMeta.menus.includes(menuName)) {
+                    res.push(menuEntry);
+                }
+            } else if (!menuName && !tag) {
+                if (onlyIndex && entry.includes('_index.md'))
+                    res.push(menuEntry);
+                else if (!onlyIndex && !noIndex)
+                    res.push(menuEntry);
+                else if (!onlyIndex && noIndex && !entry.includes('_index.md'))
+                    res.push(menuEntry);
+            } else if (!menuName && tag) {
+                if (postMeta.tags && postMeta.tags.includes(tag))
+                    res.push(menuEntry);
+            }
+
         }
     });
 
