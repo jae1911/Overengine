@@ -94,12 +94,10 @@ function markToParsed(path: string): PostMedatada {
         if (headers.tags)
             tags = headers.tags;
 
-        if (!headers.description) {
+        if (!headers.description)
             description = mdh?.markdown?.substring(0, 160).replaceAll('#', '').replaceAll(/(\r\n|\n|\r)/gm, ' ').replaceAll('*', '');
-        }
-        else if (headers.description) {
+        else if (headers.description)
             description = headers.description;
-        }
     }
     
     const markdown = mdh?.markdown ?? noMetaError.markdown;
