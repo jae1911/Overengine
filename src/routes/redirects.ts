@@ -1,4 +1,7 @@
-import { FastifyPluginCallback } from 'fastify';
+import { FastifyPluginCallback, FastifyRequest } from 'fastify';
+import MatrixUtils from '../utils/matrixUtils';
+
+const matrixUtil = new MatrixUtils();
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/redir/tw", (request, reply): void => {
@@ -22,12 +25,25 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     });
 
     // Matrix room joins
-    fastify.get('/redir/matrix/home/jae.fi', (request, reply) => {
-        reply.redirect('matrix:r/home%3Ajae.fi?action=join&via=jae.fi');
+    fastify.get('/redir/matrix/:roomid/:server', (request: FastifyRequest<{
+        Params: {
+            roomid: string,
+            server: string,
+        },
+    }>, reply) => {
+        const { roomid, server } = request.params;
+        reply.redirect(matrixUtil.standardRedirector(roomid, server));
     });
 
-    fastify.get('/redir/matrix/home/jae.fi/element', (request, reply) => {
-        reply.redirect('element://vector/webapp/#/room/%23home%3Ajae.fi?via=jae.fi');
+    fastify.get('/redir/matrix/:roomid/:server/element', (request: FastifyRequest<{
+        Params: {
+            roomid: string,
+            server: string,
+        },
+    }>, reply) => {
+        const { roomid, server } = request.params;
+        console.log(matrixUtil.elementRedirector(roomid, server));
+        reply.redirect(matrixUtil.elementRedirector(roomid, server));
     });
 
     next();
