@@ -225,6 +225,11 @@ a {
   text-decoration-style: dotted;
 }
 
+code {
+  background-color: grey;
+  color: white;
+}
+
 .content p {
   padding-left: var(--padsize);
   padding-right: var(--padsize);
