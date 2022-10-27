@@ -37,7 +37,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     });
 
     fastify.get('/redir/srht', (request, reply) => {
-        reply.redirect('https://git.sr.ht/~jae/');
+        reply.redirect('https://sr.ht/~jae/');
     });
 
     // Matrix room joins
