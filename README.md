@@ -2,6 +2,8 @@
 
 My overengineered blog/website engine.
 
+[![builds.sr.ht status](https://builds.sr.ht/~jae/Overengine.svg)](https://builds.sr.ht/~jae/Overengine?)
+
 ## Current Roadmap
 
  - [x] Tagging
