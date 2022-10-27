@@ -36,6 +36,10 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.redirect('https://github.com/issues?q=is%3Aopen+author%3Ajae1911+archived%3Afalse');
     });
 
+    fastify.get('/redir/srht', (request, reply) => {
+        reply.redirect('https://git.sr.ht/~jae/');
+    });
+
     // Matrix room joins
     fastify.get('/redir/matrix/:roomid/:server', (request: FastifyRequest<{
         Params: {
