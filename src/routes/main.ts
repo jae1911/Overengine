@@ -16,19 +16,17 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
 
     fastify.get("/*", async (request, reply) => {
         const uri = request.url;
-        let templateFile: string = "fullpage";
         let postList: string = '';
 
         let fileGet = BASE_CONTENT_DIR + uri;
         if (uri.slice(-1) == '/' && existsSync(BASE_CONTENT_DIR + uri)) {
             fileGet += '_index.md';
-            templateFile = 'list';
             postList = generateList(BASE_CONTENT_DIR + uri, request.hostname);
         }
         else
             fileGet += '.md';
 
-        await reply.view(`/templates/${templateFile}.ejs`, { 
+        await reply.view('/templates/index.ejs', { 
             content: await pathToParse(fileGet),
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),

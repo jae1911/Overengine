@@ -7,7 +7,7 @@ import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blog
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
     fastify.get("/blog/", async (request, reply) => {
-        await reply.view('/templates/list.ejs', { 
+        await reply.view('/templates/index.ejs', { 
             content: await pathToParse(BASE_CONTENT_DIR + '/blog/_index.md'),
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),
@@ -22,7 +22,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             tag: string,
         },
     }>, reply) => {
-        await reply.view('/templates/list.ejs', {
+        await reply.view('/templates/index.ejs', {
             content: await pathToParse(BASE_CONTENT_DIR + '/blog/_index.tags.md'),
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),
