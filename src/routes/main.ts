@@ -42,6 +42,18 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         });
     });
 
+    // Matrix client
+    fastify.get('/.well-known/matrix/client', (request, reply) => {
+        reply.send({
+            "m.homeserver": {
+                "base_url": `https://${request.hostname}`,
+            },
+            "m.identity_server": {
+                "base_url": `https://${request.hostname}`,
+            },
+        });
+    });
+
     next();
 }
 
