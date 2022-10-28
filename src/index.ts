@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import autoLoad from '@fastify/autoload';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
+import fastifyHealthcheck from 'fastify-healthcheck';
 
 import { join } from 'path';
 
@@ -31,6 +32,8 @@ server.register(fastifyStatic, {
     prefix: '/.well-known/',
     decorateReply: false,
 });
+
+server.register(fastifyHealthcheck);
 
 server.listen({ port: 8080, host: HOST }, (err, address) => {
     if (err) {
