@@ -10,10 +10,11 @@ class MatrixUtils {
         return roomUri;
     }
 
-    public elementRedirector(roomid: string, server: string, via?: string[]): string {
+    public elementRedirector(roomid: string, server: string, room?: boolean, via?: string[]): string {
         const viaList = via?.join('&via=') ?? defaultVias.join('&via=');
+        const directorSymbol = room ? '#' : '!';
 
-        const roomUri = `element://vector/webapp/#/room/#${roomid}:${server}?via=${viaList}`;
+        const roomUri = `element://vector/webapp/#/room/${directorSymbol}${roomid}:${server}?via=${viaList}`;
 
         return roomUri;
     }

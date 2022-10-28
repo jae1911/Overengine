@@ -55,14 +55,15 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.redirect(matrixUtil.standardRedirector(roomid, server));
     });
 
-    fastify.get('/redir/matrix/:roomid/:server/element', (request: FastifyRequest<{
+    fastify.get('/redir/matrix/:roomid/:server/element/:room', (request: FastifyRequest<{
         Params: {
             roomid: string,
             server: string,
+            room?: boolean,
         },
     }>, reply) => {
-        const { roomid, server } = request.params;
-        reply.redirect(matrixUtil.elementRedirector(roomid, server));
+        const { roomid, server, room } = request.params;
+        reply.redirect(matrixUtil.elementRedirector(roomid, server, room));
     });
 
     next();
