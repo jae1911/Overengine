@@ -40,6 +40,10 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         reply.redirect('https://sr.ht/~jae/');
     });
 
+    fastify.get('/redir/yt', (request, reply) => {
+        reply.redirect('https://youtube.com/@j4l');
+    });
+
     // Matrix room joins
     fastify.get('/redir/matrix/:roomid/:server', (request: FastifyRequest<{
         Params: {
