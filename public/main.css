@@ -228,6 +228,7 @@ a {
 code {
   background-color: grey;
   color: white;
+  font-family: pixel;
 }
 
 .content p {
