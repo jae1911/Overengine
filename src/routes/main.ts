@@ -2,7 +2,7 @@ import { FastifyPluginCallback } from 'fastify';
 import { existsSync } from 'fs';
 
 import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
-import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
+import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/", async (request, reply) => {
@@ -11,6 +11,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             sitename: SITE_NAME,
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
+            domains: DOMAINS_ADVERTISED,
         });
     });
 
@@ -32,6 +33,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
             list: postList,
+            domains: DOMAINS_ADVERTISED,
         });
     });
 

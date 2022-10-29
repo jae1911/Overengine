@@ -24,6 +24,17 @@
     <p>CC-BY SA 4.0 Jae Lo Presti 🅯🄎; Robot on the internet since 2012; Powered by <a href="https://sr.ht/~jae/Overengine/">Overengine 🐾</a> by <a href="https://j4.lc">J4</a>.</p>
     <hr>
     <small id="dotsies">Dotsies?</small>
+
+    <% if(locals.domains && domains.length > 0) { %>
+        <hr>
+        <p>Served on:</p>
+        <ul>
+            <% domains.forEach((domain) => { %>
+                <li><a href="//<%- domain %>"><%- domain %></a></li>
+            <% }) %>
+        </ul>
+    <% } %>
+
     <script type="text/javascript">
         var element = document.getElementById("body");
         function changeStyle() {

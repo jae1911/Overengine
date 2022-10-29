@@ -1,7 +1,7 @@
 import { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import moment from 'moment';
 
-import { BASE_CONTENT_DIR, SITE_NAME } from '../environment';
+import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds, generateBlogListTagged } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
@@ -13,6 +13,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
             list: generateBlogList(request.hostname),
+            domains: DOMAINS_ADVERTISED,
         });
     });
 
@@ -28,6 +29,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
             list: generateBlogListTagged(request.hostname, request.params.tag),
+            domains: DOMAINS_ADVERTISED,
         });
     });
 
@@ -40,6 +42,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             pagesMenu: generatePageMenu(request.hostname),
             wikiMenu: generateWikiMenu(request.hostname),
             moment: moment,
+            domains: DOMAINS_ADVERTISED,
         });
     });
 

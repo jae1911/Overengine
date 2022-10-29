@@ -9,6 +9,8 @@ export const SITE_NAME: string = env.SITE_NAME ?? 'Jae\'s Website';
 export const PRODUCTION: boolean = env.NODE_ENV == 'production';
 export const HOST: string = env.HOST ?? '::';
 
+export const DOMAINS_ADVERTISED: string[] | undefined = env.DOMAINS_ADVERTISED?.split(',');
+
 export const REDIS_HOST: string = env.REDIS_HOST ?? 'localhost';
 export const REDIS_PORT: number = parseInt(env.REDIS_PORT ?? '6379');
 export const REDIS_DB: number = parseInt(env.REDIS_DB ?? '0');
