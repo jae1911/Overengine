@@ -171,6 +171,7 @@ hr {
   padding-left: var(--padsize);
   padding-right: var(--padsize);
   padding-bottom: var(--padsize);
+  word-wrap: break-word;
 }
 
 @media (min-width: 991px) {
