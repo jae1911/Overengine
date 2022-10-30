@@ -6,4 +6,7 @@ export type PostMedatada = {
     menus?: string[];
     tags?: string[];
     draft?: boolean;
+    picurl?: string;
+    picalt?: string;
+    picdesc?: string;
 };

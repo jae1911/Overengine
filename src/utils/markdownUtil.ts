@@ -20,6 +20,9 @@ const errorMeta: PostMedatada = {
     markdown: '## 404\n\nPage not found.',
     pubDate: new Date(),
     draft: false,
+    picalt: undefined,
+    picurl: undefined,
+    picdesc: undefined,
 }
 
 const noMetaError: PostMedatada = {
@@ -28,6 +31,9 @@ const noMetaError: PostMedatada = {
     markdown: "## No markdown found.",
     pubDate: new Date(),
     draft: false,
+    picalt: undefined,
+    picurl: undefined,
+    picdesc: undefined,
 }
 
 async function pathToParse(path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> {
@@ -87,6 +93,9 @@ function markToParsed(path: string): PostMedatada {
     let menusList: string[] = [];
     let tags: string[] = [];
     let draft: boolean = false;
+    let picurl: string | undefined = undefined;
+    let picalt: string | undefined = undefined;
+    let picdesc: string | undefined = undefined;
 
     if (mdh?.headers) {
         const headers = JSON.parse(JSON.stringify(mdh?.headers));
@@ -104,6 +113,15 @@ function markToParsed(path: string): PostMedatada {
             description = mdh?.markdown?.substring(0, 160).replaceAll('#', '').replaceAll(/(\r\n|\n|\r)/gm, ' ').replaceAll('*', '');
         else if (headers.description)
             description = headers.description;
+        
+        if (headers.picurl && headers.picalt) {
+            picurl = headers.picurl;
+            picalt = headers.picalt;
+
+            if (headers.picdesc) {
+                picdesc = headers.picdesc;
+            }
+        }
     }
     
     const markdown = mdh?.markdown ?? noMetaError.markdown;
@@ -116,6 +134,9 @@ function markToParsed(path: string): PostMedatada {
         menus: menusList,
         tags: tags,
         draft: draft,
+        picurl: picurl,
+        picalt: picalt,
+        picdesc: picdesc,
     };
 
     return res;

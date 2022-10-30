@@ -39,12 +39,12 @@
                 <h1><%= content.title %></h1>
                 <p>- Published on <%= moment(content.pubDate).format('Do MMMM, YYYY') %> -</p>
 
-                <% if(locals.picurl && locals.picalt) { %>
+                <% if(content.picurl && content.picalt) { %>
 
                 <div class="headerpic">
-                    <img src="<%- picurl %>" alt="<%- picalt %>">
-                    <% if(locals.picdesc) { %>
-                        <p><%- picdesc %></p>
+                    <img src="<%- content.picurl %>" alt="<%- content.picalt %>">
+                    <% if(content.picdesc) { %>
+                        <p><%- content.picdesc %></p>
                     <% } %>
                 </div>
 
