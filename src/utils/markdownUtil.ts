@@ -330,6 +330,7 @@ function generateFeeds(hostname: string, isBlog: boolean, path?: string): Feed {
                     }
                 ],
                 date: postMeta.pubDate,
+                image: postMeta.picurl,
             });
         }
     })
