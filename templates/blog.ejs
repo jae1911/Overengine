@@ -39,6 +39,17 @@
                 <h1><%= content.title %></h1>
                 <p>- Published on <%= moment(content.pubDate).format('Do MMMM, YYYY') %> -</p>
 
+                <% if(locals.picurl && locals.picalt) { %>
+
+                <div class="headerpic">
+                    <img src="<%- picurl %>" alt="<%- picalt %>">
+                    <% if(locals.picdesc) { %>
+                        <p><%- picdesc %></p>
+                    <% } %>
+                </div>
+
+                <% } %>
+
                 <% if (((new Date()) - content.pubDate) / (1000 * 3600 * 24 * 365) > 1) { %>
                     <div class="construction" style="margin-top: 0.625rem;">
                         <h2>This article is older than a year and might be outdated!</h2>
