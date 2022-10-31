@@ -23,15 +23,9 @@ function scourDirectory(path: string, _files?: string[]): string[] {
 
 // Determines the type of IP address
 function isLegacy(ip: string): boolean {
-    let res: boolean;
     const addr = new Address6(ip);
 
-    if (!addr.address4)
-        res = false;
-    else
-        res = true;
-
-    return res;
+    return !addr.address4;
 }
 
 export { scourDirectory, isLegacy };
