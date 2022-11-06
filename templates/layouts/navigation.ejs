@@ -30,7 +30,11 @@
         <p>Served on:</p>
         <ul>
             <% domains.forEach((domain) => { %>
-                <li><a href="//<%- domain %>"><%- domain %></a></li>
+                <% if(domain.includes('.onion')) { %>
+                    <li><a href="http://<%- domain %>"><%- domain %></a></li>
+                <% } else { %>
+                    <li><a href="//<%- domain %>"><%- domain %></a></li>
+                <% } %>
             <% }) %>
         </ul>
     <% } %>
