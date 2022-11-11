@@ -5,11 +5,11 @@ import MatrixUtils from '../utils/matrixUtils';
 const matrixUtil = new MatrixUtils();
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
-    fastify.get("/redir/tw", async (request, reply): void => {
+    fastify.get("/redir/tw", async (request, reply) => {
         await reply.redirect('https://futurice.com/tech-weeklies');
     });
 
-    fastify.get("/redir/cv", async (request, reply): void => {
+    fastify.get("/redir/cv", async (request, reply) => {
         await reply.redirect('https://git.jae.fi/jae');
     });
 
