@@ -62,7 +62,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         },
     }>, reply) => {
         const { roomid, server, room } = request.params;
-        await reply.redirect(elementSchemeGenerator(roomid, server, room));
+        await reply.redirect(elementSchemeGenerator(roomid, server, room ?? false));
     });
 
     next();
