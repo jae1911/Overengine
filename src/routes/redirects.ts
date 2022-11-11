@@ -1,8 +1,6 @@
 import { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
-import MatrixUtils from '../utils/matrixUtils';
-
-const matrixUtil = new MatrixUtils();
+import { matrixSchemeGenerator, elementSchemeGenerator } from '../utils/matrixUtils';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/redir/tw", async (request, reply) => {
@@ -53,7 +51,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         },
     }>, reply) => {
         const { roomid, server } = request.params;
-        await reply.redirect(matrixUtil.standardRedirector(roomid, server));
+        await reply.redirect(matrixSchemeGenerator(roomid, server));
     });
 
     fastify.get('/redir/matrix/:roomid/:server/element/:room', async (request: FastifyRequest<{
@@ -64,7 +62,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         },
     }>, reply) => {
         const { roomid, server, room } = request.params;
-        await reply.redirect(matrixUtil.elementRedirector(roomid, server, room));
+        await reply.redirect(elementSchemeGenerator(roomid, server, room));
     });
 
     next();
