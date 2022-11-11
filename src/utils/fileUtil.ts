@@ -1,22 +1,29 @@
 import { readdirSync, statSync } from 'fs';
+
 import { Address6 } from 'ip-address';
 
 import { BASE_CONTENT_DIR } from '../environment';
 
 // Scours directories and only returns markdown files
+// eslint-disable-next-line functional/prefer-readonly-type
 function scourDirectory(path: string, _files?: string[]): string[] {
-    let files_: string[] = _files ?? [];
+    // eslint-disable-next-line functional/prefer-readonly-type
+    const files_: string[] = _files ?? [];
 
-    let files = readdirSync(path);
-    for (let i in files) {
-        let name = path + '/' + files[i];
+    const files = readdirSync(path);
+
+    files.forEach((file: string) => {
+        const name = path + "/" + file;
+
         if (statSync(name).isDirectory()) {
-            scourDirectory(name, files_)
-        } else {
-            if (name.split('.').pop() == 'md')
-                files_.push(name.replace(BASE_CONTENT_DIR, ''));
+            scourDirectory(name, files_);
+
+        // eslint-disable-next-line functional/immutable-data
+        } else if (name.split(".").pop() == "md") {
+            // eslint-disable-next-line functional/immutable-data
+            files_.push(name.replace(BASE_CONTENT_DIR, ""));
         }
-    }
+    })
 
     return files_;
 }
