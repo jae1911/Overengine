@@ -1,19 +1,79 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "./tsconfig.json"
-    },
-    "plugins": [
-        "@typescript-eslint",
-        "functional"
-    ],
+    "plugins": ["@typescript-eslint", "functional", "import"],
     "extends": [
         "eslint:recommended",
+        "plugin:promise/recommended",
+        "plugin:import/typescript",
+        "plugin:functional/lite",
+        "plugin:functional/stylistic",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:functional/external-recommended",
-        "plugin:functional/recommended",
-        "plugin:functional/stylistic"
-    ]
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "env": {
+        "es2021": true
+    },
+    "overrides": [
+        {
+        "files": ["*.ts"],
+        "rules": {
+            "@typescript-eslint/explicit-function-return-type": "error"
+        }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": ["./tsconfig.json"]
+    },
+    "rules": {
+        "functional/no-expression-statement": "off",
+        "require-await": "warn",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/restrict-template-expressions": "warn",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "warn",
+        "@typescript-eslint/ban-types": [
+        "error",
+        {
+            "extendDefaults": true,
+            "types": {
+            "{}": false
+            }
+        }
+        ],
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
+        "functional/no-return-void": "off",
+        "import/order": [
+        "error",
+        {
+            "groups": [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type"
+            ],
+            "newlines-between": "always",
+            "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+            }
+        }
+        ],
+        "functional/no-throw-statement": ["error", { "allowInAsyncFunctions": true }],
+        "promise/always-return": ["error", { "ignoreLastCallback": true }]
+    },
+    "settings": {
+        "import/resolver": {
+        "typescript": true,
+        "node": true
+        }
+    }
 }
