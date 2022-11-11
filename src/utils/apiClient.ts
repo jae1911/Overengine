@@ -2,155 +2,220 @@ import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from 'axios';
 
 import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY, LINGVA_DOMAIN } from "../environment";
+
 import RedisClient from "./redisUtil";
 
-class WakaClient {
-    private wClient: WakaTimeApi;
-    private cache: RedisClient;
+// Constants
+const cache = new RedisClient();
+const wClient = new WakaTimeApi(WAKATOKEN);
+const bgpBaseUri = BGPAS
+    ? `https://api.bgpview.io/asn/${BGPAS}/`
+    : null;
 
-    constructor() {
-        this.wClient = new WakaTimeApi(WAKATOKEN);
-        this.cache = new RedisClient();
+// WAKATIME CLIENT
+const getWeeklyHours = async (): Promise<string> => {
+    const cachedRes = await cache.getVal('waka_weekly');
+    if (cachedRes) {
+        return cachedRes;
     }
 
-    public async getWeeklyHours(): Promise<string> {
-        let res = '';
+    const stats = await wClient.getMyStats(RANGE.LAST_7_DAYS) as string;
+    const jsonRes = JSON.stringify(stats);
 
-        const cacheRes = await this.cache.getVal('waka_weekly');
-        if (cacheRes)
-            return cacheRes;
+    await cache.cacheVal('waka_weekly', jsonRes);
 
-        const stats = await this.wClient.getMyStats(RANGE.LAST_7_DAYS);
+    return jsonRes;
+};
 
-        res = JSON.stringify(stats);
-
-        this.cache.cacheVal('waka_weekly', res);
-
-        return res;
-    }
-}
-
-class BGPClient {
-    private asNumber: string;
-    private baseUri: string;
-    private client: AxiosInstance;
-    private cache: RedisClient;
-
-    constructor() {
-        this.asNumber = BGPAS;
-        this.baseUri = `https://api.bgpview.io/asn/${this.asNumber}/`;
-
-        this.client = axios.create({
-            baseURL: this.baseUri,
+// BGP CLIENT¨
+const generateBgpAxios = (): AxiosInstance | undefined => {
+    if (bgpBaseUri) {
+        const axiosClient = axios.create({
+            baseURL: bgpBaseUri,
             headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'jae.fi/overengine'
+                "Content-Type": "application/json",
+                "User-Agent": "jae.fi/overengine",
             }
         });
 
-        this.cache = new RedisClient();
+        return axiosClient;
     }
 
-    public async getIx(): Promise<string> {
-        let res = '';
+    return;
+};
 
-        const cacheRes = await this.cache.getVal('bgp_ix');
-        if (cacheRes)
-            return cacheRes;
+interface bgpPeer {
+    readonly ix_id: number;
+    readonly name: string;
+    readonly name_full: string;
+    readonly country_code: string;
+    readonly city: string;
+    readonly ipv4_address: string;
+    readonly ipv6_address: string;
+    readonly speed: number;
+}
 
-        const response = await this.client.get('ixs');
-        const parsedJson = JSON.parse(JSON.stringify(response.data));
+interface bgpMeta {
+    readonly time_zone: string;
+    readonly api_version: number;
+    readonly execution_time: string;
+}
 
-        if (parsedJson.status != 'ok')
-            res = 'No IXs detected.';
-        else if (parsedJson.status == 'ok') {
-            res += '<ul>';
-            parsedJson.data.forEach((ix: any) => {
-                res += `<li>${ix.name_full} [${ix.ipv6_address} - ${ix.ipv4_address} | ${ix.speed}Mbps]</li>`;
-            });
-            res += '</ul>';
-        }
+interface bgpIx {
+    readonly status: string;
+    readonly status_message: string;
+    readonly data: readonly bgpPeer[];
+    readonly meta: bgpMeta;
+}
 
-        this.cache.cacheVal('bgp_ix', res);
+interface bgpUpstream {
+    readonly asn: number;
+    readonly name: string;
+    readonly description: string;
+    readonly country_code: string;
+}
 
-        return res;
+interface bgpUpstreamData {
+    readonly ipv4_upstreams: readonly bgpUpstream[];
+    readonly ipv6_upstreams: readonly bgpUpstream[];
+}
+
+interface bgpUpstreams {
+    readonly status: string;
+    readonly status_message: string;
+    readonly data: bgpUpstreamData;
+    readonly ipv4_graph: string;
+    readonly ipv6_graph: string;
+    readonly meta: bgpMeta;
+}
+
+const getbBgpIx = async (): Promise<string | undefined> => {
+    const axiosClient = generateBgpAxios();
+    if (!axiosClient) {
+        return;
     }
 
-    public async getUpstreams(): Promise<string> {
-        let res = '';
+    const cachedRes = await cache.getVal("bgp_ix");
+    if (cachedRes) {
+        return cachedRes;
+    }
 
-        const cacheRes = await this.cache.getVal('bgp_upstreams');
-        if (cacheRes)
-            return cacheRes;
+    const res = await axiosClient.get("ixs");
+    const resJson = JSON.stringify(res.data);
 
-        const response = await this.client.get('upstreams');
+    const parsedJson = JSON.parse(resJson) as bgpIx;
 
-        const parsedJson = JSON.parse(JSON.stringify(response.data));
+    if (parsedJson.status != "ok") {
+        return "No IXs detected.";
+    } else {
+        const ixList = parsedJson.data.forEach((peer: bgpPeer): string => {
+            return `<li>${peer.name_full} [${peer.ipv6_address} - ${peer.ipv4_address} | ${peer.speed}Mbps]</li>`;
+        }) as unknown as string;
 
-        if (parsedJson.status != "ok")
-            res = "No upstreams detected.";
-        else if (parsedJson.status == 'ok') {
+        const response = "<ul>"
+            + ixList
+            + "</ul>";
+        
+        await cache.cacheVal("bgp_ix", response);
 
-            res += '<ul>';
-
-            if (parsedJson.data.ipv4_upstreams) {
-                parsedJson.data.ipv4_upstreams.forEach((upstream: any) => {
-                    res += `<li>${upstream.asn} - ${upstream.description}</li>\n`;
-                });
-            }
-
-            if (parsedJson.data.ipv6_upstreams) {
-                parsedJson.data.ipv6_upstreams.forEach((upstream: any) => {
-                    res += `<li>${upstream.asn} - ${upstream.description}</li>\n`;
-                });
-            }
-
-            res += '</ul>';
-
-        }
-
-        this.cache.cacheVal('bgp_upstreams', res);
-
-        return res;
+        return response;
     }
 }
 
-class WeatherApi {
-    private cache: RedisClient;
-    private client: AxiosInstance;
-
-    constructor() {
-        this.cache = new RedisClient();
-        this.client = axios.create({
-            baseURL: 'https://api.openweathermap.org/data/2.5/',
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'jae.fi/overengine'
-            }
-        });
+const getBgpUpstreams = async (): Promise<string | undefined> => {
+    const axiosClient = generateBgpAxios();
+    if (!axiosClient) {
+        return;
     }
 
-    public async weatherForCity(city?: string): Promise<string> {
-        let res = '';
-        const finalCity = city ?? OWMCITY;
+    const cachedRes = await cache.getVal('bgp_upstreams');
+    if (cachedRes) {
+        return cachedRes;
+    }
 
-        const cacheRes = await this.cache.getVal(`weather_city_${finalCity}`)
-        if (cacheRes)
-            return cacheRes;
+    const res = await axiosClient.get("upstreams");
+    const resJson = JSON.stringify(res);
 
-        const requestData = await this.client.get(`weather?q=${finalCity}&units=metric&appid=${OWMKEY}`);
-        const parsedData = JSON.parse(JSON.stringify(requestData.data));
+    const parsedJson = JSON.parse(resJson) as bgpUpstreams;
 
-        if (!parsedData.weather)
-            res = 'Could not fetch any weather data or instance is rate-limited.';
-        else if (parsedData.weather) {
-            res = `Weather in ${finalCity} is ${parsedData.weather[0].description} with ${parsedData.main.temp}°C.`;
-        }
+    if (parsedJson.status != "ok") {
+        return "No upstreams detected.";
+    } else {
+        const v4Upstreams = parsedJson.data.ipv4_upstreams.forEach((upstream: bgpUpstream): string => {
+            return `<li>${upstream.asn} - ${upstream.description}</li>`;
+        }) as unknown as string;
 
-        this.cache.cacheVal(`weather_city_${finalCity}`, res);
+        const v6Upstreams = parsedJson.data.ipv6_upstreams.forEach((upstream: bgpUpstream): string => {
+            return `<li>${upstream.asn} - ${upstream.description}</li>`;
+        }) as unknown as string;
+
+        const res = "<ul>"
+            + v4Upstreams
+            + v6Upstreams
+            + "</ul>";
+
+        await cache.cacheVal("bgp_upstreams", res);
 
         return res;
     }
+};
+
+// OPENWEATHERMAP
+
+interface weatherResponse {
+    readonly description: string;
+}
+
+interface weatherMain {
+    readonly temp: number;
+}
+
+interface weatherGenericResponse {
+    readonly weather: readonly weatherResponse[];
+    readonly main: weatherMain | null;
+}
+
+const getWeatherForCity = async (city?: string): Promise<string | undefined> => {
+    if (!OWMKEY) {
+        return;
+    }
+    if (!OWMCITY) {
+        city = OWMCITY;
+    }
+
+    const cachedRes = await cache.getVal(`weather_city_${city as string}`);
+    if (cachedRes) {
+        return cachedRes;
+    }
+
+    const axiosClient = axios.create({
+        baseURL: "https://api.openweathermap.org/data/2.5/",
+        headers: {
+            "Content-Type": "application/json",
+            "User-Agent": "jae.fi/overengine",
+        },
+    });
+
+    const res = await axiosClient.get(`weather?q=${city as string}&units=metric&appid=${OWMKEY}`);
+    const resJson = JSON.stringify(res.data);
+
+    const parsedJson = JSON.parse(resJson) as weatherGenericResponse;
+
+    if (parsedJson.main == null) {
+        return "Could not parse weather (instance rate limited?).";
+    } else {
+        const res = `Weather in ${city as string} is ${parsedJson.weather[0].description} with ${parsedJson.main.temp}°C.`;
+
+        await cache.cacheVal(`weather_city_${city as string}`, res);
+
+        return res;
+    }
+};
+
+// TRANSLATION
+
+interface translationResponse {
+    readonly translation: string;
 }
 
 const translateString = async(text: string, origin?: string, target?: string): Promise<string | null> => {
@@ -171,13 +236,13 @@ const translateString = async(text: string, origin?: string, target?: string): P
     });
 
     const translateUri = `/${origin}/${target}/${text}`;
-    const jsonRes = JSON.parse(JSON.stringify((await axiosClient.get(translateUri)).data));
+    const jsonRes = JSON.parse(JSON.stringify((await axiosClient.get(translateUri)).data)) as translationResponse;
 
     const finalTranslation = jsonRes.translation ?? null;
 
-    cache.cacheVal(cacheKey, finalTranslation);
+    await cache.cacheVal(cacheKey, finalTranslation);
 
     return finalTranslation;
 };
 
-export { WakaClient, BGPClient, WeatherApi, translateString };
+export { getWeeklyHours, getBgpUpstreams, getbBgpIx, getWeatherForCity, translateString };
