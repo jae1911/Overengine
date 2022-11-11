@@ -1,12 +1,12 @@
 import { FastifyPluginCallback } from 'fastify';
 
-const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
-    fastify.get("/api/geoip/csv", (request, reply): void => {
+const plugin: FastifyPluginCallback = (fastify, _options, next): void => {
+    fastify.get("/api/geoip/csv", async (_request, reply) => {
         const geoLocFeed = '2001:67c:2724::/48,FI,,,\n2a0e:8f02:f01f::/48,FI,,,\n2a12:4946:9900::/40,FI,,,\n88.218.40.0/24,FI,,,';
-        reply.send(geoLocFeed);
+        await reply.send(geoLocFeed);
     });
 
-    fastify.get('/api/geoip/json', (request, reply): void => {
+    fastify.get('/api/geoip/json', async (req, res) => {
         const geoLocFeed = [
             {
                 prefix: '2001:67c:2724::/48',
@@ -33,7 +33,8 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
                 region: 'Uusimaa',
             },
         ];
-        reply.type('application/json').send(geoLocFeed);
+
+        await res.type('application/json').send(geoLocFeed);
     });
 
     next();
