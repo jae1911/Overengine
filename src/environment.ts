@@ -23,3 +23,5 @@ export const BGPAS: string = env.BGPAS ?? '';
 
 export const OWMKEY: string = env.OWMKEY ?? '';
 export const OWMCITY: string = env.OWMCITY ?? 'Helsinki';
+
+export const LINGVA_DOMAIN: string = env.LINGVA_DOMAIN ?? 'translate.jae.fi';

@@ -1,7 +1,7 @@
 import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from 'axios';
 
-import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY } from "../environment";
+import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY, LINGVA_DOMAIN } from "../environment";
 import RedisClient from "./redisUtil";
 
 class WakaClient {
@@ -153,4 +153,31 @@ class WeatherApi {
     }
 }
 
-export { WakaClient, BGPClient, WeatherApi };
+const translateString = async(text: string, origin?: string, target?: string): Promise<string | null> => {
+    if (!origin)
+        origin = 'fi';
+    if (!target)
+        target = 'en';
+
+    const cache = new RedisClient();
+    const cacheKey = `${origin}_${target}_${text.replaceAll(' ', '-')}`;
+
+    const cachedResult = await cache.getVal(cacheKey);
+    if (cachedResult)
+        return cachedResult;
+
+    const axiosClient = axios.create({
+        baseURL: `https://${LINGVA_DOMAIN}/api/v1`,
+    });
+
+    const translateUri = `/${origin}/${target}/${text}`;
+    const jsonRes = JSON.parse(JSON.stringify((await axiosClient.get(translateUri)).data));
+
+    const finalTranslation = jsonRes.translation ?? null;
+
+    cache.cacheVal(cacheKey, finalTranslation);
+
+    return finalTranslation;
+};
+
+export { WakaClient, BGPClient, WeatherApi, translateString };
