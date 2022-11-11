@@ -1,52 +1,66 @@
-import { FastifyPluginCallback } from 'fastify';
 import { existsSync } from 'fs';
 
-import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
+import { FastifyPluginCallback } from 'fastify';
+
 import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
+import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
+
     fastify.get("/", async (request, reply) => {
+
+        const content = await pathToParse(BASE_CONTENT_DIR + "/_index.md", true, request.hostname);
+        const pagesMenu = generatePageMenu(request.hostname);
+        const wikiMenu = generateWikiMenu(request.hostname);
+
         await reply.view('/templates/index.ejs', { 
-            content: await pathToParse(BASE_CONTENT_DIR + '/_index.md', true, request.hostname),
+            content,
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname),
-            wikiMenu: generateWikiMenu(request.hostname),
+            pagesMenu,
+            wikiMenu,
             domains: DOMAINS_ADVERTISED,
         });
     });
 
     fastify.get("/*", async (request, reply) => {
-        const uri = request.url;
-        let postList: string = '';
+        const requestUri = request.url;
 
-        let fileGet = BASE_CONTENT_DIR + uri;
-        if (uri.slice(-1) == '/' && existsSync(BASE_CONTENT_DIR + uri)) {
-            fileGet += '_index.md';
-            postList = generateList(BASE_CONTENT_DIR + uri, request.hostname);
-        }
-        else
-            fileGet += '.md';
+        // Generate menus
+        const pagesMenu = generatePageMenu(request.hostname);
+        const wikiMenu = generateWikiMenu(request.hostname);
 
-        await reply.view('/templates/index.ejs', { 
-            content: await pathToParse(fileGet),
+        const isRoot = requestUri.slice(-1) == "/" && existsSync(BASE_CONTENT_DIR + requestUri);
+
+        const list = isRoot
+            ? generateList(BASE_CONTENT_DIR + requestUri, request.hostname)
+            : null;
+
+        const fileGet = isRoot
+            ? BASE_CONTENT_DIR + requestUri + "_index.md"
+            : BASE_CONTENT_DIR + requestUri + ".md";
+
+        const content = await pathToParse(fileGet);
+
+        await reply.view("/templates/index.ejs", {
+            content,
             sitename: SITE_NAME,
-            pagesMenu: generatePageMenu(request.hostname),
-            wikiMenu: generateWikiMenu(request.hostname),
-            list: postList,
+            pagesMenu,
+            wikiMenu,
+            list,
             domains: DOMAINS_ADVERTISED,
         });
     });
 
     // Matrix config
-    fastify.get("/.well-known/matrix/server", (request, reply): void => {
-        reply.send({
+    fastify.get("/.well-known/matrix/server", async (request, reply) => {
+        await reply.send({
             "m.server": `${request.hostname}:443`,
         });
     });
 
     // Matrix client
-    fastify.get('/.well-known/matrix/client', (request, reply) => {
-        reply.send({
+    fastify.get('/.well-known/matrix/client', async (request, reply) => {
+        await reply.send({
             "m.homeserver": {
                 "base_url": `https://${request.hostname}`,
             },
