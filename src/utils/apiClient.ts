@@ -3,10 +3,9 @@ import axios, { AxiosInstance } from 'axios';
 
 import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY, LINGVA_DOMAIN } from "../environment";
 
-import RedisClient from "./redisUtil";
+import { cacheVal, getVal } from "./redisUtil";
 
 // Constants
-const cache = new RedisClient();
 const wClient = new WakaTimeApi(WAKATOKEN);
 const bgpBaseUri = BGPAS
     ? `https://api.bgpview.io/asn/${BGPAS}/`
@@ -14,7 +13,7 @@ const bgpBaseUri = BGPAS
 
 // WAKATIME CLIENT
 const getWeeklyHours = async (): Promise<string> => {
-    const cachedRes = await cache.getVal('waka_weekly');
+    const cachedRes = await getVal('waka_weekly');
     if (cachedRes) {
         return cachedRes;
     }
@@ -22,7 +21,7 @@ const getWeeklyHours = async (): Promise<string> => {
     const stats = await wClient.getMyStats(RANGE.LAST_7_DAYS) as string;
     const jsonRes = JSON.stringify(stats);
 
-    await cache.cacheVal('waka_weekly', jsonRes);
+    await cacheVal('waka_weekly', jsonRes);
 
     return jsonRes;
 };
@@ -95,7 +94,7 @@ const getbBgpIx = async (): Promise<string | undefined> => {
         return;
     }
 
-    const cachedRes = await cache.getVal("bgp_ix");
+    const cachedRes = await getVal("bgp_ix");
     if (cachedRes) {
         return cachedRes;
     }
@@ -116,7 +115,7 @@ const getbBgpIx = async (): Promise<string | undefined> => {
             + ixList
             + "</ul>";
         
-        await cache.cacheVal("bgp_ix", response);
+        await cacheVal("bgp_ix", response);
 
         return response;
     }
@@ -128,7 +127,7 @@ const getBgpUpstreams = async (): Promise<string | undefined> => {
         return;
     }
 
-    const cachedRes = await cache.getVal('bgp_upstreams');
+    const cachedRes = await getVal('bgp_upstreams');
     if (cachedRes) {
         return cachedRes;
     }
@@ -154,7 +153,7 @@ const getBgpUpstreams = async (): Promise<string | undefined> => {
             + v6Upstreams
             + "</ul>";
 
-        await cache.cacheVal("bgp_upstreams", res);
+        await cacheVal("bgp_upstreams", res);
 
         return res;
     }
@@ -183,7 +182,7 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
         city = OWMCITY;
     }
 
-    const cachedRes = await cache.getVal(`weather_city_${city as string}`);
+    const cachedRes = await getVal(`weather_city_${city as string}`);
     if (cachedRes) {
         return cachedRes;
     }
@@ -206,7 +205,7 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
     } else {
         const res = `Weather in ${city as string} is ${parsedJson.weather[0].description} with ${parsedJson.main.temp}°C.`;
 
-        await cache.cacheVal(`weather_city_${city as string}`, res);
+        await cacheVal(`weather_city_${city as string}`, res);
 
         return res;
     }
@@ -224,10 +223,9 @@ const translateString = async(text: string, origin?: string, target?: string): P
     if (!target)
         target = 'en';
 
-    const cache = new RedisClient();
     const cacheKey = `${origin}_${target}_${text.replaceAll(' ', '-')}`;
 
-    const cachedResult = await cache.getVal(cacheKey);
+    const cachedResult = await getVal(cacheKey);
     if (cachedResult)
         return cachedResult;
 
@@ -240,7 +238,7 @@ const translateString = async(text: string, origin?: string, target?: string): P
 
     const finalTranslation = jsonRes.translation ?? null;
 
-    await cache.cacheVal(cacheKey, finalTranslation);
+    await cacheVal(cacheKey, finalTranslation);
 
     return finalTranslation;
 };
