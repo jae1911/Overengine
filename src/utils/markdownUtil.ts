@@ -59,7 +59,7 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     // eslint-disable-next-line functional/immutable-data
     parsedMeta.markdown = marked.parse(parsedMeta.markdown);
 
-    return notFoundMeta;
+    return parsedMeta;
 };
 
 // WakaTime stuff
