@@ -179,7 +179,7 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
         return;
     }
 
-    const cachedRes = await getVal(`weather_city_${city as string}`);
+    const cachedRes = await getVal(`weather_city_${city ?? OWMCITY}`);
     if (cachedRes) {
         return cachedRes;
     }
@@ -200,9 +200,9 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
     if (parsedJson.main == null) {
         return "Could not parse weather (instance rate limited?).";
     } else {
-        const res = `Weather in ${city as string} is ${parsedJson.weather[0].description} with ${parsedJson.main.temp}°C.`;
+        const res = `Weather in ${city ?? OWMCITY} is ${parsedJson.weather[0].description} with ${parsedJson.main.temp}°C.`;
 
-        await cacheVal(`weather_city_${city as string}`, res);
+        await cacheVal(`weather_city_${city ?? OWMCITY}`, res);
 
         return res;
     }
