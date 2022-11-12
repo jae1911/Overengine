@@ -239,7 +239,18 @@ const translateString = async(text: string, origin?: string, target?: string): P
     });
 
     const translateUri = `/${origin}/${target}/${text}`;
-    const jsonRes = JSON.parse(JSON.stringify((await axiosClient.get(translateUri)).data)) as translationResponse;
+
+    const resFromLingva = await axiosClient.get(translateUri).catch((error) => {
+        return {
+            data: [
+                {
+                    translation: "Error: could no reach the Lingva instance.",
+                }
+            ],
+        }
+    });
+
+    const jsonRes = JSON.parse(JSON.stringify(resFromLingva.data)) as translationResponse;
 
     const finalTranslation = jsonRes.translation ?? null;
 
