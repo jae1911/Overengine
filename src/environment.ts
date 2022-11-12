@@ -1,6 +1,7 @@
-import { env } from 'process';
-import dotenv from 'dotenv';
 import { join } from 'path';
+import { env } from 'process';
+
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -9,7 +10,7 @@ export const SITE_NAME: string = env.SITE_NAME ?? 'Jae\'s Website';
 export const PRODUCTION: boolean = env.NODE_ENV == 'production';
 export const HOST: string = env.HOST ?? '::';
 
-export const DOMAINS_ADVERTISED: string[] | undefined = env.DOMAINS_ADVERTISED?.split(',');
+export const DOMAINS_ADVERTISED: readonly string[] | undefined = env.DOMAINS_ADVERTISED?.split(',');
 
 export const REDIS_HOST: string = env.REDIS_HOST ?? 'localhost';
 export const REDIS_PORT: number = parseInt(env.REDIS_PORT ?? '6379');
