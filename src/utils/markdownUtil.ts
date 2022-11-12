@@ -173,7 +173,7 @@ const listToMarkdown = (path: string, baseDomain: string, onlyIndex?: boolean, n
     const fileList = generateListFromFile(path, baseDomain, onlyIndex, noIndex, menuName, isBlog, tag);
 
     const sortedList = [...fileList].sort(
-        (objA, objB) => objB.date.getTime() - objA.date.getDate(),
+        (objA, objB) => objB.date.getTime() - objA.date.getTime(),
     ).slice(0, number);
 
     const listRes: readonly string[] = sortedList.map((page): string => {
