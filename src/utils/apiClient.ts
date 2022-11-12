@@ -133,7 +133,7 @@ const getBgpUpstreams = async (): Promise<string | undefined> => {
     }
 
     const res = await axiosClient.get("upstreams");
-    const resJson = JSON.stringify(res);
+    const resJson = JSON.stringify(res.data);
 
     const parsedJson = JSON.parse(resJson) as bgpUpstreams;
 
@@ -178,9 +178,6 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
     if (!OWMKEY) {
         return;
     }
-    if (!OWMCITY) {
-        city = OWMCITY;
-    }
 
     const cachedRes = await getVal(`weather_city_${city as string}`);
     if (cachedRes) {
@@ -195,7 +192,7 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
         },
     });
 
-    const res = await axiosClient.get(`weather?q=${city as string}&units=metric&appid=${OWMKEY}`);
+    const res = await axiosClient.get(`weather?q=${city ?? OWMCITY}&units=metric&appid=${OWMKEY}`);
     const resJson = JSON.stringify(res.data);
 
     const parsedJson = JSON.parse(resJson) as weatherGenericResponse;
