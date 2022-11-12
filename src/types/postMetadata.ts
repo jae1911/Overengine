@@ -1,3 +1,4 @@
+/* eslint-disable functional/prefer-readonly-type */
 export type PostMedatada = {
     title?: string;
     description?: string;
