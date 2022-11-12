@@ -67,9 +67,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/blog/index.xml", async (request, reply) => {
         const feed = generateFeeds(request.hostname, true);
 
-        const generatedFeed = feed.rss2();
-
-        await reply.type('application/rss+xml ').send(generatedFeed);
+        await reply.type('application/rss+xml ').send(feed.rss2());
     });
 
     // JSON Feed blog
