@@ -140,18 +140,15 @@ const getBgpUpstreams = async (): Promise<string | undefined> => {
     if (parsedJson.status != "ok") {
         return "No upstreams detected.";
     } else {
-        const v4Upstreams = parsedJson.data.ipv4_upstreams.forEach((upstream: bgpUpstream): string => {
+        const v4Upstreams: readonly string[] = parsedJson.data.ipv4_upstreams.map((upstream: bgpUpstream): string => {
             return `<li>${upstream.asn} - ${upstream.description}</li>`;
-        }) as unknown as string;
+        }).filter((item) => item) as readonly string[];
 
-        const v6Upstreams = parsedJson.data.ipv6_upstreams.forEach((upstream: bgpUpstream): string => {
+        const v6Upstreams: readonly string[] = parsedJson.data.ipv6_upstreams.map((upstream: bgpUpstream): string => {
             return `<li>${upstream.asn} - ${upstream.description}</li>`;
-        }) as unknown as string;
+        }).filter((item) => item) as readonly string[];
 
-        const res = "<ul>"
-            + v4Upstreams
-            + v6Upstreams
-            + "</ul>";
+        const res = `<ul>${v4Upstreams.join("\n")}\n${v6Upstreams.join("\n")}</ul>`;
 
         await cacheVal("bgp_upstreams", res);
 
