@@ -172,17 +172,17 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
 const listToMarkdown = (path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number, tag?: string): string => {
     const fileList = generateListFromFile(path, baseDomain, onlyIndex, noIndex, menuName, isBlog, tag);
 
-    console.log(fileList);
-
     const sortedList = [...fileList].sort(
         (objA, objB) => objB.date.getTime() - objA.date.getDate(),
     ).slice(0, number);
 
-    const res = sortedList.forEach((page) => {
+    const listRes: readonly string[] = sortedList.map((page): string => {
         return showDate
             ? ` - ${page.date.getFullYear()}/${String(page.date.getMonth() + 1).padStart(2, '0')}/${String(page.date.getDay() + 1).padStart(2, '0')} [${page.title}](${page.link})`
             : ` - [${page.title}](${page.link})`;
-    }) as unknown as string;
+    }).filter((item) => item);
+
+    const res = listRes.join("\n");
 
     return res;
 };
