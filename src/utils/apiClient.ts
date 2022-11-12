@@ -189,7 +189,18 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
         },
     });
 
-    const res = await axiosClient.get(`weather?q=${city ?? OWMCITY}&units=metric&appid=${OWMKEY}`);
+    const res = await axiosClient.get(`weather?q=${city ?? OWMCITY}&units=metric&appid=${OWMKEY}`).catch((error) => {
+        const errorRes = {
+            data: [
+                {
+                    weather: "Error while fetching weather data (is your token OK?)",
+                    main: null,
+                }
+            ]
+        }
+
+        return errorRes;
+    });
     const resJson = JSON.stringify(res.data);
 
     const parsedJson = JSON.parse(resJson) as weatherGenericResponse;
