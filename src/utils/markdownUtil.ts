@@ -38,38 +38,75 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
 
     // SHORTCODES
 
+    const shortCodedMarkdown = await shortCodeOWM(await shortCodeBGP(await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown))));
+
     if (blog && baseDomain) {
-        // eslint-disable-next-line functional/immutable-data
-        parsedMeta.markdown = parsedMeta.markdown.replaceAll('{{< postlist >}}', listToMarkdown(BASE_CONTENT_DIR + '/blog', baseDomain, false, true, false, undefined, true, 5) );
-    }
+        const specialBlogListMd = marked.parse(shortCodedMarkdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5)));
 
-    // eslint-disable-next-line functional/immutable-data
-    parsedMeta.markdown = parsedMeta.markdown
-        .replaceAll('{{< construction >}}', '<div class="construction"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z"></path></svg><h2>What comes next is a work in progress!</h2></div>');
+        const response: PostMedatada = {
+            date: parsedMeta.date,
+            markdown: marked.parse(specialBlogListMd),
+            pubDate: parsedMeta.pubDate,
+            draft: parsedMeta.draft,
+            picalt: parsedMeta.picalt,
+            picdesc: parsedMeta.picdesc,
+            picurl: parsedMeta.picurl,
+            menus: parsedMeta.menus,
+            tags: parsedMeta.tags,
+            title: parsedMeta.title,
+            description: parsedMeta.description,
+        }
 
-    if (WAKATOKEN && WAKATOKEN.length > 1) {
-        // eslint-disable-next-line functional/immutable-data
-        parsedMeta.markdown = parsedMeta.markdown.replaceAll('{{< wakaCounter >}}', `<p>I spent ${await generateWakaString()} programming this week.<br><small>If the counter indicates zero, it probably means WakaTime hasn't initialized yet.</small>`);
+        return response;
     } else {
-        // eslint-disable-next-line functional/immutable-data
-        parsedMeta.markdown = parsedMeta.markdown.replaceAll("{{< wakaCounter >}}", "Wakatime is disalbed.");
+        const response: PostMedatada = {
+            date: parsedMeta.date,
+            markdown: marked.parse(shortCodedMarkdown),
+            pubDate: parsedMeta.pubDate,
+            draft: parsedMeta.draft,
+            picalt: parsedMeta.picalt,
+            picdesc: parsedMeta.picdesc,
+            picurl: parsedMeta.picurl,
+            menus: parsedMeta.menus,
+            tags: parsedMeta.tags,
+            title: parsedMeta.title,
+            description: parsedMeta.description,
+        }
+
+        return response;
     }
-
-    if (BGPAS) {
-        // eslint-disable-next-line functional/immutable-data
-        parsedMeta.markdown = parsedMeta.markdown.replaceAll("{{< bgpUpstreams >}}", await getBgpUpstreams() ?? "").replaceAll("{{< bgpIx >}}", await getbBgpIx() ?? "");
-    }
-
-    if (OWMKEY) {
-        // eslint-disable-next-line functional/immutable-data
-        parsedMeta.markdown = parsedMeta.markdown.replaceAll("{{< weatherWidget >}}", await getWeatherForCity() ?? "");
-    }
-
-    // eslint-disable-next-line functional/immutable-data
-    parsedMeta.markdown = marked.parse(parsedMeta.markdown);
-
-    return parsedMeta;
 };
+
+// Shortcodes
+const shortCodeConstruction = (input: string): string => {
+    return input.replaceAll("{{< construction >}}", "<div class=\"construction\"><svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-6 h-6\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z\"></path></svg><h2>What comes next is a work in progress!</h2></div>")
+}
+
+const shortCodeWakaTime = async (input: string): Promise<string> => {
+    const isWakaEnabled = WAKATOKEN && WAKATOKEN.length > 1;
+
+    const res = isWakaEnabled
+        ? input.replaceAll("{{< wakaCounter >}}", `<p>I spent ${await generateWakaString()} programming this week.`)
+        : input.replaceAll("{{< wakaCounter >}}", "WakaTime isn't enabled. Please check Overnengine settings to enable the integration.");
+    
+    return res;
+}
+
+const shortCodeBGP = async (input: string): Promise<string> => {
+    const res = BGPAS
+        ? input.replaceAll("{{< bgpUpstreams >}}", await getBgpUpstreams() ?? "").replaceAll("{{< bgpIx >}}", await getbBgpIx() ?? "")
+        : input.replaceAll("{{< bgpUpstreams >}}", "").replaceAll("{{< bgpIx >}}", "");
+    
+    return res;
+}
+
+const shortCodeOWM = async (input: string): Promise<string> => {
+    const res = OWMKEY
+        ? input.replaceAll("{{< weatherWidget >}}", await getWeatherForCity() ?? "An error happened while trying to get weather data.")
+        : input.replaceAll("{{< weahterWidget >}}", "The OpenWeatherMap integration is disabled.");
+
+    return res;
+}
 
 // WakaTime stuff
 interface WakaData {
