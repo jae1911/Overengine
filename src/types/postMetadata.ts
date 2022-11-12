@@ -1,5 +1,6 @@
 /* eslint-disable functional/prefer-readonly-type */
 export type PostMedatada = {
+    date: string | number | Date;
     title?: string;
     description?: string;
     markdown: string;

@@ -16,6 +16,7 @@ const notFoundMeta: PostMedatada = {
     description: "Page not found",
     markdown: "## 404\n\nPage not found.",
     pubDate: new Date(),
+    date: new Date(),
 }
 
 // PARSE MD AND RETURN IT
@@ -81,11 +82,12 @@ const generateWakaString = async (): Promise<string> => {
 const markToParsed = (path: string): PostMedatada => {
     const parsedFile = parseMarkdownHeaders(readFileSync(path, "utf-8"));
 
-    if (parsedFile?.headers && parsedFile.markdown) {
+    if (parsedFile && parsedFile?.headers && parsedFile.markdown) {
         const headers = JSON.parse(JSON.stringify(parsedFile?.headers)) as PostMedatada;
 
         const title = headers.title ?? "No title provided.";
-        const pubDate = headers.pubDate ?? new Date();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const pubDate = new Date(headers.date) ?? new Date();
         const menus = headers.menus;
         const tags = headers.tags;
         const draft = headers.draft;
@@ -100,6 +102,7 @@ const markToParsed = (path: string): PostMedatada => {
         const finalMetadata: PostMedatada = {
             title,
             pubDate,
+            date: pubDate,
             menus,
             tags,
             draft,
@@ -227,6 +230,7 @@ const blogFinder = (uri: string): PostMedatada => {
                     title: postMeta.title,
                     markdown: marked.parse(postMeta.markdown),
                     pubDate: postMeta.pubDate,
+                    date: postMeta.pubDate,
                     menus: postMeta.menus,
                     tags: postMeta.tags,
                     draft: postMeta.draft,
