@@ -278,12 +278,12 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
     });
 
     const dirContent: readonly string[] = scourDirectory(BASE_CONTENT_DIR + "/blog");
-    const allThePosts: readonly PostMedatada[] = dirContent.forEach((entry: string): PostMedatada | undefined => {
+    const allThePosts: readonly PostMedatada[] = dirContent.map((entry: string): PostMedatada | undefined => {
         if (!entry.includes("_index")) {
             const postMeta: PostMedatada = markToParsed(BASE_CONTENT_DIR + entry);
             return postMeta;
         }
-    }) as unknown as readonly PostMedatada[];
+    }).filter((item) => item) as readonly PostMedatada[];
 
     const sortedPosts: readonly PostMedatada[] = [...allThePosts].sort(
         (objA, objB) => objB.pubDate.getTime() - objA.pubDate.getTime(),
