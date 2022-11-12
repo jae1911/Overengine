@@ -216,7 +216,7 @@ const generateBlogListTagged = (baseDomain: string, tag: string): string => {
 const blogFinder = (uri: string): PostMedatada => {
     const dirContent: readonly string[] = scourDirectory(BASE_CONTENT_DIR + "/blog");
 
-    const res = dirContent.forEach((entry) => {
+    const listRes = dirContent.map((entry) => {
         const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
 
         if(postMeta.pubDate && postMeta.title) {
@@ -238,7 +238,9 @@ const blogFinder = (uri: string): PostMedatada => {
                 return finalMeta;
             }
         }
-    }) as unknown as PostMedatada;
+    }).filter((item) => item) as readonly PostMedatada[];
+
+    const res = listRes[0];
 
     return res;
 }
