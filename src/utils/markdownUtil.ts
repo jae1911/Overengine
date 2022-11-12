@@ -64,7 +64,7 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
 
 // WakaTime stuff
 interface WakaData {
-    readonly human_readable_time: string;
+    readonly human_readable_total: string;
 }
 
 interface WakaRes {
@@ -74,7 +74,7 @@ interface WakaRes {
 const generateWakaString = async (): Promise<string> => {
     const res = JSON.parse(await getWeeklyHours()) as WakaRes;
 
-    return res.data.human_readable_time;
+    return res.data.human_readable_total;
 }
 
 // PARSE MARKDOWN FILE
