@@ -107,12 +107,12 @@ const getbBgpIx = async (): Promise<string | undefined> => {
     if (parsedJson.status != "ok") {
         return "No IXs detected.";
     } else {
-        const ixList = parsedJson.data.forEach((peer: bgpPeer): string => {
+        const ixList: readonly string[] = parsedJson.data.map((peer: bgpPeer): string => {
             return `<li>${peer.name_full} [${peer.ipv6_address} - ${peer.ipv4_address} | ${peer.speed}Mbps]</li>`;
-        }) as unknown as string;
+        }).filter((item) => item) as readonly string[];
 
         const response = "<ul>"
-            + ixList
+            + ixList.join("\n")
             + "</ul>";
         
         await cacheVal("bgp_ix", response);
