@@ -23,7 +23,15 @@ const notFoundMeta: PostMedatada = {
 const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
     // eslint-disable-next-line functional/immutable-data
     if (path.length < 1 || path.split(".").pop() != "md" || !existsSync(path)) {
-        return notFoundMeta;
+        const resMeta: PostMedatada = {
+            title: notFoundMeta.title,
+            description: notFoundMeta.description,
+            markdown: marked.parse(notFoundMeta.markdown),
+            pubDate: notFoundMeta.pubDate,
+            date: notFoundMeta.date,
+        }
+
+        return resMeta;
     }
 
     const parsedMeta = markToParsed(path);
