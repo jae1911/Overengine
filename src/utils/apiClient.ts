@@ -99,25 +99,38 @@ const getbBgpIx = async (): Promise<string | undefined> => {
         return cachedRes;
     }
 
-    const res = await axiosClient.get("ixs");
-    const resJson = JSON.stringify(res.data);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const res = await axiosClient.get("ixs").catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return error as string;
+      });
 
-    const parsedJson = JSON.parse(resJson) as bgpIx;
+      if (typeof res === "string") {
+        return "Error while fetching data.";
+      }
 
-    if (parsedJson.status != "ok") {
-        return "No IXs detected.";
-    } else {
-        const ixList: readonly string[] = parsedJson.data.map((peer: bgpPeer): string => {
-            return `<li>${peer.name_full} [${peer.ipv6_address} - ${peer.ipv4_address} | ${peer.speed}Mbps]</li>`;
-        }).filter((item) => item) as readonly string[];
+      const resJson = JSON.stringify(res.data);
 
-        const response = "<ul>"
-            + ixList.join("\n")
-            + "</ul>";
-        
-        await cacheVal("bgp_ix", response);
+      const parsedJson = JSON.parse(resJson) as bgpIx;
 
-        return response;
+      if (parsedJson.status != "ok") {
+          return "No IXs detected.";
+      } else {
+          const ixList: readonly string[] = parsedJson.data.map((peer: bgpPeer): string => {
+              return `<li>${peer.name_full} [${peer.ipv6_address} - ${peer.ipv4_address} | ${peer.speed}Mbps]</li>`;
+          }).filter((item) => item) as readonly string[];
+
+          const response = "<ul>"
+              + ixList.join("\n")
+              + "</ul>";
+          
+          await cacheVal("bgp_ix", response);
+
+          return response;
+      }
+    } catch {
+      return "Error: could not fetch BGP status.";
     }
 }
 
@@ -132,27 +145,40 @@ const getBgpUpstreams = async (): Promise<string | undefined> => {
         return cachedRes;
     }
 
-    const res = await axiosClient.get("upstreams");
-    const resJson = JSON.stringify(res.data);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const res = await axiosClient.get("upstreams").catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return error as string;
+      });
 
-    const parsedJson = JSON.parse(resJson) as bgpUpstreams;
+      if (typeof res === "string") {
+        return "Error while fetching data.";
+      }
 
-    if (parsedJson.status != "ok") {
-        return "No upstreams detected.";
-    } else {
-        const v4Upstreams: readonly string[] = parsedJson.data.ipv4_upstreams.map((upstream: bgpUpstream): string => {
-            return `<li>${upstream.asn} - ${upstream.description}</li>`;
-        }).filter((item) => item) as readonly string[];
+      const resJson = JSON.stringify(res.data);
 
-        const v6Upstreams: readonly string[] = parsedJson.data.ipv6_upstreams.map((upstream: bgpUpstream): string => {
-            return `<li>${upstream.asn} - ${upstream.description}</li>`;
-        }).filter((item) => item) as readonly string[];
+      const parsedJson = JSON.parse(resJson) as bgpUpstreams;
 
-        const res = `<ul>${v4Upstreams.join("\n")}\n${v6Upstreams.join("\n")}</ul>`;
+      if (parsedJson.status != "ok") {
+          return "No upstreams detected.";
+      } else {
+          const v4Upstreams: readonly string[] = parsedJson.data.ipv4_upstreams.map((upstream: bgpUpstream): string => {
+              return `<li>${upstream.asn} - ${upstream.description}</li>`;
+          }).filter((item) => item) as readonly string[];
 
-        await cacheVal("bgp_upstreams", res);
+          const v6Upstreams: readonly string[] = parsedJson.data.ipv6_upstreams.map((upstream: bgpUpstream): string => {
+              return `<li>${upstream.asn} - ${upstream.description}</li>`;
+          }).filter((item) => item) as readonly string[];
 
-        return res;
+          const res = `<ul>${v4Upstreams.join("\n")}\n${v6Upstreams.join("\n")}</ul>`;
+
+          await cacheVal("bgp_upstreams", res);
+
+          return res;
+      }
+    } catch(err) {
+      return "Error: could not fetch BGP status.";
     }
 };
 
