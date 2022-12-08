@@ -43,6 +43,10 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         await reply.redirect('https://youtube.com/@j4l');
     });
 
+    fastify.get('/redir/tg', async (request, reply) => {
+        await reply.redirect('https://jae1911.t.me');
+    });
+
     // Matrix room joins
     fastify.get('/redir/matrix/:roomid/:server', async (request: FastifyRequest<{
         readonly Params: {
