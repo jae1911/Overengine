@@ -18,12 +18,16 @@ const getWeeklyHours = async (): Promise<string> => {
         return cachedRes;
     }
 
-    const stats = await wClient.getMyStats(RANGE.LAST_7_DAYS) as string;
-    const jsonRes = JSON.stringify(stats);
+    try {
+        const stats = await wClient.getMyStats(RANGE.LAST_7_DAYS) as string;
+        const jsonRes = JSON.stringify(stats);
 
-    await cacheVal('waka_weekly', jsonRes);
+        await cacheVal('waka_weekly', jsonRes);
 
-    return jsonRes;
+        return jsonRes;
+    } catch (error) {
+        return "Error while fetching WakaTime.";
+    }
 };
 
 // BGP CLIENT¨
