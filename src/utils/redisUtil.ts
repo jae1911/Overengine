@@ -1,5 +1,4 @@
 import Redis from 'ioredis';
-import { pickle } from 'picklefriend';
 
 import { REDIS_HOST, REDIS_DB, REDIS_PASSWORD, REDIS_PORT, REDIS_USER } from '../environment';
 
