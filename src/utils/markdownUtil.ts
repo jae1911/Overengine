@@ -334,7 +334,7 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
     );
 
     sortedPosts.forEach((postMeta) => {
-        if (postMeta.title) {
+        if (postMeta.title && (PRODUCTION && !postMeta.draft) || !PRODUCTION) {
             const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').toLowerCase()}/`;
 
             feed.addItem({
