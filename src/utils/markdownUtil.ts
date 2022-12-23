@@ -175,7 +175,7 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
         if (!PRODUCTION || (PRODUCTION && !postMeta.draft)) {
 
             const uriList = isBlog
-                ? `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, "0")}/${String(postMeta.pubDate.getDay() + 1).padStart(2, "0")}/${title.replaceAll(" ", "-").toLowerCase()}/`
+                ? `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, "0")}/${String(postMeta.pubDate.getDay() + 1).padStart(2, "0")}/${title.replaceAll(" ", "-").replaceAll('"', '').replaceAll(':', '').toLowerCase()}/`
                 : `${proto}://${baseDomain}${entry.replace(BASE_CONTENT_DIR, "").replace(".md", "").replaceAll(" ", "-")}`;
 
             const cannotBeSubDir = !isBlog && (uriList.substring(uriList.lastIndexOf("/")).replace("/", "") == "_index");
@@ -267,7 +267,7 @@ const blogFinder = (uri: string): PostMedatada => {
         const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
 
         if(postMeta.pubDate && postMeta.title) {
-            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').toLowerCase()}/`;
+            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').toLowerCase()}/`;
 
             if (formattedTitle == uri) {
                 const finalMeta: PostMedatada = {
@@ -335,7 +335,7 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
 
     sortedPosts.forEach((postMeta) => {
         if (postMeta.title && ((PRODUCTION && !postMeta.draft) || !PRODUCTION)) {
-            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').toLowerCase()}/`;
+            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').toLowerCase()}/`;
 
             feed.addItem({
                 title: postMeta.title,
