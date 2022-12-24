@@ -290,7 +290,7 @@ const blogFinder = (uri: string): PostMedatada => {
 
     const res = listRes[0];
 
-    return res;
+    return res ?? notFoundMeta;
 }
 
 // DETERMINE PROTOCOL FOR GENERATORS
