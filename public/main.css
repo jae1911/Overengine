@@ -37,6 +37,11 @@
   --table-color: #000000;
   --shadow-color: #999999;
   --title-color: white;
+
+  /* FLAGS */
+  --trans-blue: #5BCEFA;
+  --trans-pink: #F5A9B8;
+  --flag-cred: #CD0000;
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -319,4 +324,40 @@ video {
   font-style: italic;
   font-weight: lighter;
   margin: 5px;
+}
+
+/* TRANS FLAG */
+.sect-trans-wrapper {
+  max-width: 100vw;
+  height: 25px;
+}
+
+.sect-trans-blue {
+  background-color: var(--trans-blue);
+  height: 20%;
+}
+
+.sect-trans-pink {
+  background-color: var(--trans-pink);
+  height: 20%;
+}
+.sect-trans-white {
+  background-color: white;
+  height: 20%;
+}
+
+.tflag-wrapper {
+  margin-top: 5px;
+  max-width: 100vw;
+  height: 25px;
+}
+
+.tflag {
+  background: white;
+  background: linear-gradient(90deg, rgba(32,182,38,1) 0%, rgba(78,149,244,1) 25%, rgba(242,66,255,1) 50%, rgba(231,233,42,1) 75%, rgba(255,255,255,1) 100%); 
+  height: 100%;
+  color: black;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: sans-serif;
 }
