@@ -2,6 +2,7 @@ arch: x86_64
 image: archlinux
 packages:
   - docker
+  - docker-buildx
 secrets:
   -  88343b8e-5e4e-4088-ba2e-5efc27d8f584
 environment:
@@ -18,5 +19,4 @@ tasks:
       sleep 10
       cat ~/docker_reg_pass | sudo docker login -u "$DOCKER_USER" --password-stdin=true reg.jae.fi
       cd Overengine
-      sudo docker image build -t reg.jae.fi/jae/overengine:latest ./
-      sudo docker push reg.jae.fi/jae/overengine:latest
+      sudo docker buildx build --push --platform=linux/amd64,linux/arm64 -t reg.jae.fi/jae/overengine:latest . 
