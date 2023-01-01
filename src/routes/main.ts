@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 
 import { FastifyPluginCallback } from 'fastify';
 
-import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED, MATRIX_SUBDOMAIN } from '../environment';
+import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED, MATRIX_SUBDOMAIN, MATRIX_HOMESERVER_PORT } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
@@ -54,8 +54,8 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Matrix config
     fastify.get("/.well-known/matrix/server", async (request, reply) => {
         const matrixDir = MATRIX_SUBDOMAIN ?
-            `https://${MATRIX_SUBDOMAIN}.${request.hostname}:443` :
-            `https://${request.hostname}:443`;
+            `https://${MATRIX_SUBDOMAIN}.${request.hostname}:${MATRIX_HOMESERVER_PORT}` :
+            `https://${request.hostname}:${MATRIX_HOMESERVER_PORT}`;
 
         await reply.send({
             "m.server": matrixDir,
