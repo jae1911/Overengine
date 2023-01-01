@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 
 import { FastifyPluginCallback } from 'fastify';
 
-import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
+import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED, MATRIX_SUBDOMAIN } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
 
 const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
@@ -53,19 +53,27 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
 
     // Matrix config
     fastify.get("/.well-known/matrix/server", async (request, reply) => {
+        const matrixDir = MATRIX_SUBDOMAIN ?
+            `https://${MATRIX_SUBDOMAIN}.${request.hostname}:443` :
+            `https://${request.hostname}:443`;
+
         await reply.send({
-            "m.server": `${request.hostname}:443`,
+            "m.server": matrixDir,
         });
     });
 
     // Matrix client
     fastify.get('/.well-known/matrix/client', async (request, reply) => {
+        const matrixDir = MATRIX_SUBDOMAIN ?
+            `https://${MATRIX_SUBDOMAIN}.${request.hostname}` :
+            `https://${request.hostname}`;
+
         await reply.send({
             "m.homeserver": {
-                "base_url": `https://${request.hostname}`,
+                "base_url": matrixDir,
             },
             "m.identity_server": {
-                "base_url": `https://${request.hostname}`,
+                "base_url": matrixDir,
             },
         });
     });

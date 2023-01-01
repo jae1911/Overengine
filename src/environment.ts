@@ -26,3 +26,5 @@ export const OWMKEY: string = env.OWMKEY ?? '';
 export const OWMCITY: string = env.OWMCITY ?? 'Helsinki';
 
 export const LINGVA_DOMAIN: string = env.LINGVA_DOMAIN ?? 'translate.jae.fi';
+
+export const MATRIX_SUBDOMAIN: string = env.MATRIX_SUBDOMAIN ?? '';
