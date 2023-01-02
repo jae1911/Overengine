@@ -54,8 +54,8 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     // Matrix config
     fastify.get("/.well-known/matrix/server", async (request, reply) => {
         const matrixDir = MATRIX_SUBDOMAIN ?
-            `https://${MATRIX_SUBDOMAIN}.${request.hostname}:${MATRIX_HOMESERVER_PORT}` :
-            `https://${request.hostname}:${MATRIX_HOMESERVER_PORT}`;
+            `${MATRIX_SUBDOMAIN}.${request.hostname}:${MATRIX_HOMESERVER_PORT}` :
+            `${request.hostname}:${MATRIX_HOMESERVER_PORT}`;
 
         await reply.send({
             "m.server": matrixDir,
