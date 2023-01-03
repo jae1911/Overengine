@@ -229,7 +229,7 @@ a {
 code {
   background-color: grey;
   color: white;
-  font-family: pixel;
+  font-family: monospace;
 }
 
 .content p {
