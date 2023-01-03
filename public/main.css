@@ -5,11 +5,6 @@
   src: url('fonts/Dotsies.ttf') format('truetype');
 }
 
-@font-face {
-  font-family: 'pixel';
-  src: url('fonts/Ac437_IBM_PGC.woff2');
-}
-
 :root {
   --fontsize: 1.4em;
   --pagetitle: 1.75em;
@@ -61,7 +56,7 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: 'pixel';
+  font-family: sans-serif;
   background-color: var(--background-color);
   background-image: url('img/oldbg/maze.gif');
   color: var(--main-text-color);
