@@ -32,7 +32,7 @@ function scourDirectory(path: string, _files?: string[]): string[] {
 function isLegacy(ip: string): boolean {
     const addr = new Address6(ip);
 
-    return !addr.address4;
+    return addr.v4;
 }
 
 export { scourDirectory, isLegacy };
