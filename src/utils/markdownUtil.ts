@@ -172,7 +172,7 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
         const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
         const title = postMeta.title ?? "No title found";
 
-        if (!PRODUCTION || (PRODUCTION && !postMeta.draft)) {
+        if (!PRODUCTION || (PRODUCTION && !postMeta.draft && !isPostInFuture(postMeta.pubDate))) {
 
             const uriList = isBlog
                 ? `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, "0")}/${String(postMeta.pubDate.getDay() + 1).padStart(2, "0")}/${title.replaceAll(" ", "-").replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`
@@ -334,7 +334,7 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
     );
 
     sortedPosts.forEach((postMeta) => {
-        if (postMeta.title && ((PRODUCTION && !postMeta.draft) || !PRODUCTION)) {
+        if (postMeta.title && ((PRODUCTION && !postMeta.draft && !isPostInFuture(postMeta.pubDate)) || !PRODUCTION)) {
             const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
 
             feed.addItem({
@@ -357,6 +357,10 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
     });
 
     return feed;
+}
+
+const isPostInFuture = (date: Date): boolean => {
+    return date.getTime() > Date.now();
 }
 
 // Export those bad bois
