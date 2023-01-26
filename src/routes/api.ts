@@ -53,7 +53,7 @@ const plugin: FastifyPluginCallback = (fastify, _options, next): void => {
             },
             me: {
                 name: "Jae",
-                pronouns: "She/Her",
+                pronouns: "She/Her/It",
             },
         };
 
