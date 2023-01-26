@@ -37,6 +37,29 @@ const plugin: FastifyPluginCallback = (fastify, _options, next): void => {
         await res.type('application/json').send(geoLocFeed);
     });
 
+    fastify.get("/api/meta", async (_request, reply) => {
+        const response = {
+            contacts: {
+                email: "jae@777.tf",
+                activityPub: "@me@soc.jae.fi",
+                matrix: "@me:jae.fi"
+            },
+            location: {
+                system: "Solar System",
+                planet: "Earth",
+                continent: "Europe",
+                country: "Finland",
+                city: "Helsinki",
+            },
+            me: {
+                name: "Jae",
+                pronouns: "She/Her",
+            },
+        };
+
+        await reply.type('application/json').send(response);
+    });
+
     next();
 }
 
