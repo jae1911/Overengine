@@ -86,7 +86,7 @@ const shortCodeWakaTime = async (input: string): Promise<string> => {
 
     const res = isWakaEnabled
         ? input.replaceAll("{{< wakaCounter >}}", `<p>I spent ${await generateWakaString()} programming this week.`)
-        : input.replaceAll("{{< wakaCounter >}}", "WakaTime isn't enabled. Please check Overnengine settings to enable the integration.");
+        : input.replaceAll("{{< wakaCounter >}}", "");
     
     return res;
 }
@@ -102,7 +102,7 @@ const shortCodeBGP = async (input: string): Promise<string> => {
 const shortCodeOWM = async (input: string): Promise<string> => {
     const res = OWMKEY
         ? input.replaceAll("{{< weatherWidget >}}", await getWeatherForCity() ?? "An error happened while trying to get weather data.")
-        : input.replaceAll("{{< weahterWidget >}}", "The OpenWeatherMap integration is disabled.");
+        : input.replaceAll("{{< weahterWidget >}}", "");
 
     return res;
 }
