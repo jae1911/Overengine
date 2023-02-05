@@ -102,7 +102,7 @@ const shortCodeBGP = async (input: string): Promise<string> => {
 const shortCodeOWM = async (input: string): Promise<string> => {
     const res = OWMKEY
         ? input.replaceAll("{{< weatherWidget >}}", await getWeatherForCity() ?? "An error happened while trying to get weather data.")
-        : input.replaceAll("{{< weahterWidget >}}", "");
+        : input.replaceAll("{{< weatherWidget >}}", "");
 
     return res;
 }
