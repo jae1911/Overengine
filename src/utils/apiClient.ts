@@ -270,7 +270,7 @@ const translateString = async(text: string, origin?: string, target?: string): P
 
     const translateUri = `/${origin}/${target}/${text}`;
 
-    const resFromLingva = await axiosClient.get(translateUri).catch((error) => {
+    const resFromLingva = await axiosClient.get(translateUri).catch((_error) => {
         return {
             data: [
                 {
