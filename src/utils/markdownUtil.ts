@@ -10,6 +10,9 @@ import { PostMedatada } from "../types/postMetadata";
 
 import { getbBgpIx, getBgpUpstreams, getWeatherForCity, getWeeklyHours } from "./apiClient";
 import { scourDirectory } from "./fileUtil";
+import MarkdownIt from "markdown-it";
+import MarkdownItFootnote from "markdown-it-footnote";
+
 
 const notFoundMeta: PostMedatada = {
     title: "404",
@@ -18,6 +21,8 @@ const notFoundMeta: PostMedatada = {
     pubDate: new Date(),
     date: new Date(),
 }
+
+const mdParser = MarkdownIt().use(MarkdownItFootnote)
 
 // PARSE MD AND RETURN IT
 const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
@@ -36,15 +41,18 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     const parsedMeta = markToParsed(path);
 
     // SHORTCODES
-
     const shortCodedMarkdown = await shortCodeOWM(await shortCodeBGP(await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown))));
 
+    // Convert markdown to end
+    const parsedMarkdownWithReferences = mdParser.render(parsedMeta.markdown);
+
+    // Launch rendering
     if (blog && baseDomain) {
         const specialBlogListMd = marked.parse(shortCodedMarkdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5)));
 
         const response: PostMedatada = {
             date: parsedMeta.date,
-            markdown: marked.parse(specialBlogListMd),
+            markdown: parsedMarkdownWithReferences,
             pubDate: parsedMeta.pubDate,
             draft: parsedMeta.draft,
             picalt: parsedMeta.picalt,
@@ -60,7 +68,7 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     } else {
         const response: PostMedatada = {
             date: parsedMeta.date,
-            markdown: marked.parse(shortCodedMarkdown),
+            markdown: parsedMarkdownWithReferences,
             pubDate: parsedMeta.pubDate,
             draft: parsedMeta.draft,
             picalt: parsedMeta.picalt,
