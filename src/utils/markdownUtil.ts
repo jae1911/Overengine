@@ -169,6 +169,10 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
     const dirContent = scourDirectory(path);
 
     const res: readonly MenuList[] = dirContent.map((entry: string): MenuList | undefined => {
+        if (entry.includes('_index.tags.md')) {
+            return undefined;
+        }
+
         const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
         const title = postMeta.title ?? "No title found";
 
