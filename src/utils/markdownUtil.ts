@@ -22,7 +22,11 @@ const notFoundMeta: PostMedatada = {
     date: new Date(),
 }
 
-const mdParser = MarkdownIt().use(MarkdownItFootnote)
+const mdParser = MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true,
+}).use(MarkdownItFootnote)
 
 // PARSE MD AND RETURN IT
 const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
@@ -44,7 +48,7 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     const shortCodedMarkdown = await shortCodeOWM(await shortCodeBGP(await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown))));
 
     // Convert markdown to end
-    const parsedMarkdownWithReferences = mdParser.render(parsedMeta.markdown);
+    const parsedMarkdownWithReferences = mdParser.render(shortCodedMarkdown);
 
     // Launch rendering
     if (blog && baseDomain) {
