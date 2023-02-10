@@ -10,7 +10,7 @@ const cache = new Redis({
     db: REDIS_DB,
     password: REDIS_PASSWORD,
     username: REDIS_USER,
-})
+});
 
 const cacheVal = async (key: string, value: string, ttl?: number, persist?: boolean): Promise<string> => {
     const result = persist
