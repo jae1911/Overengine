@@ -50,6 +50,14 @@
 
                 <% } %>
 
+                <% if (content.tags) { %>
+
+                Tags: <%- content.tags.map((tag) =>{
+                    return `<a href="/blog/tag/${tag}/">${tag}</a>`;
+                });%>
+
+                <% } %>
+
                 <% if (((new Date()) - content.pubDate) / (1000 * 3600 * 24 * 365) > 1) { %>
                     <div class="construction" style="margin-top: 0.625rem;">
                         <h2>This article is older than a year and might be outdated!</h2>
