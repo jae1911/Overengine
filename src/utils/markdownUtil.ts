@@ -56,9 +56,6 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     // SHORTCODES
     const shortCodedMarkdown = await shortCodeOWM(await shortCodeBGP(await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown))));
 
-    // Convert markdown to end
-    // const parsedMarkdownWithReferences = mdParser.render(shortCodedMarkdown);
-
     // Launch rendering
     if (blog && baseDomain) {
         const specialBlogListMd = shortCodedMarkdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5));
