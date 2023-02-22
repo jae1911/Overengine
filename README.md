@@ -4,6 +4,10 @@ My overengineered blog/website engine.
 
 [![builds.sr.ht status](https://builds.sr.ht/~jae/Overengine.svg)](https://builds.sr.ht/~jae/Overengine?)
 
+## Current Ideas
+
+ - [ ] Cli version (runs tests & lightweight server from `sitecontent`)
+
 ## Current Roadmap
 
  - [x] Tagging
