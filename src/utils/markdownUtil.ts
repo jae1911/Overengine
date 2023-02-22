@@ -12,6 +12,9 @@ import { getbBgpIx, getBgpUpstreams, getWeatherForCity, getWeeklyHours } from ".
 import { scourDirectory } from "./fileUtil";
 import MarkdownIt from "markdown-it";
 import MarkdownItFootnote from "markdown-it-footnote";
+import highlightjs from "markdown-it-highlightjs";
+import anchor from "markdown-it-anchor";
+import slugify from "slugify";
 
 
 const notFoundMeta: PostMedatada = {
@@ -26,7 +29,13 @@ const mdParser = MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
-}).use(MarkdownItFootnote)
+})  .use(MarkdownItFootnote)
+    .use(highlightjs)
+    .use(anchor, {
+        slugify: s => slugify(s, {
+            lower: true,
+        }),
+    });
 
 // PARSE MD AND RETURN IT
 const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
