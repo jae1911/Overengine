@@ -197,7 +197,7 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
         if (!PRODUCTION || (PRODUCTION && !postMeta.draft && !isPostInFuture(postMeta.pubDate))) {
 
             const uriList = isBlog
-                ? `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, "0")}/${String(postMeta.pubDate.getDay() + 1).padStart(2, "0")}/${title.replaceAll(" ", "-").replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`
+                ? `${proto}://${baseDomain}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, "0")}/${String(postMeta.pubDate.getUTCDate()).padStart(2, "0")}/${title.replaceAll(" ", "-").replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`
                 : `${proto}://${baseDomain}${entry.replace(BASE_CONTENT_DIR, "").replace(".md", "").replaceAll(" ", "-")}`;
 
             const cannotBeSubDir = !isBlog && (uriList.substring(uriList.lastIndexOf("/")).replace("/", "") == "_index");
