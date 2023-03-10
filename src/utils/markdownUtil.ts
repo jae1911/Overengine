@@ -247,7 +247,7 @@ const listToMarkdown = (path: string, baseDomain: string, onlyIndex?: boolean, n
 
     const listRes: readonly string[] = sortedList.map((page): string => {
         return showDate
-            ? ` - ${page.date.getFullYear()}/${String(page.date.getMonth() + 1).padStart(2, '0')}/${String(page.date.getDay() + 1).padStart(2, '0')} [${page.title}](${page.link})`
+            ? ` - ${page.date.getFullYear()}/${String(page.date.getMonth() + 1).padStart(2, '0')}/${String(page.date.getUTCDate()).padStart(2, '0')} [${page.title}](${page.link})`
             : ` - [${page.title}](${page.link})`;
     }).filter((item) => item);
 
@@ -357,7 +357,7 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
 
     sortedPosts.forEach((postMeta) => {
         if (postMeta.title && ((PRODUCTION && !postMeta.draft && !isPostInFuture(postMeta.pubDate)) || !PRODUCTION)) {
-            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
+            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getUTCDate()).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
 
             feed.addItem({
                 title: postMeta.title,
