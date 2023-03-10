@@ -289,7 +289,7 @@ const blogFinder = (uri: string): PostMedatada => {
         const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
 
         if(postMeta.pubDate && postMeta.title) {
-            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getDay() + 1).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
+            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getUTCDate()).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
 
             if (formattedTitle == uri) {
                 const finalMeta: PostMedatada = {
