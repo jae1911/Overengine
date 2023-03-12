@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: 'pixel';
-  src: url('fonts/VT323-Regular.ttf') format('truetype');
+  src: url('fonts/vt323-regular-webfont.woff2');
 }
 
 :root {
