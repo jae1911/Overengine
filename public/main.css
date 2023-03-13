@@ -230,9 +230,15 @@ a {
   text-decoration-style: dotted;
 }
 
+pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
 code {
-  background-color: grey;
-  color: white;
+  background: #f3f3f3;
+  color: #444;
   font-family: pixel;
 }
 
