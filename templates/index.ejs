@@ -20,8 +20,8 @@
     <meta property="og:description" content="<%= content.description %>">
     <meta property="og:image" content="/files/logo.svg">
 
-    <link rel="stylesheet" href="/files/highlightjs/styles/default.min.css">
-    <script src="/files/highlightjs/highlight.min.js"></script>
+    <script async src="/files/highlightjs/highlight.min.js"></script>
+    <script>window.addEventListener('load', () => hljs.highlightAll());</script>
 
     <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 </head>

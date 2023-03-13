@@ -1,5 +1,5 @@
 /*!
-  Highlight.js v11.6.0 (git: bed790f3f3)
+  Highlight.js v11.7.0 (git: 82688fad18)
   (c) 2006-2022 undefined and other contributors
   License: BSD-3-Clause
  */
@@ -907,7 +907,7 @@ var hljs = (function () {
      * @param {boolean} caseInsensitive
      */
     function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
-      /** @type KeywordDict */
+      /** @type {import("highlight.js/private").KeywordDict} */
       const compiledKeywords = Object.create(null);
 
       // input can be a string of keywords, an array of keywords, or a object with
@@ -1566,7 +1566,7 @@ var hljs = (function () {
       return mode;
     }
 
-    var version = "11.6.0";
+    var version = "11.7.0";
 
     class HTMLInjectionError extends Error {
       constructor(reason, html) {
