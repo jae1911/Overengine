@@ -63,7 +63,7 @@ body {
   margin: 0;
   font-family: pixel;
   background-color: var(--background-color);
-  background-image: url('img/oldbg/maze.gif');
+  background-image: url('img/oldbg/maze.avif');
   color: var(--main-text-color);
 }
 
