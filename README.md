@@ -38,4 +38,4 @@ My overengineered blog/website engine.
 
 ## License
 
-The software is provided under the MIT License.
+The software is provided under the GNU GPLv3 License.
