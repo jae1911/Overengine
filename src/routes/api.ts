@@ -42,7 +42,7 @@ const plugin: FastifyPluginCallback = (fastify, _options, next): void => {
             contacts: {
                 email: "jae@777.tf",
                 activityPub: "@me@soc.jae.fi",
-                matrix: "@me:jae.fi"
+                matrix: "@jae:777.tf"
             },
             location: {
                 system: "Solar System",
@@ -53,7 +53,7 @@ const plugin: FastifyPluginCallback = (fastify, _options, next): void => {
             },
             me: {
                 name: "Jae",
-                pronouns: "She/Her/It",
+                pronouns: "It/Its",
             },
         };
 
