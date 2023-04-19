@@ -40,15 +40,13 @@ const mdParser = MarkdownIt({
 // PARSE MD AND RETURN IT
 const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
     if (path.length < 1 || [...path.split(".")].pop() != "md" || !existsSync(path)) {
-        const resMeta: PostMedatada = {
+        return {
             title: notFoundMeta.title,
             description: notFoundMeta.description,
             markdown: marked.parse(notFoundMeta.markdown),
             pubDate: notFoundMeta.pubDate,
             date: notFoundMeta.date,
         }
-
-        return resMeta;
     }
 
     const parsedMeta = markToParsed(path);
@@ -58,7 +56,7 @@ const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string):
 
     // Launch rendering
     const gotBlogDomain = isBlog && baseDomain;
-    const response: PostMedatada = {
+    return {
         date: parsedMeta.date,
         markdown: mdParser.render(
             gotBlogDomain
@@ -74,8 +72,6 @@ const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string):
         title: parsedMeta.title,
         description: parsedMeta.description,
     };
-
-    return response;
 };
 
 // Shortcodes
@@ -90,27 +86,21 @@ const shortcodeBlogList = (markdown: string, baseDomain: string): string => {
 const shortCodeWakaTime = async (input: string): Promise<string> => {
     const isWakaEnabled = WAKATOKEN && WAKATOKEN.length > 1;
 
-    const res = isWakaEnabled
+    return isWakaEnabled
         ? input.replaceAll("{{< wakaCounter >}}", `<p>I spent ${await generateWakaString()} programming this week.`)
         : input.replaceAll("{{< wakaCounter >}}", "");
-    
-    return res;
 }
 
 const shortCodeBGP = async (input: string): Promise<string> => {
-    const res = BGPAS
+    return BGPAS
         ? input.replaceAll("{{< bgpUpstreams >}}", await getBgpUpstreams() ?? "").replaceAll("{{< bgpIx >}}", await getbBgpIx() ?? "")
         : input.replaceAll("{{< bgpUpstreams >}}", "").replaceAll("{{< bgpIx >}}", "");
-    
-    return res;
 }
 
 const shortCodeOWM = async (input: string): Promise<string> => {
-    const res = OWMKEY
+    return OWMKEY
         ? input.replaceAll("{{< weatherWidget >}}", await getWeatherForCity() ?? "An error happened while trying to get weather data.")
         : input.replaceAll("{{< weatherWidget >}}", "");
-
-    return res;
 }
 
 // WakaTime stuff
@@ -149,7 +139,7 @@ const markToParsed = (path: string): PostMedatada => {
         const picalt = headers.picalt;
         const picdesc = headers.picdesc;
 
-        const finalMetadata: PostMedatada = {
+        return {
             title,
             pubDate,
             date: pubDate,
@@ -162,8 +152,6 @@ const markToParsed = (path: string): PostMedatada => {
             picurl,
             markdown: parsedFile.markdown,
         }
-
-        return finalMetadata;
     } else {
         return notFoundMeta;
     }
@@ -174,7 +162,7 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
     const proto = determineProtocol(baseDomain);
     const dirContent = scourDirectory(path);
 
-    const res: readonly MenuList[] = dirContent.map((entry: string): MenuList | undefined => {
+    return dirContent.map((entry: string): MenuList | undefined => {
         if (entry.includes('_index.tags.md')) {
             return undefined;
         }
@@ -222,8 +210,6 @@ const generateListFromFile = (path: string, baseDomain: string, onlyIndex?: bool
             }
         }
     }).filter((item) => item) as readonly MenuList[];
-
-    return res;
 }
 
 const listToMarkdown = (path: string, baseDomain: string, onlyIndex?: boolean, noIndex?: boolean, showDate?: boolean, menuName?: string, isBlog?: boolean, number?: number, tag?: string): string => {
@@ -239,9 +225,7 @@ const listToMarkdown = (path: string, baseDomain: string, onlyIndex?: boolean, n
             : ` - [${page.title}](${page.link})`;
     }).filter((item) => item);
 
-    const res = listRes.join("\n");
-
-    return res;
+    return listRes.join("\n");
 };
 
 // Menus generators
@@ -305,11 +289,9 @@ const blogFinder = (uri: string): PostMedatada => {
 
 // DETERMINE PROTOCOL FOR GENERATORS
 const determineProtocol = (host: string): string => {
-    const res = host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost') || host.includes('.i2p')
+    return host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost') || host.includes('.i2p') || host.includes('.jj')
         ? "http"
         : "https";
-    
-    return res;
 }
 
 // Feed Generator
@@ -334,8 +316,7 @@ const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed =
     const dirContent: readonly string[] = scourDirectory(BASE_CONTENT_DIR + "/blog");
     const allThePosts: readonly PostMedatada[] = dirContent.map((entry: string): PostMedatada | undefined => {
         if (!entry.includes("_index")) {
-            const postMeta: PostMedatada = markToParsed(BASE_CONTENT_DIR + entry);
-            return postMeta;
+            return markToParsed(BASE_CONTENT_DIR + entry);
         }
     }).filter((item) => item) as readonly PostMedatada[];
 
