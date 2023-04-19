@@ -62,6 +62,17 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
         await reply.redirect(matrixSchemeGenerator(roomid, server));
     });
 
+    // Matrix user scheme
+    fastify.get('/redir/matrix/user/:id/:server', async (request: FastifyRequest<{
+        readonly Params: {
+            readonly id: string,
+            readonly server: string,
+        },
+    }>, reply) => {
+        const { id, server } = request.params;
+        await reply.redirect(matrixSchemeGenerator(id, server, undefined, true));
+    });
+
     fastify.get('/redir/matrix/:roomid/:server/element/:room', async (request: FastifyRequest<{
         readonly Params: {
             readonly roomid: string,
