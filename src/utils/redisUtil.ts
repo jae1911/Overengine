@@ -13,16 +13,13 @@ const cache = new Redis({
 });
 
 const cacheVal = async (key: string, value: string, ttl?: number, persist?: boolean): Promise<string> => {
-    const result = persist
+    return persist
         ? await cache.set(key, value)
         : await cache.set(key, value, "EX", ttl ?? defaultTtl);
-    
-    return result;
 }
 
 const getVal = async (key: string): Promise<string | null> => {
-    const res = await cache.get(key);
-    return res;
+    return cache.get(key);
 }
 
 export { cacheVal, getVal };

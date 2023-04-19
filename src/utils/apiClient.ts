@@ -33,15 +33,13 @@ const getWeeklyHours = async (): Promise<string> => {
 // BGP CLIENT¨
 const generateBgpAxios = (): AxiosInstance | undefined => {
     if (bgpBaseUri) {
-        const axiosClient = axios.create({
+        return axios.create({
             baseURL: bgpBaseUri,
             headers: {
                 "Content-Type": "application/json",
                 "User-Agent": "jae.fi/overengine",
             }
         });
-
-        return axiosClient;
     }
 
     return;
@@ -220,7 +218,7 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
     });
 
     const res = await axiosClient.get(`weather?q=${city ?? OWMCITY}&units=metric&appid=${OWMKEY}`).catch((error) => {
-        const errorRes = {
+        return {
             data: [
                 {
                     weather: "Error while fetching weather data (is your token OK?)",
@@ -228,8 +226,6 @@ const getWeatherForCity = async (city?: string): Promise<string | undefined> => 
                 }
             ]
         }
-
-        return errorRes;
     });
     const resJson = JSON.stringify(res.data);
 

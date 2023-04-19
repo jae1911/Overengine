@@ -8,7 +8,7 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     });
 
     fastify.get("/redir/cv", async (request, reply) => {
-        await reply.redirect('https://git.jae.fi/jae');
+        await reply.redirect('https://git.sr.ht/jae');
     });
 
     fastify.get('/redir/metacode', async (request, reply) => {
@@ -45,6 +45,10 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
 
     fastify.get('/redir/tg', async (request, reply) => {
         await reply.redirect('https://jae1911.t.me');
+    });
+
+    fastify.get('/redir/oyl', async (request, reply) => {
+        await reply.redirect('https://indieweb.org/own_your_links');
     });
 
     // Matrix room joins

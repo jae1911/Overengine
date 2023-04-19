@@ -2,9 +2,7 @@ const defaultVias: readonly string[] = ['jae.fi'];
 
 const matrixSchemeGenerator = (roomid: string, server: string, via?: readonly string[]): string => {
     const viaList = via?.join("&via=") ?? defaultVias.join("&via=");
-    const roomUri = `matrix:roomid/${roomid}:${server}?action=join&via=${viaList}`;
-
-    return roomUri;
+    return `matrix:roomid/${roomid}:${server}?action=join&via=${viaList}`;
 }
 
 const elementSchemeGenerator = (roomid: string, server: string, room: boolean, via?: readonly string[]): string => {
@@ -14,9 +12,7 @@ const elementSchemeGenerator = (roomid: string, server: string, room: boolean, v
         ? "#"
         : "!";
     
-    const roomUri = `element://vector/webapp/#/room/${dirSymbol}${roomid}:${server}?via=${viaList}`;
-
-    return roomUri;
+    return `element://vector/webapp/#/room/${dirSymbol}${roomid}:${server}?via=${viaList}`;
 }
 
 export { matrixSchemeGenerator, elementSchemeGenerator };
