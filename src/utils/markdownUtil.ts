@@ -2,7 +2,12 @@ import { existsSync, readFileSync } from "fs";
 
 import { Feed } from "feed";
 import { parseMarkdownHeaders } from 'markdown-headers';
+import MarkdownIt from "markdown-it";
+import anchor from "markdown-it-anchor";
+import MarkdownItFootnote from "markdown-it-footnote";
+import highlightjs from "markdown-it-highlightjs";
 import { marked } from "marked";
+import slugify from "slugify";
 
 import { BASE_CONTENT_DIR, BGPAS, OWMKEY, PRODUCTION, WAKATOKEN } from "../environment";
 import { MenuList } from "../types/menuList";
@@ -10,11 +15,6 @@ import { PostMedatada } from "../types/postMetadata";
 
 import { getbBgpIx, getBgpUpstreams, getWeatherForCity, getWeeklyHours } from "./apiClient";
 import { scourDirectory } from "./fileUtil";
-import MarkdownIt from "markdown-it";
-import MarkdownItFootnote from "markdown-it-footnote";
-import highlightjs from "markdown-it-highlightjs";
-import anchor from "markdown-it-anchor";
-import slugify from "slugify";
 
 
 const notFoundMeta: PostMedatada = {
@@ -57,41 +57,25 @@ const pathToParse = async (path: string, blog?: boolean, baseDomain?: string): P
     const shortCodedMarkdown = await shortCodeOWM(await shortCodeBGP(await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown))));
 
     // Launch rendering
-    if (blog && baseDomain) {
-        const specialBlogListMd = shortCodedMarkdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5));
+    const gotBlogDomain = blog && baseDomain;
+    const response: PostMedatada = {
+        date: parsedMeta.date,
+        markdown: mdParser.render(
+            gotBlogDomain
+                ? shortCodedMarkdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5))
+                : shortCodedMarkdown),
+        pubDate: parsedMeta.pubDate,
+        draft: parsedMeta.draft,
+        picalt: parsedMeta.picalt,
+        picdesc: parsedMeta.picdesc,
+        picurl: parsedMeta.picurl,
+        menus: parsedMeta.menus,
+        tags: parsedMeta.tags,
+        title: parsedMeta.title,
+        description: parsedMeta.description,
+    };
 
-        const response: PostMedatada = {
-            date: parsedMeta.date,
-            markdown: mdParser.render(specialBlogListMd),
-            pubDate: parsedMeta.pubDate,
-            draft: parsedMeta.draft,
-            picalt: parsedMeta.picalt,
-            picdesc: parsedMeta.picdesc,
-            picurl: parsedMeta.picurl,
-            menus: parsedMeta.menus,
-            tags: parsedMeta.tags,
-            title: parsedMeta.title,
-            description: parsedMeta.description,
-        }
-
-        return response;
-    } else {
-        const response: PostMedatada = {
-            date: parsedMeta.date,
-            markdown: mdParser.render(shortCodedMarkdown),
-            pubDate: parsedMeta.pubDate,
-            draft: parsedMeta.draft,
-            picalt: parsedMeta.picalt,
-            picdesc: parsedMeta.picdesc,
-            picurl: parsedMeta.picurl,
-            menus: parsedMeta.menus,
-            tags: parsedMeta.tags,
-            title: parsedMeta.title,
-            description: parsedMeta.description,
-        }
-
-        return response;
-    }
+    return response;
 };
 
 // Shortcodes
