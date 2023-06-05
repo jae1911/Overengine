@@ -12,7 +12,7 @@ export const HOST: string = env.HOST ?? '::';
 
 export const DOMAINS_ADVERTISED: readonly string[] | undefined = env.DOMAINS_ADVERTISED?.split(',');
 
-export const REDIS_HOST: string = env.REDIS_HOST ?? 'localhost';
+export const REDIS_HOST: string | undefined = env.REDIS_HOST;
 export const REDIS_PORT: number = parseInt(env.REDIS_PORT ?? '6379');
 export const REDIS_DB: number = parseInt(env.REDIS_DB ?? '0');
 export const REDIS_PASSWORD: string = env.REDIS_PASSWORD ?? '';
