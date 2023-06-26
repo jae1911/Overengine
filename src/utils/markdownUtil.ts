@@ -71,6 +71,7 @@ const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string):
         tags: parsedMeta.tags,
         title: parsedMeta.title,
         description: parsedMeta.description,
+        spoilered: parsedMeta.spoilered,
     };
 };
 
@@ -138,6 +139,7 @@ const markToParsed = (path: string): PostMedatada => {
         const picurl = headers.picurl;
         const picalt = headers.picalt;
         const picdesc = headers.picdesc;
+        const spoilered = headers.spoilered;
 
         return {
             title,
@@ -151,6 +153,7 @@ const markToParsed = (path: string): PostMedatada => {
             picdesc,
             picurl,
             markdown: parsedFile.markdown,
+            spoilered,
         }
     } else {
         return notFoundMeta;
@@ -275,6 +278,7 @@ const blogFinder = (uri: string): PostMedatada => {
                     picalt: postMeta.picalt,
                     picurl: postMeta.picurl,
                     picdesc: postMeta.picdesc,
+                    spoilered: postMeta.spoilered,
                 };
 
                 return finalMeta;

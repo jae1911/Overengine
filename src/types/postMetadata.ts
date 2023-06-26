@@ -11,4 +11,5 @@ export type PostMedatada = {
     picurl?: string;
     picalt?: string;
     picdesc?: string;
+    spoilered?: boolean;
 };
