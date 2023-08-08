@@ -70,7 +70,7 @@ body {
 .page {
   margin: auto;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1500px;
   border: 3px solid var(--blue);
   box-sizing: border-box;
   margin-top: var(--padsize);
@@ -136,8 +136,8 @@ hr {
 }
 
 .mainPage {
-  max-width: 70%;
-  min-width: 70%;
+  max-width: 75%;
+  min-width: 75%;
   padding-left: var(--padsize);
   padding-right: var(--padsize);
   padding-bottom: var(--padsize);
@@ -325,7 +325,8 @@ video {
 }
 
 .headerpic {
-  width: 100%;
+  margin: 0 auto;
+  width: 500px;
   border: solid 1px var(--blue);
 }
 
