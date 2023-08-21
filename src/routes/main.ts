@@ -75,6 +75,9 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
             "m.identity_server": {
                 "base_url": matrixDir,
             },
+            "org.matrix.msc3575.proxy": {
+                "url": matrixDir,
+            }
         });
     });
 
