@@ -1109,6 +1109,14 @@ fast-uri@^2.0.0, fast-uri@^2.1.0:
   resolved "https://registry.npmjs.org/fast-uri/-/fast-uri-2.1.0.tgz"
   integrity sha512-qKRta6N7BWEFVlyonVY/V+BMLgFqktCUV0QjT259ekAIlbVrMaFnFLxJ4s/JPl4tou56S1BzPufI60bLe29fHA==
 
+fastify-graceful-shutdown@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/fastify-graceful-shutdown/-/fastify-graceful-shutdown-3.5.1.tgz#e8d3180bde8564197d87e362b5cf85724923de73"
+  integrity sha512-fNwwCn8ob+Ykjg1iFgQrhbxNryXxUAGWD8yxz93gUgwAFgavd7rsOO/RN1oQskzltWBjWTB2KAqeF8q4XrJIkA==
+  dependencies:
+    fastify-plugin "^4.5.1"
+    fastparallel "^2.4.1"
+
 fastify-healthcheck@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/fastify-healthcheck/-/fastify-healthcheck-4.2.0.tgz"
@@ -1120,6 +1128,11 @@ fastify-plugin@^4.0.0:
   version "4.2.1"
   resolved "https://registry.npmjs.org/fastify-plugin/-/fastify-plugin-4.2.1.tgz"
   integrity sha512-dlGKiwLzRBKkEf5J5ho0uAD/Jdv8GQVUbriB3tAX3ehRUXE4gTV3lRd5inEg9li1aLzb0EGj8y2K4/8g1TN06g==
+
+fastify-plugin@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-4.5.1.tgz#44dc6a3cc2cce0988bc09e13f160120bbd91dbee"
+  integrity sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==
 
 fastify@4.10.2:
   version "4.10.2"
@@ -1141,6 +1154,14 @@ fastify@4.10.2:
     secure-json-parse "^2.5.0"
     semver "^7.3.7"
     tiny-lru "^10.0.0"
+
+fastparallel@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/fastparallel/-/fastparallel-2.4.1.tgz#0d984a5813ffa67f30b4a5cb4cb8cbe61c7ee5a5"
+  integrity sha512-qUmhxPgNHmvRjZKBFUNI0oZuuH9OlSIOXmJ98lhKPxMZZ7zS/Fi0wRHOihDSz0R1YiIOjxzOY4bq65YTcdBi2Q==
+  dependencies:
+    reusify "^1.0.4"
+    xtend "^4.0.2"
 
 fastq@^1.6.0, fastq@^1.6.1:
   version "1.13.0"
@@ -2724,6 +2745,11 @@ xml-js@^1.6.11:
   integrity sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==
   dependencies:
     sax "^1.2.4"
+
+xtend@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
+  integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
 yallist@^4.0.0:
   version "4.0.0"

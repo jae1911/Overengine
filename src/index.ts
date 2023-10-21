@@ -4,14 +4,19 @@ import autoLoad from '@fastify/autoload';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import fastify from 'fastify';
+import fastifyGracefulShutdown from 'fastify-graceful-shutdown';
 import fastifyHealthcheck from 'fastify-healthcheck';
 
 
 import { PRODUCTION, HOST } from './environment';
 
 const server = fastify({
-    logger: !PRODUCTION,
+    logger: {
+        level: PRODUCTION ? 'info' : 'debug',
+    },
 });
+
+void server.register(fastifyGracefulShutdown);
 
 void server.register(autoLoad, {
     dir: join(__dirname, 'routes'),
@@ -42,5 +47,12 @@ server.listen({ port: 8080, host: HOST }, (err, address) => {
         console.error(err);
         process.exit(1);
     }
-    console.log(`Server is listening on ${address}`);
+    server.log.info(`Server is listening on ${address}`);
+});
+
+server.after(() => {
+    server.gracefulShutdown((_signal, next) => {
+        server.log.info('Shutting down');
+        next();
+    });
 });
