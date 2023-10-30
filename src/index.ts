@@ -8,12 +8,11 @@ import fastifyHealthcheck from 'fastify-healthcheck';
 
 
 import { PRODUCTION, HOST } from './environment';
-import mainRoutes from './routes/main';
 import { registerRoutes } from './utils/routesUtils';
 
 const server = fastify({
     logger: {
-        level: PRODUCTION ? 'info' : 'debug',
+        level: PRODUCTION ? 'fatal' : 'debug',
     },
 });
 
