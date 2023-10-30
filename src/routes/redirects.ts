@@ -2,7 +2,7 @@ import { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 import { matrixSchemeGenerator, elementSchemeGenerator } from '../utils/matrixUtils';
 
-const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
+const redirects: FastifyPluginCallback = function (fastify, opts, next): void {
     fastify.get("/redir/tw", async (request, reply) => {
         await reply.redirect('https://futurice.com/tech-weeklies');
     });
@@ -87,4 +87,4 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     next();
 }
 
-export default plugin;
+export default redirects;

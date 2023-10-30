@@ -4,7 +4,7 @@ import moment from 'moment';
 import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
 import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateFeeds, generateBlogListTagged } from '../utils/markdownUtil';
 
-const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
+const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
     fastify.get("/blog/", async (request, reply) => {
         const content = await pathToParse(BASE_CONTENT_DIR + "/blog/_index.md");
@@ -91,4 +91,4 @@ const plugin: FastifyPluginCallback = function (fastify, opts, next): void {
     next();
 }
 
-export default plugin;
+export default blogRoutes;
