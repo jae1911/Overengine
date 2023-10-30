@@ -25,7 +25,7 @@ const cacheVal = async (key: string, value: string, ttl?: number, persist?: bool
 const getVal = async (key: string): Promise<string | null> => {
     const cache = makeRedis();
 
-    return cache.get(key);
+    return await cache.get(key);
 }
 
 export { cacheVal, getVal };

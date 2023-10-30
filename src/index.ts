@@ -1,6 +1,5 @@
 import { join } from 'path';
 
-import autoLoad from '@fastify/autoload';
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
 import fastify from 'fastify';
@@ -9,6 +8,8 @@ import fastifyHealthcheck from 'fastify-healthcheck';
 
 
 import { PRODUCTION, HOST } from './environment';
+import mainRoutes from './routes/main';
+import { registerRoutes } from './utils/routesUtils';
 
 const server = fastify({
     logger: {
@@ -18,9 +19,7 @@ const server = fastify({
 
 void server.register(fastifyGracefulShutdown);
 
-void server.register(autoLoad, {
-    dir: join(__dirname, 'routes'),
-});
+registerRoutes(server);
 
 void server.register(fastifyView, {
     engine: {

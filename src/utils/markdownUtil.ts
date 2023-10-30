@@ -9,7 +9,7 @@ import highlightjs from "markdown-it-highlightjs";
 import { marked } from "marked";
 import slugify from "slugify";
 
-import { BASE_CONTENT_DIR, BGPAS, OWMKEY, PRODUCTION, WAKATOKEN } from "../environment";
+import { BASE_CONTENT_DIR, BGPAS, BLOGS_ENABLED, OWMKEY, PRODUCTION, WAKATOKEN } from "../environment";
 import { MenuList } from "../types/menuList";
 import { PostMedatada } from "../types/postMetadata";
 
@@ -81,7 +81,7 @@ const shortCodeConstruction = (input: string): string => {
 }
 
 const shortcodeBlogList = (markdown: string, baseDomain: string): string => {
-    return markdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5));
+    return BLOGS_ENABLED ? markdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5)) : markdown.replaceAll("{{< postlist >}}", '');
 }
 
 const shortCodeWakaTime = async (input: string): Promise<string> => {

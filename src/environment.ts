@@ -29,3 +29,8 @@ export const LINGVA_DOMAIN: string = env.LINGVA_DOMAIN ?? 'translate.jae.fi';
 
 export const MATRIX_SUBDOMAIN: string = env.MATRIX_SUBDOMAIN ?? '';
 export const MATRIX_HOMESERVER_PORT: number = parseInt(env.MATRIX_HOMESERVER_PORT ?? '443');
+
+export const MATRIX_ENABLED: boolean = env.MATRIX_ENABLED == 'true';
+export const BLOGS_ENABLED: boolean = env.BLOGS_ENABLED == 'true';
+export const REDIRECTS_ENABLED: boolean = env.REDIRECTS_ENABLED == 'true';
+export const API_ENABLED: boolean = env.API_ENABLED == 'true';

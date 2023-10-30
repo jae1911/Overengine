@@ -7,7 +7,6 @@
   "author": "Jae Lo Presti <jae@j4.lc>",
   "license": "MIT",
   "dependencies": {
-    "@fastify/autoload": "^5.4.0",
     "@fastify/static": "^6.5.0",
     "@fastify/view": "^7.1.0",
     "@nick22985/wakatime-api": "^1.0.1",
