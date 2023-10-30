@@ -42,7 +42,7 @@ void server.register(fastifyHealthcheck);
 
 server.listen({ port: 8080, host: HOST }, (err, address) => {
     if (err) {
-        console.error(err);
+        server.log.fatal(err);
         process.exit(1);
     }
     server.log.info(`Server is listening on ${address}`);
