@@ -2,6 +2,7 @@ import { join } from 'path';
 
 import fastifyStatic from '@fastify/static';
 import fastifyView from '@fastify/view';
+import ejs from 'ejs';
 import fastify from 'fastify';
 import fastifyGracefulShutdown from 'fastify-graceful-shutdown';
 import fastifyHealthcheck from 'fastify-healthcheck';
@@ -22,8 +23,7 @@ registerRoutes(server);
 
 void server.register(fastifyView, {
     engine: {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        ejs: require("ejs"),
+        ejs: ejs,
     }
 });
 
