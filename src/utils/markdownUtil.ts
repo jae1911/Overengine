@@ -127,7 +127,6 @@ const markToParsed = (path: string): PostMedatada => {
         const headers = JSON.parse(JSON.stringify(parsedFile?.headers)) as PostMedatada;
 
         const title = headers.title ?? "No title provided.";
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const pubDate = new Date(headers.date) ?? new Date();
         const menus = headers.menus;
         const tags = headers.tags;

@@ -2,9 +2,8 @@ arch: x86_64
 image: archlinux
 packages:
   - docker
-  - docker-buildx
 secrets:
-  -  88343b8e-5e4e-4088-ba2e-5efc27d8f584
+  -  e4b4e45e-b74b-443d-838f-eba61a0d2e0d
 environment:
   DOCKER_USER: 'jae'
 sources:
@@ -17,8 +16,5 @@ tasks:
       sudo nohup dockerd --bip 172.18.0.1/16 </dev/null >/dev/null 2>&1 &
       sudo usermod -aG docker $(whoami)
       sleep 10
-      cat ~/docker_reg_pass | sudo docker login -u "$DOCKER_USER" --password-stdin=true reg.jae.fi
       cd Overengine
-      sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      sudo docker buildx create --use
-      sudo docker buildx build --push --platform=linux/amd64,linux/arm64 -t reg.jae.fi/jae/overengine:latest . 
+      docker build -t rg.nl-ams.scw.cloud/jaexencont/overengine:latest . ; docker push rg.nl-ams.scw.cloud/jaexencont/overengine:latest
