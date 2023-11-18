@@ -2,6 +2,7 @@ arch: x86_64
 image: archlinux
 packages:
   - docker
+  - docker-buildx
 secrets:
   -  e4b4e45e-b74b-443d-838f-eba61a0d2e0d
 environment:
@@ -17,4 +18,5 @@ tasks:
       sudo usermod -aG docker $(whoami)
       sleep 10
       cd Overengine
-      docker build -t rg.nl-ams.scw.cloud/jaexencont/overengine:latest . ; docker push rg.nl-ams.scw.cloud/jaexencont/overengine:latest
+      sudo docker buildx create --use
+      sudo docker buildx build --push --platform=linux/amd64 -t rg.nl-ams.scw.cloud/jaexencont/overengine:latest . 
