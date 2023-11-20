@@ -81,13 +81,13 @@ const shortCodeConstruction = (input: string): string => {
 }
 
 const shortcodeBlogList = (markdown: string, baseDomain: string): string => {
-    return BLOGS_ENABLED ? markdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5)) : markdown.replaceAll("{{< postlist >}}", '');
+    return BLOGS_ENABLED 
+        ? markdown.replaceAll("{{< postlist >}}", listToMarkdown(BASE_CONTENT_DIR + "/blog", baseDomain, false, true, false, undefined, true, 5)) 
+        : markdown.replaceAll("{{< postlist >}}", '');
 }
 
 const shortCodeWakaTime = async (input: string): Promise<string> => {
-    const isWakaEnabled = WAKATOKEN && WAKATOKEN.length > 1;
-
-    return isWakaEnabled
+    return WAKATOKEN && WAKATOKEN.length > 1
         ? input.replaceAll("{{< wakaCounter >}}", `<p>I spent ${await generateWakaString()} programming this week.`)
         : input.replaceAll("{{< wakaCounter >}}", "");
 }
