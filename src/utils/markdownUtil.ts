@@ -1,6 +1,5 @@
 import { existsSync, readFileSync } from "fs";
 
-import { Feed } from "feed";
 import { parseMarkdownHeaders } from 'markdown-headers';
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
@@ -11,19 +10,11 @@ import slugify from "slugify";
 
 import { BASE_CONTENT_DIR, PRODUCTION } from "../environment";
 import { MenuList } from "../types/menuList";
-import { PostMedatada } from "../types/postMetadata";
+import { notFoundMeta, PostMedatada } from "../types/postMetadata";
 
 import { determineProtocol, isPostInFuture } from "./feedUtils";
 import { scourDirectory } from "./fileUtil";
 import { shortCodeOWM, shortCodeBGP, shortCodeWakaTime, shortCodeConstruction, shortcodeBlogList } from "./shortCodeUtils";
-
-const notFoundMeta: PostMedatada = {
-    title: "404",
-    description: "Page not found",
-    markdown: "## 404\n\nPage not found.",
-    pubDate: new Date(),
-    date: new Date(),
-}
 
 const mdParser = MarkdownIt({
     html: true,
@@ -211,40 +202,5 @@ const generateBlogListTagged = (baseDomain: string, tag: string): string => {
     return marked.parse(listMd);
 }
 
-// Blog Finder
-const blogFinder = (uri: string): PostMedatada => {
-    const dirContent: readonly string[] = scourDirectory(BASE_CONTENT_DIR + "/blog");
-
-    const listRes = dirContent.map((entry) => {
-        const postMeta = markToParsed(BASE_CONTENT_DIR + entry);
-
-        if(postMeta.pubDate && postMeta.title) {
-            const formattedTitle = `/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getUTCDate()).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
-
-            if (formattedTitle == uri) {
-                const finalMeta: PostMedatada = {
-                    title: postMeta.title,
-                    markdown: marked.parse(postMeta.markdown),
-                    pubDate: postMeta.pubDate,
-                    date: postMeta.pubDate,
-                    menus: postMeta.menus,
-                    tags: postMeta.tags,
-                    draft: postMeta.draft,
-                    picalt: postMeta.picalt,
-                    picurl: postMeta.picurl,
-                    picdesc: postMeta.picdesc,
-                    spoilered: postMeta.spoilered,
-                };
-
-                return finalMeta;
-            }
-        }
-    }).filter((item) => item) as readonly PostMedatada[];
-
-    const res = listRes[0];
-
-    return res ?? notFoundMeta;
-}
-
 // Export those bad bois
-export { pathToParse, blogFinder, generateList, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged };
+export { pathToParse, generateList, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged };

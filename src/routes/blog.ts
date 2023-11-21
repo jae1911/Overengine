@@ -2,8 +2,9 @@ import { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import moment from 'moment';
 
 import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
+import { blogFinder } from '../utils/blogUtils';
 import { generateFeeds } from '../utils/feedUtils';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, blogFinder, generateBlogListTagged } from '../utils/markdownUtil';
+import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged } from '../utils/markdownUtil';
 
 const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index
@@ -66,14 +67,14 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
 
     // RSS Feed blog
     fastify.get("/blog/index.xml", async (request, reply) => {
-        const feed = generateFeeds(request.hostname, true);
+        const feed = generateFeeds(request.hostname);
 
         await reply.type('application/rss+xml ').send(feed.rss2());
     });
 
     // JSON Feed blog
     fastify.get("/blog/index.json", async (request, reply) => {
-        const feed = generateFeeds(request.hostname, true);
+        const feed = generateFeeds(request.hostname);
 
         const generatedFeed = feed.json1();
 
@@ -82,7 +83,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
 
     // ATOM Feed blog
     fastify.get("/blog/index.atom", async (request, reply) => {
-        const feed = generateFeeds(request.hostname, true);
+        const feed = generateFeeds(request.hostname);
 
         const generatedFeed = feed.atom1();
 

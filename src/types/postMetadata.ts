@@ -13,3 +13,11 @@ export type PostMedatada = {
     picdesc?: string;
     spoilered?: boolean;
 };
+
+export const notFoundMeta: PostMedatada = {
+    title: "404",
+    description: "Page not found",
+    markdown: "## 404\n\nPage not found.",
+    pubDate: new Date(),
+    date: new Date(),
+}
