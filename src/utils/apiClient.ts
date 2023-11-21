@@ -2,6 +2,7 @@ import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from 'axios';
 
 import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY, LINGVA_DOMAIN } from "../environment";
+import { WakaRes } from "../types/wakatime";
 
 import { cacheVal, getVal } from "./redisUtil";
 
@@ -12,7 +13,7 @@ const bgpBaseUri = BGPAS
     : null;
 
 // WAKATIME CLIENT
-const getWeeklyHours = async (): Promise<string> => {
+export const getWeeklyHours = async (): Promise<string> => {
     const cachedRes = await getVal('waka_weekly');
     if (cachedRes) {
         return cachedRes;
@@ -31,7 +32,7 @@ const getWeeklyHours = async (): Promise<string> => {
 };
 
 // BGP CLIENT¨
-const generateBgpAxios = (): AxiosInstance | undefined => {
+export const generateBgpAxios = (): AxiosInstance | undefined => {
     if (bgpBaseUri) {
         return axios.create({
             baseURL: bgpBaseUri,
@@ -90,7 +91,7 @@ interface bgpUpstreams {
     readonly meta: bgpMeta;
 }
 
-const getbBgpIx = async (): Promise<string | undefined> => {
+export const getbBgpIx = async (): Promise<string | undefined> => {
     const axiosClient = generateBgpAxios();
     if (!axiosClient) {
         return;
@@ -136,7 +137,7 @@ const getbBgpIx = async (): Promise<string | undefined> => {
     }
 }
 
-const getBgpUpstreams = async (): Promise<string | undefined> => {
+export const getBgpUpstreams = async (): Promise<string | undefined> => {
     const axiosClient = generateBgpAxios();
     if (!axiosClient) {
         return;
@@ -199,7 +200,7 @@ interface weatherGenericResponse {
     readonly main: weatherMain | null;
 }
 
-const getWeatherForCity = async (city?: string): Promise<string | undefined> => {
+export const getWeatherForCity = async (city?: string): Promise<string | undefined> => {
     if (!OWMKEY) {
         return;
     }
@@ -248,7 +249,7 @@ interface translationResponse {
     readonly translation: string;
 }
 
-const translateString = async(text: string, origin?: string, target?: string): Promise<string | null> => {
+export const translateString = async(text: string, origin?: string, target?: string): Promise<string | null> => {
     if (!origin)
         origin = 'fi';
     if (!target)
@@ -285,4 +286,8 @@ const translateString = async(text: string, origin?: string, target?: string): P
     return finalTranslation;
 };
 
-export { getWeeklyHours, getBgpUpstreams, getbBgpIx, getWeatherForCity, translateString };
+export const generateWakaString = async (): Promise<string> => {
+    const res = JSON.parse(await getWeeklyHours()) as WakaRes;
+
+    return res.data.human_readable_total
+}
