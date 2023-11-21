@@ -17,7 +17,7 @@ export const isPostInFuture = (date: Date): boolean => {
     return date.getTime() > Date.now();
 }
 
-export const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed => {
+export const generateFeeds = (hostname: string): Feed => {
     const protocol = determineProtocol(hostname);
 
     const feed = new Feed({
