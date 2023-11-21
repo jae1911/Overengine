@@ -13,6 +13,7 @@ import { BASE_CONTENT_DIR, PRODUCTION } from "../environment";
 import { MenuList } from "../types/menuList";
 import { PostMedatada } from "../types/postMetadata";
 
+import { determineProtocol, isPostInFuture } from "./feedUtils";
 import { scourDirectory } from "./fileUtil";
 import { shortCodeOWM, shortCodeBGP, shortCodeWakaTime, shortCodeConstruction, shortcodeBlogList } from "./shortCodeUtils";
 
@@ -75,7 +76,7 @@ const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string):
 };
 
 // PARSE MARKDOWN FILE
-const markToParsed = (path: string): PostMedatada => {
+export const markToParsed = (path: string): PostMedatada => {
     const parsedFile = parseMarkdownHeaders(readFileSync(path, "utf-8"));
 
     if (parsedFile && parsedFile?.headers && parsedFile.markdown) {
@@ -245,72 +246,5 @@ const blogFinder = (uri: string): PostMedatada => {
     return res ?? notFoundMeta;
 }
 
-// DETERMINE PROTOCOL FOR GENERATORS
-const determineProtocol = (host: string): string => {
-    return host.includes('.onion') || host.includes('127.0.0.1') || host.includes('192.168.0') || host.includes('localhost') || host.includes('.i2p') || host.includes('.jj')
-        ? "http"
-        : "https";
-}
-
-// Feed Generator
-const generateFeeds = (hostname: string, isBlog: boolean, path?: string): Feed => {
-    const protocol = determineProtocol(hostname);
-
-    const feed = new Feed({
-        title: "Jae's Blog",
-        description: "The blog of Jae.",
-        id: `${protocol}://${hostname}`,
-        link: `${protocol}://${hostname}`,
-        language: "en",
-        copyright: "CC BY-SA 4.0 Jae Lo Presti",
-        generator: "Overengine by J4",
-        feedLinks: {
-            xml: `${protocol}://${hostname}/blog/index.xml`,
-            json: `${protocol}://${hostname}/blog/index.json`,
-            atom: `${protocol}://${hostname}/blog/index.atom`,
-        },
-    });
-
-    const dirContent: readonly string[] = scourDirectory(BASE_CONTENT_DIR + "/blog");
-    const allThePosts: readonly PostMedatada[] = dirContent.map((entry: string): PostMedatada | undefined => {
-        if (!entry.includes("_index")) {
-            return markToParsed(BASE_CONTENT_DIR + entry);
-        }
-    }).filter((item) => item) as readonly PostMedatada[];
-
-    const sortedPosts: readonly PostMedatada[] = [...allThePosts].sort(
-        (objA, objB) => objB.pubDate.getTime() - objA.pubDate.getTime(),
-    );
-
-    sortedPosts.forEach((postMeta) => {
-        if (postMeta.title && ((PRODUCTION && !postMeta.draft && !isPostInFuture(postMeta.pubDate)) || !PRODUCTION)) {
-            const formattedURi = `${protocol}://${hostname}/blog/${postMeta.pubDate.getFullYear()}/${String(postMeta.pubDate.getMonth() + 1).padStart(2, '0')}/${String(postMeta.pubDate.getUTCDate()).padStart(2, '0')}/${postMeta.title.replaceAll(' ', '-').replaceAll('"', '').replaceAll(':', '').replaceAll('\'', '').toLowerCase()}/`;
-
-            feed.addItem({
-                title: postMeta.title,
-                id: formattedURi,
-                link: formattedURi,
-                description: postMeta.description,
-                date: postMeta.pubDate,
-                image: postMeta.picurl,
-                content: marked.parse(postMeta.markdown),
-                author: [
-                    {
-                        name: "Jae Lo Presti",
-                        email: "jae@j4.lc",
-                        link: "https://j4.lc",
-                    }
-                ],
-            });
-        }
-    });
-
-    return feed;
-}
-
-const isPostInFuture = (date: Date): boolean => {
-    return date.getTime() > Date.now();
-}
-
 // Export those bad bois
-export { determineProtocol, pathToParse, blogFinder, generateList, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged, generateFeeds };
+export { pathToParse, blogFinder, generateList, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged };
