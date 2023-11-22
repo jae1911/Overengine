@@ -2,7 +2,10 @@ import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from 'axios';
 
 import { WAKATOKEN, BGPAS, OWMKEY, OWMCITY, LINGVA_DOMAIN } from "../environment";
+import { bgpPeer, bgpIx, bgpUpstream, bgpUpstreams } from "../types/bgp";
+import { translationResponse } from "../types/translate";
 import { WakaRes } from "../types/wakatime";
+import { weatherGenericResponse } from "../types/weather";
 
 import { cacheVal, getVal } from "./redisUtil";
 
@@ -31,6 +34,13 @@ export const getWeeklyHours = async (): Promise<string> => {
     }
 };
 
+export const generateWakaString = async (): Promise<string> => {
+    const res = JSON.parse(await getWeeklyHours()) as WakaRes;
+
+    return res.data.human_readable_total
+}
+
+
 // BGP CLIENT¨
 export const generateBgpAxios = (): AxiosInstance | undefined => {
     if (bgpBaseUri) {
@@ -45,51 +55,6 @@ export const generateBgpAxios = (): AxiosInstance | undefined => {
 
     return;
 };
-
-interface bgpPeer {
-    readonly ix_id: number;
-    readonly name: string;
-    readonly name_full: string;
-    readonly country_code: string;
-    readonly city: string;
-    readonly ipv4_address: string;
-    readonly ipv6_address: string;
-    readonly speed: number;
-}
-
-interface bgpMeta {
-    readonly time_zone: string;
-    readonly api_version: number;
-    readonly execution_time: string;
-}
-
-interface bgpIx {
-    readonly status: string;
-    readonly status_message: string;
-    readonly data: readonly bgpPeer[];
-    readonly meta: bgpMeta;
-}
-
-interface bgpUpstream {
-    readonly asn: number;
-    readonly name: string;
-    readonly description: string;
-    readonly country_code: string;
-}
-
-interface bgpUpstreamData {
-    readonly ipv4_upstreams: readonly bgpUpstream[];
-    readonly ipv6_upstreams: readonly bgpUpstream[];
-}
-
-interface bgpUpstreams {
-    readonly status: string;
-    readonly status_message: string;
-    readonly data: bgpUpstreamData;
-    readonly ipv4_graph: string;
-    readonly ipv6_graph: string;
-    readonly meta: bgpMeta;
-}
 
 export const getbBgpIx = async (): Promise<string | undefined> => {
     const axiosClient = generateBgpAxios();
@@ -187,19 +152,6 @@ export const getBgpUpstreams = async (): Promise<string | undefined> => {
 
 // OPENWEATHERMAP
 
-interface weatherResponse {
-    readonly description: string;
-}
-
-interface weatherMain {
-    readonly temp: number;
-}
-
-interface weatherGenericResponse {
-    readonly weather: readonly weatherResponse[];
-    readonly main: weatherMain | null;
-}
-
 export const getWeatherForCity = async (city?: string): Promise<string | undefined> => {
     if (!OWMKEY) {
         return;
@@ -245,10 +197,6 @@ export const getWeatherForCity = async (city?: string): Promise<string | undefin
 
 // TRANSLATION
 
-interface translationResponse {
-    readonly translation: string;
-}
-
 export const translateString = async(text: string, origin?: string, target?: string): Promise<string | null> => {
     if (!origin)
         origin = 'fi';
@@ -285,9 +233,3 @@ export const translateString = async(text: string, origin?: string, target?: str
 
     return finalTranslation;
 };
-
-export const generateWakaString = async (): Promise<string> => {
-    const res = JSON.parse(await getWeeklyHours()) as WakaRes;
-
-    return res.data.human_readable_total
-}
