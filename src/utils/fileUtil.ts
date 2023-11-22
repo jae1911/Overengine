@@ -4,7 +4,7 @@ import { Address6 } from 'ip-address';
 
 import { BASE_CONTENT_DIR } from '../environment';
 
-const scourDirectory = (path: string): readonly string[] => {
+export const scourDirectory = (path: string): readonly string[] => {
     const files = readdirSync(path);
 
     const everything = files.map((file: string) => {
@@ -19,8 +19,6 @@ const scourDirectory = (path: string): readonly string[] => {
     return everything.flatMap((item) => Array.isArray(item) ? item : [item]) as readonly string[];
 }
 
-const isLegacy = (ip: string): boolean => {
+export const isLegacy = (ip: string): boolean => {
     return new Address6(ip).v4;
 }
-
-export { scourDirectory, isLegacy };

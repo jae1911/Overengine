@@ -14,7 +14,7 @@ const makeRedis = (): Redis => {
     });
 }
 
-const cacheVal = async (key: string, value: string, ttl?: number, persist?: boolean): Promise<string> => {
+export const cacheVal = async (key: string, value: string, ttl?: number, persist?: boolean): Promise<string> => {
     const cache = makeRedis();
     
     return persist
@@ -22,10 +22,8 @@ const cacheVal = async (key: string, value: string, ttl?: number, persist?: bool
         : await cache.set(key, value, "EX", ttl ?? defaultTtl);
 }
 
-const getVal = async (key: string): Promise<string | null> => {
+export const getVal = async (key: string): Promise<string | null> => {
     const cache = makeRedis();
 
     return await cache.get(key);
 }
-
-export { cacheVal, getVal };
