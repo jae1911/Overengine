@@ -25,7 +25,7 @@ const mdParser = MarkdownIt({
     });
 
 // PARSE MD AND RETURN IT
-const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
+export const pathToParse = async (path: string, isBlog?: boolean, baseDomain?: string): Promise<PostMedatada> => {
     if (path.length < 1 || [...path.split(".")].pop() != "md" || !existsSync(path)) {
         return {
             title: notFoundMeta.title,
@@ -101,6 +101,3 @@ export const markToParsed = (path: string): PostMedatada => {
         return notFoundMeta;
     }
 }
-
-// Export those bad bois
-export { pathToParse };
