@@ -4,7 +4,8 @@ import moment from 'moment';
 import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
 import { blogFinder } from '../utils/blogUtils';
 import { generateFeeds } from '../utils/feedUtils';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged } from '../utils/markdownUtil';
+import { generatePageMenu, generateWikiMenu, generateBlogList, generateBlogListTagged } from '../utils/listUtils';
+import { pathToParse } from '../utils/markdownUtil';
 
 const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
     // Blog index

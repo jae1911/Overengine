@@ -3,7 +3,8 @@ import { existsSync } from 'fs';
 import { FastifyPluginCallback } from 'fastify';
 
 import { BASE_CONTENT_DIR, SITE_NAME, DOMAINS_ADVERTISED } from '../environment';
-import { pathToParse, generatePageMenu, generateWikiMenu, generateList } from '../utils/markdownUtil';
+import { generatePageMenu, generateWikiMenu, generateList } from '../utils/listUtils';
+import { pathToParse } from '../utils/markdownUtil';
 
 const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
 
