@@ -1,3 +1,3 @@
 export interface translationResponse {
-    readonly translation: string;
+  readonly translation: string;
 }

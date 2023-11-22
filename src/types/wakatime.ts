@@ -1,7 +1,7 @@
 export interface WakaData {
-    readonly human_readable_total: string;
+  readonly human_readable_total: string;
 }
 
 export interface WakaRes {
-    readonly data: WakaData;
+  readonly data: WakaData;
 }

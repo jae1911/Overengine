@@ -4,9 +4,9 @@ packages:
   - docker
   - docker-buildx
 secrets:
-  -  96d6709d-1469-48b7-8ec2-0e5113821f31
+  - 96d6709d-1469-48b7-8ec2-0e5113821f31
 environment:
-  DOCKER_USER: 'SCWSKTWJR9ZP1H501BTA'
+  DOCKER_USER: "SCWSKTWJR9ZP1H501BTA"
 sources:
   - https://git.sr.ht/~jae/Overengine
 tasks:
@@ -20,4 +20,4 @@ tasks:
       cd Overengine
       sudo cat ~/docker-key | sudo docker login -u "$DOCKER_USER" --password-stdin=true rg.nl-ams.scw.cloud
       sudo docker buildx create --use
-      sudo docker buildx build --push --platform=linux/amd64 -t rg.nl-ams.scw.cloud/jaexencont/overengine:latest . 
+      sudo docker buildx build --push --platform=linux/amd64 -t rg.nl-ams.scw.cloud/jaexencont/overengine:latest .

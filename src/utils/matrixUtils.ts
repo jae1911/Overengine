@@ -1,16 +1,26 @@
-const defaultVias: readonly string[] = ['jae.fi'];
+const defaultVias: readonly string[] = ["jae.fi"];
 
-export const matrixSchemeGenerator = (id: string, server: string, via?: readonly string[], isUser?: boolean): string => {
-    const viaList = via?.join("&via=") ?? defaultVias.join("&via=");
-    return `matrix:${isUser ? 'u' : 'roomid'}/${id}:${server}?action=join&via=${viaList}`;
-}
+export const matrixSchemeGenerator = (
+  id: string,
+  server: string,
+  via?: readonly string[],
+  isUser?: boolean,
+): string => {
+  const viaList = via?.join("&via=") ?? defaultVias.join("&via=");
+  return `matrix:${
+    isUser ? "u" : "roomid"
+  }/${id}:${server}?action=join&via=${viaList}`;
+};
 
-export const elementSchemeGenerator = (roomid: string, server: string, room: boolean, via?: readonly string[]): string => {
-    const viaList = via?.join("&via=") ?? defaultVias.join("&via=");
+export const elementSchemeGenerator = (
+  roomid: string,
+  server: string,
+  room: boolean,
+  via?: readonly string[],
+): string => {
+  const viaList = via?.join("&via=") ?? defaultVias.join("&via=");
 
-    const dirSymbol = room
-        ? "#"
-        : "!";
-    
-    return `element://vector/webapp/#/room/${dirSymbol}${roomid}:${server}?via=${viaList}`;
-}
+  const dirSymbol = room ? "#" : "!";
+
+  return `element://vector/webapp/#/room/${dirSymbol}${roomid}:${server}?via=${viaList}`;
+};

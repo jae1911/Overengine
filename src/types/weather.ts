@@ -1,12 +1,12 @@
 export interface weatherResponse {
-    readonly description: string;
+  readonly description: string;
 }
 
 export interface weatherMain {
-    readonly temp: number;
+  readonly temp: number;
 }
 
 export interface weatherGenericResponse {
-    readonly weather: readonly weatherResponse[];
-    readonly main: weatherMain | null;
+  readonly weather: readonly weatherResponse[];
+  readonly main: weatherMain | null;
 }
