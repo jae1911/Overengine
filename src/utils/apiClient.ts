@@ -71,9 +71,7 @@ export const getbBgpIx = async (): Promise<string | undefined> => {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const res = await axiosClient.get("ixs").catch((error) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return error as string;
     });
 
@@ -117,9 +115,7 @@ export const getBgpUpstreams = async (): Promise<string | undefined> => {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const res = await axiosClient.get("upstreams").catch((error) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return error as string;
     });
 
