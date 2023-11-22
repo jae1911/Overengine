@@ -32,7 +32,7 @@
         <%- include('layouts/header'); -%>
         <div class="cpage">
 
-            <div class="mainPage">
+            <main class="mainPage">
                 <% if (content.spoilered) { %>
                     <div class="spoilerAccept" id="spoilerPopup">
                         <p>This page contains content innapropriate for audiences under 18 years old.</p>
@@ -79,7 +79,7 @@
 
                     <%- content.markdown %>
                 </div>
-            </div>
+            </main>
             <%- include('layouts/navigation'); -%>
         </div>
     </div>
