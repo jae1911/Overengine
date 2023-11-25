@@ -10,7 +10,7 @@ import fastifyHealthcheck from "fastify-healthcheck";
 import { PRODUCTION, HOST } from "./environment";
 import { registerRoutes } from "./utils/routesUtils";
 
-const server = fastify({
+export const server = fastify({
   logger: {
     level: PRODUCTION ? "fatal" : "debug",
   },

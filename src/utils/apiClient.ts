@@ -1,6 +1,7 @@
 import { RANGE, WakaTimeApi } from "@nick22985/wakatime-api";
 import axios, { AxiosInstance } from "axios";
 
+import { server } from "..";
 import {
   WAKATOKEN,
   BGPAS,
@@ -34,6 +35,7 @@ export const getWeeklyHours = async (): Promise<string> => {
 
     return jsonRes;
   } catch (error) {
+    server.log.error(`Error when fetching Wakatime data: ${error as string}`);
     return "Error while fetching WakaTime.";
   }
 };
@@ -62,6 +64,7 @@ export const generateBgpAxios = (): AxiosInstance | undefined => {
 export const getbBgpIx = async (): Promise<string | undefined> => {
   const axiosClient = generateBgpAxios();
   if (!axiosClient) {
+    server.log.error(`Failed to create the Axios instance for BGP IXS.`);
     return;
   }
 
@@ -72,10 +75,12 @@ export const getbBgpIx = async (): Promise<string | undefined> => {
 
   try {
     const res = await axiosClient.get("ixs").catch((error) => {
+      server.log.error(`Error when fetching BPG IXS: ${error as string}`);
       return error as string;
     });
 
     if (typeof res === "string") {
+      server.log.error("Response type of BGP IXS wasn't a string.");
       return "Error while fetching data.";
     }
 
@@ -98,7 +103,8 @@ export const getbBgpIx = async (): Promise<string | undefined> => {
 
       return response;
     }
-  } catch {
+  } catch (error) {
+    server.log.error(`Could not fetch BGP IXS: ${error as string}`);
     return "Error: could not fetch BGP status.";
   }
 };
@@ -106,6 +112,7 @@ export const getbBgpIx = async (): Promise<string | undefined> => {
 export const getBgpUpstreams = async (): Promise<string | undefined> => {
   const axiosClient = generateBgpAxios();
   if (!axiosClient) {
+    server.log.error("Could not generate Axios for BGP Upstreams");
     return;
   }
 
@@ -116,10 +123,12 @@ export const getBgpUpstreams = async (): Promise<string | undefined> => {
 
   try {
     const res = await axiosClient.get("upstreams").catch((error) => {
+      server.log.error(`Error when fetching BGP Upstreams: ${error as string}`);
       return error as string;
     });
 
     if (typeof res === "string") {
+      server.log.error("Response type of BGP Upstreams wasn't a string.");
       return "Error while fetching data.";
     }
 
@@ -150,7 +159,8 @@ export const getBgpUpstreams = async (): Promise<string | undefined> => {
 
       return res;
     }
-  } catch (err) {
+  } catch (error) {
+    server.log.error(`Could not fetch BGP Upstreams: ${error as string}`);
     return "Error: could not fetch BGP status.";
   }
 };
@@ -227,7 +237,8 @@ export const translateString = async (
 
   const translateUri = `/${origin}/${target}/${text}`;
 
-  const resFromLingva = await axiosClient.get(translateUri).catch((_error) => {
+  const resFromLingva = await axiosClient.get(translateUri).catch((error) => {
+    server.log.error(`Could not fetch Lingva translations: ${error as string}`);
     return {
       data: [
         {
