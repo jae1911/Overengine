@@ -1,17 +1,16 @@
-/* eslint-disable functional/prefer-readonly-type */
 export type PostMedatada = {
-  date: string | number | Date;
-  title?: string;
-  description?: string;
-  markdown: string;
-  pubDate: Date;
-  menus?: string[];
-  tags?: string[];
-  draft?: boolean;
-  picurl?: string;
-  picalt?: string;
-  picdesc?: string;
-  spoilered?: boolean;
+  readonly date: string | number | Date;
+  readonly title?: string;
+  readonly description?: string;
+  readonly markdown: string;
+  readonly pubDate: Date;
+  readonly menus?: readonly string[];
+  readonly tags?: readonly string[];
+  readonly draft?: boolean;
+  readonly picurl?: string;
+  readonly picalt?: string;
+  readonly picdesc?: string;
+  readonly spoilered?: boolean;
 };
 
 export const notFoundMeta: PostMedatada = {
