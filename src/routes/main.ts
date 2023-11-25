@@ -6,6 +6,7 @@ import {
   BASE_CONTENT_DIR,
   SITE_NAME,
   DOMAINS_ADVERTISED,
+  SITE_TAGLINE,
 } from "../environment";
 import {
   generatePageMenu,
@@ -30,6 +31,7 @@ const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       pagesMenu,
       wikiMenu,
       domains: DOMAINS_ADVERTISED,
+      sitetagline: SITE_TAGLINE,
     });
   });
 
@@ -60,6 +62,7 @@ const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       wikiMenu,
       list,
       domains: DOMAINS_ADVERTISED,
+      sitetagline: SITE_TAGLINE,
     });
   });
 

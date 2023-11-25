@@ -11,6 +11,7 @@ export const BASE_CONTENT_DIR: string =
 export const SITE_NAME: string = env.SITE_NAME ?? "Jae's Website";
 export const SITE_DESCRIPTION: string =
   env.SITE_DESCRIPTION ?? "The blog of Jae.";
+export const SITE_TAGLINE: string = env.SITE_TAGLINE ?? "Random Beeps'n Boops";
 export const SITE_COPYRIGHT: string =
   env.SITE_COPYRIGHT ?? "CC BY-SA 4.0 Jae Lo Presti";
 export const SITE_LANGUAGE: string = env.SITE_LANGUAGE ?? "en";

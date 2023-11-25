@@ -5,6 +5,7 @@ import {
   BASE_CONTENT_DIR,
   SITE_NAME,
   DOMAINS_ADVERTISED,
+  SITE_TAGLINE,
 } from "../environment";
 import { blogFinder } from "../utils/blogUtils";
 import { generateFeeds } from "../utils/feedUtils";
@@ -31,6 +32,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       wikiMenu,
       list,
       domains: DOMAINS_ADVERTISED,
+      sitetagline: SITE_TAGLINE
     });
   });
 
@@ -61,6 +63,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
         wikiMenu,
         list,
         domains: DOMAINS_ADVERTISED,
+        sitetagline: SITE_TAGLINE,
       });
     },
   );
@@ -80,6 +83,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       wikiMenu,
       moment: moment,
       domains: DOMAINS_ADVERTISED,
+      sitetagline: SITE_TAGLINE,
     });
   });
 
