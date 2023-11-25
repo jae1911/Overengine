@@ -41,6 +41,7 @@ export const blogFinder = (uri: string): PostMedatada => {
             picurl: postMeta.picurl,
             picdesc: postMeta.picdesc,
             spoilered: postMeta.spoilered,
+            description: postMeta.description,
           };
           return finalMeta;
         }

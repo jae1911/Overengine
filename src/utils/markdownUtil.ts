@@ -4,8 +4,9 @@ import { parseMarkdownHeaders } from "markdown-headers";
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
 import markdownItAnchor from "markdown-it-anchor";
-import MarkdownItFootnote from "markdown-it-footnote";
+import markdownItFootnote from "markdown-it-footnote";
 import highlightjs from "markdown-it-highlightjs";
+import markdownItPlainText from "markdown-it-plain-text";
 import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import { marked } from "marked";
 import slugify from "slugify";
@@ -26,7 +27,7 @@ const mdParser = MarkdownIt({
   typographer: true,
   xhtmlOut: true,
 })
-  .use(MarkdownItFootnote)
+  .use(markdownItFootnote)
   .use(highlightjs)
   .use(anchor, {
     slugify: (s) =>
@@ -36,6 +37,8 @@ const mdParser = MarkdownIt({
   })
   .use(markdownItAnchor)
   .use(markdownItTocDoneRight);
+
+const mdPlainText = MarkdownIt().use(markdownItPlainText);
 
 // PARSE MD AND RETURN IT
 export const pathToParse = async (
@@ -97,6 +100,8 @@ export const markToParsed = (path: string): PostMedatada => {
       JSON.stringify(parsedFile?.headers),
     ) as PostMedatada;
 
+    const _renderedMarkdown = mdPlainText.render(parsedFile.markdown);
+
     const title = headers.title ?? "No title provided.";
     const pubDate = new Date(headers.date) ?? new Date();
     const menus = headers.menus;
@@ -104,11 +109,8 @@ export const markToParsed = (path: string): PostMedatada => {
     const draft = headers.draft;
     const description = headers.description
       ? headers.description
-      : parsedFile.markdown
-          .substring(0, 160)
-          .replaceAll("#", "")
-          .replaceAll(/(\r\n|\n|\r)/gm, " ")
-          .replaceAll("*", "");
+      : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        ((mdPlainText as any).plainText as string).substring(0, 160) + "...";
 
     const picurl = headers.picurl;
     const picalt = headers.picalt;

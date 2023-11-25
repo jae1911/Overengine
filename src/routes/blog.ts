@@ -32,7 +32,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       wikiMenu,
       list,
       domains: DOMAINS_ADVERTISED,
-      sitetagline: SITE_TAGLINE
+      sitetagline: SITE_TAGLINE,
     });
   });
 
