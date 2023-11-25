@@ -3,8 +3,10 @@ import { existsSync, readFileSync } from "fs";
 import { parseMarkdownHeaders } from "markdown-headers";
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
+import markdownItAnchor from "markdown-it-anchor";
 import MarkdownItFootnote from "markdown-it-footnote";
 import highlightjs from "markdown-it-highlightjs";
+import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import { marked } from "marked";
 import slugify from "slugify";
 
@@ -22,6 +24,7 @@ const mdParser = MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
+  xhtmlOut: true,
 })
   .use(MarkdownItFootnote)
   .use(highlightjs)
@@ -30,7 +33,9 @@ const mdParser = MarkdownIt({
       slugify(s, {
         lower: true,
       }),
-  });
+  })
+  .use(markdownItAnchor)
+  .use(markdownItTocDoneRight);
 
 // PARSE MD AND RETURN IT
 export const pathToParse = async (
