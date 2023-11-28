@@ -56,6 +56,10 @@ const redirects: FastifyPluginCallback = function (fastify, opts, next): void {
     await reply.redirect("https://indieweb.org/own_your_links");
   });
 
+  fastify.get("/wiki/misc/resonite", async (_req, res) => {
+    await res.redirect("/wiki/resonite/");
+  });
+
   // Matrix room joins
   fastify.get(
     "/redir/matrix/:roomid/:server",
