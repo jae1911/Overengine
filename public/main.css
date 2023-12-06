@@ -7,11 +7,11 @@
 
 @font-face {
   font-family: 'pixel';
-  src: url('fonts/vt323-regular-webfont.woff2');
+  src: url('fonts/AtkinsonHyperlegible-Regular.ttf');
 }
 
 :root {
-  --fontsize: 1.4em;
+  --fontsize: 1.2em;
   --pagetitle: 1.75em;
 
   --imgsize: 10em;
