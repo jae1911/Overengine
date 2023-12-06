@@ -32,7 +32,7 @@ export const getLatestGitHash = (): string => {
 
   const headRef = readFileSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`, 'utf8');
 
-  const hash = headRef.substring(0, headRef.indexOf(' '));
+  const hash = headRef.substring(0, headRef.indexOf(' ')).replaceAll(' branch', '').substring(0, 8);
 
   return hash;
 }
