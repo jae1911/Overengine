@@ -392,3 +392,8 @@ video {
   left: 45%;
   position: relative;
 }
+
+blockquote {
+  border-left: 2px solid white;
+  padding-left: 15px;
+}
