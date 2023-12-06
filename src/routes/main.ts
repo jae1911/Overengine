@@ -8,6 +8,7 @@ import {
   DOMAINS_ADVERTISED,
   SITE_TAGLINE,
 } from "../environment";
+import { getLatestGitHash } from "../utils/fileUtil";
 import {
   generatePageMenu,
   generateWikiMenu,
@@ -32,6 +33,7 @@ const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       wikiMenu,
       domains: DOMAINS_ADVERTISED,
       sitetagline: SITE_TAGLINE,
+      contentVersion: getLatestGitHash(),
     });
   });
 
@@ -63,6 +65,7 @@ const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       list,
       domains: DOMAINS_ADVERTISED,
       sitetagline: SITE_TAGLINE,
+      contentVersion: getLatestGitHash(),
     });
   });
 

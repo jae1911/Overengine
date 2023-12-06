@@ -9,6 +9,7 @@ import {
 } from "../environment";
 import { blogFinder } from "../utils/blogUtils";
 import { generateFeeds } from "../utils/feedUtils";
+import { getLatestGitHash } from "../utils/fileUtil";
 import {
   generatePageMenu,
   generateWikiMenu,
@@ -33,6 +34,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       list,
       domains: DOMAINS_ADVERTISED,
       sitetagline: SITE_TAGLINE,
+      contentVersion: getLatestGitHash(),
     });
   });
 
@@ -64,6 +66,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
         list,
         domains: DOMAINS_ADVERTISED,
         sitetagline: SITE_TAGLINE,
+        contentVersion: getLatestGitHash(),
       });
     },
   );
@@ -84,6 +87,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       moment: moment,
       domains: DOMAINS_ADVERTISED,
       sitetagline: SITE_TAGLINE,
+      contentVersion: getLatestGitHash(),
     });
   });
 

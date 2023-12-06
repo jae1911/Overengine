@@ -1,8 +1,8 @@
-import { readdirSync, statSync } from "fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 
 import { Address6 } from "ip-address";
 
-import { BASE_CONTENT_DIR } from "../environment";
+import { BASE_CONTENT_DIR, CONTENT_ROOT_DIR } from "../environment";
 
 export const scourDirectory = (path: string): readonly string[] => {
   const files = readdirSync(path);
@@ -25,3 +25,14 @@ export const scourDirectory = (path: string): readonly string[] => {
 export const isLegacy = (ip: string): boolean => {
   return new Address6(ip).v4;
 };
+
+export const getLatestGitHash = (): string => {
+  if (!existsSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`))
+    return 'Unknown';
+
+  const headRef = readFileSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`, 'utf8');
+
+  const hash = headRef.substring(0, headRef.indexOf(' '));
+
+  return hash;
+}
