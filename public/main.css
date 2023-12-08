@@ -180,6 +180,10 @@ button {
     margin-top: var(--padsize);
     margin-bottom: var(--padsize);
   }
+  .header img {
+    width: 25%;
+    height: 25%;
+  }
 }
 
 .navigation {
