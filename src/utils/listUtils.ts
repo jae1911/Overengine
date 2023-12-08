@@ -1,11 +1,9 @@
-import { marked } from "marked";
-
 import { BASE_CONTENT_DIR, PRODUCTION } from "../environment";
 import { MenuList } from "../types/menuList";
 
 import { determineProtocol, isPostInFuture } from "./feedUtils";
 import { scourDirectory } from "./fileUtil";
-import { markToParsed } from "./markdownUtil";
+import { markToParsed, mdParser } from "./markdownUtil";
 
 export const generateListFromFile = (
   path: string,
@@ -129,7 +127,7 @@ export const listToMarkdown = (
 
 // Menus generators
 export const generateList = (path: string, baseDomain: string): string => {
-  return marked.parse(
+  return mdParser.render(
     listToMarkdown(path.replace(/.$/, ""), baseDomain, false, true),
   );
 };
@@ -143,7 +141,7 @@ export const generatePageMenu = (baseDomain: string): string => {
     false,
     "main",
   );
-  return marked.parse(listMd);
+  return mdParser.render(listMd);
 };
 
 export const generateWikiMenu = (baseDomain: string): string => {
@@ -155,7 +153,7 @@ export const generateWikiMenu = (baseDomain: string): string => {
     false,
     "wiki",
   );
-  return marked.parse(listMd);
+  return mdParser.render(listMd);
 };
 
 export const generateBlogList = (baseDomain: string): string => {
@@ -168,7 +166,7 @@ export const generateBlogList = (baseDomain: string): string => {
     undefined,
     true,
   );
-  return marked.parse(listMd);
+  return mdParser.render(listMd);
 };
 
 export const generateBlogListTagged = (
@@ -186,5 +184,5 @@ export const generateBlogListTagged = (
     undefined,
     tag,
   );
-  return marked.parse(listMd);
+  return mdParser.render(listMd);
 };

@@ -1,10 +1,8 @@
-import { marked } from "marked";
-
 import { BASE_CONTENT_DIR } from "../environment";
 import { notFoundMeta, PostMedatada } from "../types/postMetadata";
 
 import { scourDirectory } from "./fileUtil";
-import { markToParsed } from "./markdownUtil";
+import { markToParsed, mdParser } from "./markdownUtil";
 
 export const blogFinder = (uri: string): PostMedatada => {
   const dirContent: readonly string[] = scourDirectory(
@@ -31,7 +29,7 @@ export const blogFinder = (uri: string): PostMedatada => {
         if (formattedTitle == uri) {
           const finalMeta: PostMedatada = {
             title: postMeta.title,
-            markdown: marked.parse(postMeta.markdown),
+            markdown: mdParser.render(postMeta.markdown),
             pubDate: postMeta.pubDate,
             date: postMeta.pubDate,
             menus: postMeta.menus,

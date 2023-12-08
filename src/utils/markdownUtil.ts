@@ -8,7 +8,6 @@ import markdownItFootnote from "markdown-it-footnote";
 import highlightjs from "markdown-it-highlightjs";
 import markdownItPlainText from "markdown-it-plain-text";
 import markdownItTocDoneRight from "markdown-it-toc-done-right";
-import { marked } from "marked";
 import slugify from "slugify";
 
 import { notFoundMeta, PostMedatada } from "../types/postMetadata";
@@ -21,7 +20,7 @@ import {
   shortcodeBlogList,
 } from "./shortCodeUtils";
 
-const mdParser = MarkdownIt({
+export const mdParser = MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
@@ -54,7 +53,7 @@ export const pathToParse = async (
     return {
       title: notFoundMeta.title,
       description: notFoundMeta.description,
-      markdown: marked.parse(notFoundMeta.markdown),
+      markdown: mdParser.render(notFoundMeta.markdown),
       pubDate: notFoundMeta.pubDate,
       date: notFoundMeta.date,
     };

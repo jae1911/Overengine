@@ -1,5 +1,4 @@
 import { Feed } from "feed";
-import { marked } from "marked";
 
 import {
   BASE_CONTENT_DIR,
@@ -12,7 +11,7 @@ import {
 import { PostMedatada } from "../types/postMetadata";
 
 import { scourDirectory } from "./fileUtil";
-import { markToParsed } from "./markdownUtil";
+import { markToParsed, mdParser } from "./markdownUtil";
 
 export const determineProtocol = (host: string): string => {
   return host.includes(".onion") ||
@@ -87,7 +86,7 @@ export const generateFeeds = (hostname: string): Feed => {
         description: postMeta.description,
         date: postMeta.pubDate,
         image: postMeta.picurl,
-        content: marked.parse(postMeta.markdown),
+        content: mdParser.render(postMeta.markdown),
         author: [
           {
             name: "Jae Lo Presti",
