@@ -27,12 +27,14 @@ export const isLegacy = (ip: string): boolean => {
 };
 
 export const getLatestGitHash = (): string => {
-  if (!existsSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`))
-    return 'Unknown';
+  if (!existsSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`)) return "Unknown";
 
-  const headRef = readFileSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`, 'utf8');
+  const headRef = readFileSync(`${CONTENT_ROOT_DIR}/.git/FETCH_HEAD`, "utf8");
 
-  const hash = headRef.substring(0, headRef.indexOf(' ')).replaceAll(' branch', '').substring(0, 8);
+  const hash = headRef
+    .substring(0, headRef.indexOf(" "))
+    .replaceAll(" branch", "")
+    .substring(0, 8);
 
   return hash;
-}
+};

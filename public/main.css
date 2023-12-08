@@ -162,11 +162,11 @@ button {
 @media (max-width: 991px) {
   .navigation {
     position: relative;
-    max-width: 90vw;
+    max-width: 95%;
   }
   .mainPage {
     position: relative;
-    max-width: 90vw;
+    max-width: 95%;
   }
   .cpage {
     display: block;
@@ -174,7 +174,7 @@ button {
   .page {
     margin: auto;
     width: 100%;
-    max-width: 95vw;
+    max-width: 95%;
     border: 3px solid var(--blue);
     box-sizing: border-box;
     margin-top: var(--padsize);
