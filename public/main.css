@@ -273,6 +273,8 @@ table, th, td {
   max-width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .tablecontainer {
