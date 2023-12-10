@@ -1,11 +1,4 @@
 @font-face {
-  font-family: 'Dotsies';
-  font-style: normal;
-  font-weight: 400;
-  src: url('fonts/Dotsies.ttf') format('truetype');
-}
-
-@font-face {
   font-family: 'pixel';
   src: url('fonts/AtkinsonHyperlegible-Regular.ttf');
 }
