@@ -1,3 +1,3 @@
 [submodule "content"]
 	path = content
-	url = https://git.sr.ht/~jae/sitecontent
+	url = https://forge.tedomum.net/jae/sitecontent.git
