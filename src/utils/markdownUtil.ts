@@ -109,7 +109,8 @@ export const markToParsed = (path: string): PostMedatada => {
     const description = headers.description
       ? headers.description
       : // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        ((mdPlainText as any).plainText as string).substring(0, 160) + "...";
+        // @ts-ignore
+        (mdPlainText.plainText as string).substring(0, 160) + "...";
 
     const picurl = headers.picurl;
     const picalt = headers.picalt;
