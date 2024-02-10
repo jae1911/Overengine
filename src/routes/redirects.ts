@@ -11,7 +11,7 @@ const redirects: FastifyPluginCallback = function (fastify, opts, next): void {
   });
 
   fastify.get("/redir/cv", async (request, reply) => {
-    await reply.redirect("https://git.sr.ht/jae");
+    await reply.redirect("https://j4.lc");
   });
 
   fastify.get("/redir/metacode", async (request, reply) => {
