@@ -45,13 +45,15 @@
     "nodemon": "^2.0.20",
     "prettier": "3.1.0",
     "ts-node": "^10.9.1",
-    "tsutils": "^3.21.0"
+    "tsutils": "^3.21.0",
+    "typescript-coverage-report": "^0.8.0"
   },
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier . --check",
-    "prettier-fix": "prettier . --write"
+    "prettier-fix": "prettier . --write",
+    "coverage": "typescript-coverage-report"
   }
 }
