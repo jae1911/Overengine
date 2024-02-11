@@ -28,6 +28,7 @@ test-tests:
     - yarn install --frozen-lockfile
   script:
     - yarn test:ci
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   artifacts:
     when: always
     reports:
