@@ -2,14 +2,13 @@ stages:
   - test
   - build
 
-cache:
-  paths:
-    - node_modules/
-    - .yarn
-
 test-lint:
   stage: test
   image: node:current-alpine
+  cache:
+    - paths:
+      - node_modules/
+      - .yarn
   before_script:
     - yarn config set cache-folder .yarn
     - yarn install --frozen-lockfile
@@ -20,6 +19,10 @@ test-lint:
 test-tests:
   stage: test
   image: node:current-alpine
+  cache:
+    - paths:
+      - node_modules/
+      - .yarn
   before_script:
     - yarn config set cache-folder .yarn
     - yarn install --frozen-lockfile
