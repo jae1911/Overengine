@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 
 import { Address6 } from "ip-address";
 
+import { server } from "..";
 import { BASE_CONTENT_DIR, CONTENT_ROOT_DIR } from "../environment";
 
 export const scourDirectory = (path: string): readonly string[] => {
@@ -23,7 +24,13 @@ export const scourDirectory = (path: string): readonly string[] => {
 };
 
 export const isLegacy = (ip: string): boolean => {
-  return new Address6(ip).v4;
+  try {
+    const addr = new Address6(ip);
+
+    return !!addr.address4;
+  } catch(_e) {
+    return true;
+  }
 };
 
 export const getLatestGitHash = (): string => {
