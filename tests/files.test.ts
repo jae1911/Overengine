@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 
-import { isLegacy, scourDirectory } from "../src/utils/fileUtil";
+import { getLatestGitHash, isLegacy, scourDirectory } from "../src/utils/fileUtil";
 
 describe("ScourDirectory testing", () => {
   test("listing module empty", () => {
@@ -22,5 +22,11 @@ describe("ip module testing", () => {
 
   test("isIpv6", () => {
     expect(isLegacy("2001:0db8:85a3:0000:0000:8a2e:0370:7334")).toBe(false);
+  });
+});
+
+describe("git module testing", () => {
+  test("git not found", () => {
+    expect(getLatestGitHash()).toBe("Unknown");
   });
 });
