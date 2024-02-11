@@ -28,7 +28,7 @@ export const isLegacy = (ip: string): boolean => {
     const addr = new Address6(ip);
 
     return !!addr.address4;
-  } catch(_e) {
+  } catch (_e) {
     return true;
   }
 };

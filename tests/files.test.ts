@@ -1,6 +1,10 @@
 import { describe, expect, test } from "@jest/globals";
 
-import { getLatestGitHash, isLegacy, scourDirectory } from "../src/utils/fileUtil";
+import {
+  getLatestGitHash,
+  isLegacy,
+  scourDirectory,
+} from "../src/utils/fileUtil";
 
 describe("ScourDirectory testing", () => {
   test("listing module empty", () => {
