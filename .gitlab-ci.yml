@@ -24,7 +24,12 @@ test-tests:
     - yarn config set cache-folder .yarn
     - yarn install --frozen-lockfile
   script:
-    - yarn test
+    - yarn test:ci
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
 
 build-push:
   stage: build
