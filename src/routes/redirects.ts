@@ -15,7 +15,7 @@ const redirects: FastifyPluginCallback = function (fastify, opts, next): void {
   });
 
   fastify.get("/redir/metacode", async (request, reply) => {
-    await reply.redirect("https://git.jae.fi/jae/overengine");
+    await reply.redirect("https://forge.tedomum.net/jae/Overengine");
   });
 
   fastify.get("/redir/gh", async (request, reply) => {
@@ -58,6 +58,10 @@ const redirects: FastifyPluginCallback = function (fastify, opts, next): void {
 
   fastify.get("/wiki/misc/resonite", async (_req, res) => {
     await res.redirect("/wiki/resonite/");
+  });
+
+  fastify.get("/redir/glab", async (_req, res) => {
+    await res.redirect("https://forge.tedomum.net/jae");
   });
 
   // Matrix room joins
