@@ -28,5 +28,4 @@ build-push:
   only:
     - branches
     - tags
-  dependencies:
-    - test
+  needs: ["test"]
