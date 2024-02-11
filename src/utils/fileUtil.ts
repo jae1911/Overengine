@@ -2,7 +2,6 @@ import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 
 import { Address6 } from "ip-address";
 
-import { server } from "..";
 import { BASE_CONTENT_DIR, CONTENT_ROOT_DIR } from "../environment";
 
 export const scourDirectory = (path: string): readonly string[] => {
