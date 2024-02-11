@@ -7,7 +7,7 @@ cache:
     - node_modules/
     - .yarn
 
-test:
+test-lint:
   stage: test
   image: node:current-alpine
   before_script:
@@ -16,6 +16,15 @@ test:
   script:
     - yarn lint
     - yarn prettier
+
+test-tests:
+  stage: test
+  image: node:current-alpine
+  before_script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+  script:
+    - yarn test
 
 build-push:
   stage: build
@@ -28,4 +37,4 @@ build-push:
   only:
     - branches
     - tags
-  needs: ["test"]
+  needs: ["test-lint", "test-tests"]
