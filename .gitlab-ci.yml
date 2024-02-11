@@ -7,8 +7,8 @@ test-lint:
   image: node:current-alpine
   cache:
     - paths:
-      - node_modules/
-      - .yarn
+        - node_modules/
+        - .yarn
   before_script:
     - yarn config set cache-folder .yarn
     - yarn install --frozen-lockfile
@@ -21,8 +21,8 @@ test-tests:
   image: node:current-alpine
   cache:
     - paths:
-      - node_modules/
-      - .yarn
+        - node_modules/
+        - .yarn
   before_script:
     - yarn config set cache-folder .yarn
     - yarn install --frozen-lockfile

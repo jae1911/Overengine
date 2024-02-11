@@ -1,10 +1,14 @@
 import { describe, expect, test } from "@jest/globals";
 
-import { elementSchemeGenerator, matrixSchemeGenerator } from "../src/utils/matrixUtils";
+import {
+  elementSchemeGenerator,
+  matrixSchemeGenerator,
+} from "../src/utils/matrixUtils";
 
 describe("Matrix scheme generator", () => {
   test("scheme generator room", () => {
-    const sampleScheme = "matrix:roomid/test:example.com?action=join&via=jae.fi";
+    const sampleScheme =
+      "matrix:roomid/test:example.com?action=join&via=jae.fi";
 
     expect(matrixSchemeGenerator("test", "example.com")).toBe(sampleScheme);
   });
@@ -32,6 +36,8 @@ describe("Element scheme generator", () => {
     const sampleScheme =
       "element://vector/webapp/#/room/#test:example.com?via=jae.fi";
 
-    expect(elementSchemeGenerator("test", "example.com", true)).toBe(sampleScheme);
+    expect(elementSchemeGenerator("test", "example.com", true)).toBe(
+      sampleScheme,
+    );
   });
 });
