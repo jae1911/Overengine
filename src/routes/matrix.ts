@@ -9,6 +9,10 @@ const matrixRoutes: FastifyPluginCallback = (fastify, _options, next): void => {
       ? `${MATRIX_SUBDOMAIN}.${request.hostname}:${MATRIX_HOMESERVER_PORT}`
       : `${request.hostname}:${MATRIX_HOMESERVER_PORT}`;
 
+    if (request.hostname === "jae.fi") {
+      await reply.send().status(404);
+    }
+
     await reply.send({
       "m.server": matrixDir,
     });
