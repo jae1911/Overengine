@@ -37,6 +37,20 @@ test-tests:
         - junit.xml
   needs: []
 
+test-build-launch:
+  stage: test
+  image: node:current-alpine
+  cache:
+    - paths:
+        - node_modules/
+        - .yarn
+  before_script:
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+  script:
+    - yarn build
+    - file build/src/index.js
+
 build-push:
   stage: build
   image:
@@ -48,4 +62,4 @@ build-push:
   only:
     - branches
     - tags
-  needs: ["test-lint", "test-tests"]
+  needs: ["test-lint", "test-tests", "test-build-launch"]
