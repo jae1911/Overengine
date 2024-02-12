@@ -50,6 +50,7 @@ test-build-launch:
   script:
     - yarn build
     - file build/src/index.js
+  needs: []
 
 build-push:
   stage: build
