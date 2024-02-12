@@ -20,6 +20,10 @@ const matrixRoutes: FastifyPluginCallback = (fastify, _options, next): void => {
       ? `https://${MATRIX_SUBDOMAIN}.${request.hostname}`
       : `https://${request.hostname}`;
 
+    if (request.hostname === "jae.fi") {
+      await reply.send().status(404);
+    }
+
     await reply.send({
       "m.homeserver": {
         base_url: matrixDir,
