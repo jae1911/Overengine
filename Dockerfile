@@ -9,7 +9,7 @@ FROM node:lts-alpine AS runner
 
 COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/templates /templates
-COPY --from=builder /app/build /app/build
+COPY --from=builder /app/build/src /app/build
 COPY --from=builder /app/content /app/content
 COPY --from=builder /app/public /app/public
 
