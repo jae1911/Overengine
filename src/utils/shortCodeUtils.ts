@@ -1,7 +1,4 @@
-import {
-  BASE_CONTENT_DIR,
-  BLOGS_ENABLED,
-} from "../environment";
+import { BASE_CONTENT_DIR, BLOGS_ENABLED } from "../environment";
 
 import { listToMarkdown } from "./listUtils";
 

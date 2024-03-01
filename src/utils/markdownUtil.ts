@@ -12,10 +12,7 @@ import slugify from "slugify";
 
 import { notFoundMeta, PostMedatada } from "../types/postMetadata";
 
-import {
-  shortCodeConstruction,
-  shortcodeBlogList,
-} from "./shortCodeUtils";
+import { shortCodeConstruction, shortcodeBlogList } from "./shortCodeUtils";
 
 export const mdParser = MarkdownIt({
   html: true,
