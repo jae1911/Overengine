@@ -1,18 +1,8 @@
 import {
   BASE_CONTENT_DIR,
-  BGPAS,
   BLOGS_ENABLED,
-  OWMKEY,
-  WAKATOKEN,
 } from "../environment";
-import { WakaRes } from "../types/wakatime";
 
-import {
-  getBgpUpstreams,
-  getbBgpIx,
-  getWeatherForCity,
-  getWeeklyHours,
-} from "./apiClient";
 import { listToMarkdown } from "./listUtils";
 
 export const shortCodeConstruction = (input: string): string => {
@@ -41,39 +31,4 @@ export const shortcodeBlogList = (
         ),
       )
     : markdown.replaceAll("{{< postlist >}}", "");
-};
-
-export const shortCodeWakaTime = async (input: string): Promise<string> => {
-  return WAKATOKEN && WAKATOKEN.length > 1
-    ? input.replaceAll(
-        "{{< wakaCounter >}}",
-        `<p>I spent ${await generateWakaString()} programming this week.`,
-      )
-    : input.replaceAll("{{< wakaCounter >}}", "");
-};
-
-export const shortCodeBGP = async (input: string): Promise<string> => {
-  return BGPAS
-    ? input
-        .replaceAll("{{< bgpUpstreams >}}", (await getBgpUpstreams()) ?? "")
-        .replaceAll("{{< bgpIx >}}", (await getbBgpIx()) ?? "")
-    : input
-        .replaceAll("{{< bgpUpstreams >}}", "")
-        .replaceAll("{{< bgpIx >}}", "");
-};
-
-export const shortCodeOWM = async (input: string): Promise<string> => {
-  return OWMKEY
-    ? input.replaceAll(
-        "{{< weatherWidget >}}",
-        (await getWeatherForCity()) ??
-          "An error happened while trying to get weather data.",
-      )
-    : input.replaceAll("{{< weatherWidget >}}", "");
-};
-
-export const generateWakaString = async (): Promise<string> => {
-  const res = JSON.parse(await getWeeklyHours()) as WakaRes;
-
-  return res.data.human_readable_total;
 };

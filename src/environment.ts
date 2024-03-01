@@ -29,15 +29,6 @@ export const REDIS_DB: number = parseInt(env.REDIS_DB ?? "0");
 export const REDIS_PASSWORD: string = env.REDIS_PASSWORD ?? "";
 export const REDIS_USER: string = env.REDIS_USER ?? "";
 
-export const WAKATOKEN: string = env.WAKATOKEN ?? "";
-
-export const BGPAS: string = env.BGPAS ?? "";
-
-export const OWMKEY: string = env.OWMKEY ?? "";
-export const OWMCITY: string = env.OWMCITY ?? "Helsinki";
-
-export const LINGVA_DOMAIN: string = env.LINGVA_DOMAIN ?? "translate.jae.fi";
-
 export const MATRIX_SUBDOMAIN: string = env.MATRIX_SUBDOMAIN ?? "";
 export const MATRIX_HOMESERVER_PORT: number = parseInt(
   env.MATRIX_HOMESERVER_PORT ?? "443",

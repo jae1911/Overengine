@@ -13,9 +13,6 @@ import slugify from "slugify";
 import { notFoundMeta, PostMedatada } from "../types/postMetadata";
 
 import {
-  shortCodeOWM,
-  shortCodeBGP,
-  shortCodeWakaTime,
   shortCodeConstruction,
   shortcodeBlogList,
 } from "./shortCodeUtils";
@@ -62,11 +59,7 @@ export const pathToParse = async (
   const parsedMeta = markToParsed(path);
 
   // SHORTCODES
-  const shortCodedMarkdown = await shortCodeOWM(
-    await shortCodeBGP(
-      await shortCodeWakaTime(shortCodeConstruction(parsedMeta.markdown)),
-    ),
-  );
+  const shortCodedMarkdown = shortCodeConstruction(parsedMeta.markdown);
 
   // Launch rendering
   const gotBlogDomain = isBlog && baseDomain;
