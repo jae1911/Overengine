@@ -34,11 +34,11 @@ export const mdParser = MarkdownIt({
 const mdPlainText = MarkdownIt().use(markdownItPlainText);
 
 // PARSE MD AND RETURN IT
-export const pathToParse = async (
+export const pathToParse = (
   path: string,
   isBlog?: boolean,
   baseDomain?: string,
-): Promise<PostMedatada> => {
+): PostMedatada => {
   if (
     path.length < 1 ||
     [...path.split(".")].pop() != "md" ||

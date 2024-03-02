@@ -21,7 +21,7 @@ import { pathToParse } from "../utils/markdownUtil";
 const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
   // Blog index
   fastify.get("/blog/", async (request, reply) => {
-    const content = await pathToParse(BASE_CONTENT_DIR + "/blog/_index.md");
+    const content = pathToParse(BASE_CONTENT_DIR + "/blog/_index.md");
     const pagesMenu = generatePageMenu(request.hostname);
     const wikiMenu = generateWikiMenu(request.hostname);
     const list = generateBlogList(request.hostname);
@@ -51,9 +51,7 @@ const blogRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
     ) => {
       const { tag } = request.params;
 
-      const content = await pathToParse(
-        BASE_CONTENT_DIR + "/blog/_index.tags.md",
-      );
+      const content = pathToParse(BASE_CONTENT_DIR + "/blog/_index.tags.md");
       const pagesMenu = generatePageMenu(request.hostname);
       const wikiMenu = generateWikiMenu(request.hostname);
       const list = generateBlogListTagged(request.hostname, tag);

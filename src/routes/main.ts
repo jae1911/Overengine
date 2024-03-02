@@ -18,7 +18,7 @@ import { pathToParse } from "../utils/markdownUtil";
 
 const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
   fastify.get("/", async (request, reply) => {
-    const content = await pathToParse(
+    const content = pathToParse(
       BASE_CONTENT_DIR + "/_index.md",
       true,
       request.hostname,
@@ -55,7 +55,7 @@ const mainRoutes: FastifyPluginCallback = function (fastify, opts, next): void {
       ? BASE_CONTENT_DIR + requestUri + "_index.md"
       : BASE_CONTENT_DIR + requestUri + ".md";
 
-    const content = await pathToParse(fileGet);
+    const content = pathToParse(fileGet);
 
     await reply.view("/templates/index.ejs", {
       content,
