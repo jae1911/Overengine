@@ -89,7 +89,7 @@ export const markToParsed = (path: string): PostMedatada => {
       JSON.stringify(parsedFile?.headers),
     ) as PostMedatada;
 
-    const _renderedMarkdown = mdPlainText.render(parsedFile.markdown);
+    mdPlainText.render(parsedFile.markdown);
 
     const title = headers.title ?? "No title provided.";
     const pubDate = new Date(headers.date) ?? new Date();
