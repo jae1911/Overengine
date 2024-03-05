@@ -2,6 +2,9 @@ stages:
   - test
   - build
 
+variables:
+  SAST_IMAGE_SUFFIX: '-fips'
+
 test-lint:
   stage: test
   image: node:current-alpine
@@ -52,3 +55,4 @@ build-push:
 
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml
