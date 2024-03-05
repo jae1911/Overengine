@@ -49,3 +49,6 @@ build-push:
     - branches
     - tags
   needs: ["test-lint", "test-tests"]
+
+include:
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
