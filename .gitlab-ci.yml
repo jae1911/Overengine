@@ -58,7 +58,6 @@ build-push:
       "nodejs-scan-sast",
       "secret_detection",
       "semgrep-sast",
-      "dependency_scanning",
     ]
 
 include:
