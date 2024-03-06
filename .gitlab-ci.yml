@@ -58,8 +58,10 @@ build-push:
       "nodejs-scan-sast",
       "secret_detection",
       "semgrep-sast",
+      "dependency_scanning",
     ]
 
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - template: Jobs/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
