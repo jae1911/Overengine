@@ -51,7 +51,7 @@ build-push:
   only:
     - branches
     - tags
-  needs: ["test-lint", "test-tests"]
+  needs: ["test-lint", "test-tests", "nodejs-scan-sast", "secret_detection", "semgrep-sast"]
 
 include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
