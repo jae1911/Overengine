@@ -3,7 +3,7 @@ stages:
   - build
 
 variables:
-  SAST_IMAGE_SUFFIX: '-fips'
+  SAST_IMAGE_SUFFIX: "-fips"
 
 test-lint:
   stage: test
