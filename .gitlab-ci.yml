@@ -74,3 +74,4 @@ deploy:
     - ssh $SSH_USER@$SSH_HOST "docker compose pull website && docker compose up -d website && exit"
   after_script:
     - rm -rf ~/.ssh
+  needs: ["build-push"]
