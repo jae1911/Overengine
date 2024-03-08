@@ -74,4 +74,5 @@ publish-content:
     - ssh $SSH_USER@$SSH_HOST "docker compose pull website && docker compose up -d website && exit"
   only:
     - beep
+  environment: production
   needs: ["build-push"]
