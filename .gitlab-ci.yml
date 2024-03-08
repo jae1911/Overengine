@@ -74,5 +74,7 @@ publish-content:
     - ssh $SSH_USER@$SSH_HOST "docker compose pull website && docker compose up -d website && exit"
   only:
     - beep
-  environment: production
+  environment:
+    name: production
+    url: https://777.tf
   needs: ["build-push"]
